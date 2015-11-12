@@ -108,10 +108,12 @@ export class Calendar extends React.Component {
     return (
       <table className='calendar'>
         <thead className='day-headers'>
-          <th>
-            &nbsp;
-          </th>
-          {daysOfWeek}
+          <tr>
+            <th>
+              &nbsp;
+            </th>
+            {daysOfWeek}
+          </tr>
         </thead>
         <tbody>
           {months}

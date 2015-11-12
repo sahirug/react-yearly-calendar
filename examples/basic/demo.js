@@ -4677,11 +4677,15 @@ var Calendar = exports.Calendar = (function (_React$Component) {
           'thead',
           { className: 'day-headers' },
           React.createElement(
-            'th',
+            'tr',
             null,
-            ' '
-          ),
-          daysOfWeek
+            React.createElement(
+              'th',
+              null,
+              ' '
+            ),
+            daysOfWeek
+          )
         ),
         React.createElement(
           'tbody',
