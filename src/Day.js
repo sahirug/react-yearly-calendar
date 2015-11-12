@@ -1,27 +1,26 @@
-'use strict';
+const React = require('react');
 
-var React = require('react');
+const defaultProps = { classes: '' };
 
-var Day = React.createClass({
-
-  getDefaultProps: function() {
-    return {
-      classes: ''
-    };
-  },
-
-  _onClick: function() {
-    if (this.props.onClick)
+export class Day extends React.Component {
+  onClick() {
+    if (this.props.onClick) {
       this.props.onClick(this.props.day.day);
-  },
+    }
+  }
 
-  render: function() {
+  render() {
     return (
-      <div onClick={this._onClick} className={this.props.day.classes}>
-        <span className='day-number'>{this.props.day.day.date()}</span>
-      </div>
+      <td
+        onClick={this.onClick.bind(this)}
+        className={this.props.day.classes}
+      >
+        <span className="day-number">
+          {this.props.day.day.date()}
+        </span>
+      </td>
     );
   }
-});
+}
 
-module.exports = Day;
+Day.defaultProps = defaultProps;

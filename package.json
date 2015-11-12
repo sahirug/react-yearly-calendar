@@ -1,27 +1,33 @@
 {
-  "name": "react-calendar-component",
-  "version": "0.2.1",
-  "description": "React.js calendar component.",
+  "name": "react-yearly-calendar",
+  "version": "0.0.1",
+  "description": "A yearly calendar built in React.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Hanse/react-calendar"
+    "url": "git@github.com:BelkaLab/react-yearly-calendar"
   },
   "main": "./lib/index.js",
   "scripts": {
-    "test": "make test",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "make publish"
   },
-  "author": "Hanse",
-  "license": "MIT",
   "keywords": [
     "react",
     "react.js",
     "calendar",
-    "react component",
-    "react calendar component",
-    "clndr"
+    "year",
+    "yearly"
   ],
-  "devDependencies": {
-    "react-tools": "^0.12.2"
+  "author": "Belka <giovanni@belka.us> (http://belka.us)",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.10.6",
+    "react": "^0.14.2",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies":{
+    "babel-cli": "^6.1.2",
+    "babel-preset-es2015": "^6.1.2",
+    "babel-preset-react": "^6.1.2"
   }
 }

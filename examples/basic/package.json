@@ -1,18 +1,19 @@
 {
-  "name": "calendar-basic",
+  "name": "react-yearly-calendar-demo",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify -t [reactify  --harmony] main.js -o bundle.js"
+    "postinstall": "browserify -t [reactify --harmony] main.js -o demo.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.9.0",
-    "react": "^0.12.2",
-    "react-calendar-component": "latest"
+    "moment": "^2.10.6",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "react-yearly-calendar": "../../"
   },
   "devDependencies": {
     "browserify": "^8.1.3",

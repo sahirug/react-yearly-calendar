@@ -1,7 +1,6 @@
-var React = require('react');
-var {Calendar} = require('react-calendar-component');
-
-require('moment/locale/nb');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const {Calendar} = require('react-yearly-calendar');
 
 function datePicked(date) {
   console.log(date);
@@ -9,8 +8,8 @@ function datePicked(date) {
 
 console.log('Hello World')
 
-React.render(
-  <Calendar showDaysOfWeek={true}
+ReactDOM.render(
+  <Calendar.Calendar showDaysOfWeek={true}
             onPickDate={datePicked} />,
   document.getElementById('calendar')
 );
