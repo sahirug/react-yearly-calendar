@@ -5,17 +5,17 @@ const Day = require('./Day').Day;
 // const CalendarControls = require('./CalendarControls');
 
 const propTypes = {
-  weekOffset: React.PropTypes.number,
-  forceSixRows: React.PropTypes.bool,
+  year: React.PropTypes.number.isRequired,
+  forceFullWeeks: React.PropTypes.bool,
   showDaysOfWeek: React.PropTypes.bool,
+  onPickDate: React.PropTypes.func
 };
 
 const defaultProps = {
-  weekOffset: 0,
-  forceSixRows: false,
-  showDaysOfWeek: false,
-  onPickDate: null,
   year: moment().year(),
+  forceFullWeeks: false,
+  showDaysOfWeek: true,
+  onPickDate: null,
   selectedDay: moment()
 };
 
@@ -25,39 +25,35 @@ export class Calendar extends React.Component {
   }
 
   days(month) {
-    var date = moment(); // current day
+    let date = moment(); // current day
     date.year(this.props.year); // set year
     date.month(month); // set desired month
     date = date.startOf('month');
 
     var days = [];
-    var diff = date.weekday() - this.props.weekOffset;
-    if (diff < 0) diff += 7;
 
+    // insert days before the start of the month
+    const diff = date.weekday();
     for (let i = 0; i < diff; i++) {
       let day = moment([date.year(), date.month(), i-diff+1]);
       days.push({day: day, classes: 'prev-month'});
     }
 
+    // insert days of month
     const numberOfDays = date.daysInMonth();
     for (let i = 1; i <= numberOfDays; i++) {
       let day = moment([date.year(), date.month(), i]);
-      days.push({day: day});
+      days.push({day: day, classes: day.isSame(this.props.selectedDay, 'day')? 'selected': ''});
     }
 
+    // insert days at the end to match up 37 (max number of days in a month + 6)
+    // or 42 (if user prefers seeing the week closing with Sunday)
+    const totalDays = this.props.forceFullWeeks? 42: 37;
     let i = 1;
-    while (days.length < 37) {
+    while (days.length < totalDays) {
       let day = moment([date.year(), date.month(), numberOfDays+i]);
       days.push({day: day, classes: 'next-month'});
       i++;
-    }
-
-    if (this.props.forceSixRows && days.length !== 42) {
-      let start = moment(days[days.length-1].date).add(1, 'days');
-      while (days.length < 42) {
-        days.push({day: moment(start), classes: 'next-month'});
-        start.add(1, 'days');
-      }
     }
 
     return days;
@@ -73,24 +69,33 @@ export class Calendar extends React.Component {
   }
 
   daysOfWeek() {
-    var daysOfWeek = this.props.daysOfWeek;
-    if (!daysOfWeek) {
-      daysOfWeek = [];
-      for (var i = 0; i < 37; i++) {
-        daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
-      }
+    var daysOfWeek = [];
+    const totalDays = this.props.forceFullWeeks? 42: 37;
+    for (let i = 0; i < totalDays; i++) {
+      daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
     }
+
     return daysOfWeek;
   }
 
   render() {
-    const daysOfWeek = this.daysOfWeek().map((day, i) => {
-      return (
-        <th key={'weekday-' + i} className={i%7==0? "bolder": ""}>
-          {day}
-        </th>
+    let weekDays;
+    if(this.props.showDaysOfWeek) {
+      weekDays = (
+        <tr>
+          <th>
+            &nbsp;
+          </th>
+          {this.daysOfWeek().map((day, i) => {
+            return (
+              <th key={'weekday-' + i} className={i%7==0? "bolder": ""}>
+                {day}
+              </th>
+            );
+          })}
+        </tr>
       );
-    });
+    }
 
     const months  = _.range(0,12).map((month, i) => {
       return (
@@ -108,12 +113,7 @@ export class Calendar extends React.Component {
     return (
       <table className='calendar'>
         <thead className='day-headers'>
-          <tr>
-            <th>
-              &nbsp;
-            </th>
-            {daysOfWeek}
-          </tr>
+          {weekDays}
         </thead>
         <tbody>
           {months}
