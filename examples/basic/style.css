@@ -1,0 +1,68 @@
+body {
+  background-color: white;
+  font-family: sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+thead {
+  background-color: lightblue;
+  margin-bottom: 3px;
+  border-bottom: 1px solid lightslategray
+}
+
+thead th {
+  font-weight: normal;
+  padding: 10px 3px;
+}
+
+thead th.bolder {
+  font-weight: bold;
+}
+
+tr > td:first-child {
+  font-weight: bold;
+  text-align: left;
+  cursor: default;
+}
+
+td {
+  text-align: center;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+td.prev-month, td.next-month {
+  color: #B5B4B4;
+  cursor: default;
+}
+
+td.selected {
+  color: red;
+}
+
+div#calendar {
+  margin: 50px auto;
+  border: 1px solid gray;
+  background-color: aliceblue;
+  display: table;
+}
+
+h1,h2,h3,h4,h5 {
+  text-align: center;
+  color: #404040;
+}
+
+a {
+  color: #B10909;
+  font-weight: bolder;
+  text-decoration: none;
+}

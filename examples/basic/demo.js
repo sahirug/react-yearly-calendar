@@ -3,15 +3,19 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const $__0=  require('react-yearly-calendar'),Calendar=$__0.Calendar;
 
+var selectedDay;
+
 function datePicked(date) {
-  console.log(date);
+  console.log("You selected: " + date.format("DD/MMM/YY"));
+  selectedDay = date;
 }
 
-console.log('Hello World')
-
 ReactDOM.render(
-  React.createElement(Calendar.Calendar, {showDaysOfWeek: true, 
-            onPickDate: datePicked}),
+  React.createElement(Calendar.Calendar, {
+    showDaysOfWeek: true, 
+    onPickDate: datePicked, 
+    selectedDay: selectedDay}
+  ),
   document.getElementById('calendar')
 );
 
@@ -4558,17 +4562,17 @@ var Day = require('./Day').Day;
 // const CalendarControls = require('./CalendarControls');
 
 var propTypes = {
-  weekOffset: React.PropTypes.number,
-  forceSixRows: React.PropTypes.bool,
-  showDaysOfWeek: React.PropTypes.bool
+  year: React.PropTypes.number.isRequired,
+  forceFullWeeks: React.PropTypes.bool,
+  showDaysOfWeek: React.PropTypes.bool,
+  onPickDate: React.PropTypes.func
 };
 
 var defaultProps = {
-  weekOffset: 0,
-  forceSixRows: false,
-  showDaysOfWeek: false,
-  onPickDate: null,
   year: moment().year(),
+  forceFullWeeks: false,
+  showDaysOfWeek: true,
+  onPickDate: null,
   selectedDay: moment()
 };
 
@@ -4590,33 +4594,29 @@ var Calendar = exports.Calendar = (function (_React$Component) {
       date = date.startOf('month');
 
       var days = [];
-      var diff = date.weekday() - this.props.weekOffset;
-      if (diff < 0) diff += 7;
 
+      // insert days before the start of the month
+      var diff = date.weekday();
       for (var _i = 0; _i < diff; _i++) {
         var day = moment([date.year(), date.month(), _i - diff + 1]);
         days.push({ day: day, classes: 'prev-month' });
       }
 
+      // insert days of month
       var numberOfDays = date.daysInMonth();
       for (var _i2 = 1; _i2 <= numberOfDays; _i2++) {
         var day = moment([date.year(), date.month(), _i2]);
-        days.push({ day: day });
+        days.push({ day: day, classes: day.isSame(this.props.selectedDay, 'day') ? 'selected' : '' });
       }
 
+      // insert days at the end to match up 37 (max number of days in a month + 6)
+      // or 42 (if user prefers seeing the week closing with Sunday)
+      var totalDays = this.props.forceFullWeeks ? 42 : 37;
       var i = 1;
-      while (days.length < 37) {
+      while (days.length < totalDays) {
         var day = moment([date.year(), date.month(), numberOfDays + i]);
         days.push({ day: day, classes: 'next-month' });
         i++;
-      }
-
-      if (this.props.forceSixRows && days.length !== 42) {
-        var start = moment(days[days.length - 1].date).add(1, 'days');
-        while (days.length < 42) {
-          days.push({ day: moment(start), classes: 'next-month' });
-          start.add(1, 'days');
-        }
       }
 
       return days;
@@ -4633,13 +4633,12 @@ var Calendar = exports.Calendar = (function (_React$Component) {
   }, {
     key: 'daysOfWeek',
     value: function daysOfWeek() {
-      var daysOfWeek = this.props.daysOfWeek;
-      if (!daysOfWeek) {
-        daysOfWeek = [];
-        for (var i = 0; i < 37; i++) {
-          daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
-        }
+      var daysOfWeek = [];
+      var totalDays = this.props.forceFullWeeks ? 42 : 37;
+      for (var i = 0; i < totalDays; i++) {
+        daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
       }
+
       return daysOfWeek;
     }
   }, {
@@ -4647,13 +4646,25 @@ var Calendar = exports.Calendar = (function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var daysOfWeek = this.daysOfWeek().map(function (day, i) {
-        return React.createElement(
-          'th',
-          { key: 'weekday-' + i, className: i % 7 == 0 ? "bolder" : "" },
-          day
+      var weekDays = undefined;
+      if (this.props.showDaysOfWeek) {
+        weekDays = React.createElement(
+          'tr',
+          null,
+          React.createElement(
+            'th',
+            null,
+            ' '
+          ),
+          this.daysOfWeek().map(function (day, i) {
+            return React.createElement(
+              'th',
+              { key: 'weekday-' + i, className: i % 7 == 0 ? "bolder" : "" },
+              day
+            );
+          })
         );
-      });
+      }
 
       var months = _.range(0, 12).map(function (month, i) {
         return React.createElement(
@@ -4676,16 +4687,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
         React.createElement(
           'thead',
           { className: 'day-headers' },
-          React.createElement(
-            'tr',
-            null,
-            React.createElement(
-              'th',
-              null,
-              ' '
-            ),
-            daysOfWeek
-          )
+          weekDays
         ),
         React.createElement(
           'tbody',
