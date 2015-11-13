@@ -16,7 +16,7 @@ table {
 thead {
   background-color: lightblue;
   margin-bottom: 3px;
-  border-bottom: 1px solid lightslategray
+  border-bottom: 2px solid white
 }
 
 thead th {
@@ -28,32 +28,47 @@ thead th.bolder {
   font-weight: bold;
 }
 
-tr > td:first-child {
+td {
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  border: 1px solid lightblue;
+  min-width: 18px;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td.month-name {
   font-weight: bold;
   text-align: left;
   cursor: default;
-}
-
-td {
-  text-align: center;
-  padding: 5px 8px;
-  cursor: pointer;
+  border-left: none;
 }
 
 td.prev-month, td.next-month {
-  color: #B5B4B4;
+  color: transparent;
   cursor: default;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAABvrngfAAAAMUlEQVQImWNce+OZs4IkAxJg/PDjPzJ/74PnTGh8ZwVJJjQ+AwMDExofKoTMZ2BgAADaohRdwRxCnQAAAABJRU5ErkJggg==');
 }
 
 td.selected {
   color: red;
+  font-weight: bold;
+}
+
+td.bolder {
+  font-weight: bold;
 }
 
 div#calendar {
   margin: 50px auto;
-  border: 1px solid gray;
+  border: 1px solid lightblue;
   background-color: aliceblue;
   display: table;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 h1,h2,h3,h4,h5 {
