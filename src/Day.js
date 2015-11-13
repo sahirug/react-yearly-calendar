@@ -1,11 +1,18 @@
 const React = require('react');
 
-const defaultProps = { classes: '' };
+const propTypes = {
+  classes: React.PropTypes.string,
+  onClick: React.PropTypes.func
+};
+
+const defaultProps = {
+  classes: ''
+};
 
 export class Day extends React.Component {
   onClick() {
     if (this.props.onClick) {
-      this.props.onClick(this.props.day.day);
+      this.props.onClick(this.props.day);
     }
   }
 
@@ -13,14 +20,15 @@ export class Day extends React.Component {
     return (
       <td
         onClick={this.onClick.bind(this)}
-        className={this.props.day.classes}
+        className={this.props.classes}
       >
-        <span className="day-number">
-          {this.props.day.day.date()}
+        <span className='day-number'>
+          {this.props.day.date()}
         </span>
       </td>
     );
   }
 }
 
+Day.propTypes = propTypes;
 Day.defaultProps = defaultProps;
