@@ -48,6 +48,7 @@ td.month-name {
 td.prev-month, td.next-month {
   color: transparent;
   cursor: default;
+  pointer-events: none;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAABvrngfAAAAMUlEQVQImWNce+OZs4IkAxJg/PDjPzJ/74PnTGh8ZwVJJjQ+AwMDExofKoTMZ2BgAADaohRdwRxCnQAAAABJRU5ErkJggg==');
 }
 

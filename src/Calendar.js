@@ -44,13 +44,15 @@ export class Calendar extends React.Component {
         classes.push('prev-month');
       } else if ( i > (numberOfDays + prevMonthDaysCount) ) {
         classes.push('next-month');
+      } else {
+        // 'selected' class sholud be applied only to days in this month
+        if( day.isSame(this.props.selectedDay, 'day') ) {
+          classes.push('selected');
+        }
       }
 
       if( (i-1)%7==0 ) {
         classes.push('bolder');
-      }
-      if( day.isSame(this.props.selectedDay, 'day') ) {
-        classes.push('selected');
       }
 
       return (

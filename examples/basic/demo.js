@@ -5,9 +5,6 @@ const moment = require('moment');
 const $__0=  require('react-yearly-calendar').Calendar,Calendar=$__0.Calendar;
 const $__1=  require('react-yearly-calendar').CalendarControls,CalendarControls=$__1.CalendarControls;
 
-console.dir(Calendar);
-console.dir(CalendarControls);
-
 var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____Class0.hasOwnProperty(____Class0____Key)){Demo[____Class0____Key]=____Class0[____Class0____Key];}}var ____SuperProtoOf____Class0=____Class0===null?null:____Class0.prototype;Demo.prototype=Object.create(____SuperProtoOf____Class0);Demo.prototype.constructor=Demo;Demo.__superConstructor__=____Class0;
   function Demo(props) {"use strict";
     ____Class0.call(this,props);
@@ -4715,13 +4712,15 @@ var Calendar = exports.Calendar = (function (_React$Component) {
           classes.push('prev-month');
         } else if (i > numberOfDays + prevMonthDaysCount) {
           classes.push('next-month');
+        } else {
+          // 'selected' class sholud be applied only to days in this month
+          if (day.isSame(_this2.props.selectedDay, 'day')) {
+            classes.push('selected');
+          }
         }
 
         if ((i - 1) % 7 == 0) {
           classes.push('bolder');
-        }
-        if (day.isSame(_this2.props.selectedDay, 'day')) {
-          classes.push('selected');
         }
 
         return React.createElement(Day, {
@@ -4792,21 +4791,17 @@ var Calendar = exports.Calendar = (function (_React$Component) {
       });
 
       return React.createElement(
-        'div',
-        null,
+        'table',
+        { className: 'calendar' },
         React.createElement(
-          'table',
-          { className: 'calendar' },
-          React.createElement(
-            'thead',
-            { className: 'day-headers' },
-            weekDays
-          ),
-          React.createElement(
-            'tbody',
-            null,
-            months
-          )
+          'thead',
+          { className: 'day-headers' },
+          weekDays
+        ),
+        React.createElement(
+          'tbody',
+          null,
+          months
         )
       );
     }
