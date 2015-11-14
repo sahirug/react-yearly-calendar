@@ -5,12 +5,6 @@ body {
 
 table {
   border-collapse: collapse;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 thead {
@@ -28,12 +22,16 @@ thead th.bolder {
   font-weight: bold;
 }
 
+tbody {
+  font-size: 0.8em;
+}
+
 td {
   text-align: center;
   padding: 8px;
   cursor: pointer;
   border: 1px solid lightblue;
-  min-width: 18px;
+  min-width: 15px;
 }
 
 tr:last-child td {
@@ -63,12 +61,21 @@ td.bolder {
 }
 
 div#calendar {
-  margin: 50px auto;
   border: 1px solid lightblue;
   background-color: aliceblue;
-  display: table;
   overflow: hidden;
   border-radius: 5px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+div#demo {
+  display: table;
+  margin: 50px auto;
 }
 
 h1,h2,h3,h4,h5 {
@@ -80,4 +87,32 @@ a {
   color: #B10909;
   font-weight: bolder;
   text-decoration: none;
+}
+
+.calendar-controls {
+  margin: 5px auto;
+  display: table;
+  font-size: 30px;
+}
+
+.calendar-controls div {
+  display: inline;
+}
+
+.calendar-controls .current-year {
+  margin: 0 30px;
+}
+
+.calendar-controls .control {
+  font-weight: bolder;
+  color: #AA0000;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+.options {
+  border: 1px solid lightblue;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin-top: 30px;
 }

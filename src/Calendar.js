@@ -2,7 +2,6 @@ const React = require('react');
 const moment = require('moment');
 const _ = require('underscore');
 const Day = require('./Day').Day;
-// const CalendarControls = require('./CalendarControls');
 
 const propTypes = {
   year: React.PropTypes.number.isRequired,

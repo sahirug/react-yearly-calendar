@@ -1,26 +1,99 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 const React = require('react');
 const ReactDOM = require('react-dom');
-const $__0=  require('react-yearly-calendar'),Calendar=$__0.Calendar;
+const moment = require('moment');
+const $__0=  require('react-yearly-calendar').Calendar,Calendar=$__0.Calendar;
+const $__1=  require('react-yearly-calendar').CalendarControls,CalendarControls=$__1.CalendarControls;
 
-var selectedDay;
+console.dir(Calendar);
+console.dir(CalendarControls);
 
-function datePicked(date) {
-  console.log("You selected: " + date.format("DD/MMM/YY"));
-  selectedDay = date;
-}
+var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____Class0.hasOwnProperty(____Class0____Key)){Demo[____Class0____Key]=____Class0[____Class0____Key];}}var ____SuperProtoOf____Class0=____Class0===null?null:____Class0.prototype;Demo.prototype=Object.create(____SuperProtoOf____Class0);Demo.prototype.constructor=Demo;Demo.__superConstructor__=____Class0;
+  function Demo(props) {"use strict";
+    ____Class0.call(this,props);
+
+    this.state = {
+      year: moment().year(),
+      selectedDay: moment(),
+      showDaysOfWeek: true
+    };
+  }
+
+  Object.defineProperty(Demo.prototype,"onPrevYear",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({ year: this.state.year-1 });
+  }});
+
+  Object.defineProperty(Demo.prototype,"onNextYear",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({ year: this.state.year+1 });
+  }});
+
+  Object.defineProperty(Demo.prototype,"datePicked",{writable:true,configurable:true,value:function(date) {"use strict";
+    this.setState({ selectedDay: date });
+  }});
+
+  Object.defineProperty(Demo.prototype,"showDaysOfWeek",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
+  }});
+  Object.defineProperty(Demo.prototype,"forceFullWeeks",{writable:true,configurable:true,value:function(){"use strict";
+    this.setState({
+      showDaysOfWeek: true,
+      forceFullWeeks: !this.state.forceFullWeeks
+    });
+  }});
+
+  Object.defineProperty(Demo.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+    return (
+      React.createElement("div", null, 
+        React.createElement("div", {id: "calendar"}, 
+          React.createElement(CalendarControls, {
+            year: this.state.year, 
+            onPrev: this.onPrevYear.bind(this), 
+            onNext: this.onNextYear.bind(this)}
+          ), 
+          React.createElement(Calendar, {
+            year: this.state.year, 
+            selectedDay: this.state.selectedDay, 
+            showDaysOfWeek: this.state.showDaysOfWeek, 
+            forceFullWeeks: this.state.forceFullWeeks, 
+            onPickDate: this.datePicked.bind(this)}
+          )
+        ), 
+
+        React.createElement("div", {className: "options"}, 
+          React.createElement("b", null, "Options"), 
+          React.createElement("br", null), 
+          React.createElement("ul", null, 
+            React.createElement("li", null, 
+              React.createElement("input", {
+                id: "showDaysOfWeek", 
+                type: "checkbox", 
+                onChange: this.showDaysOfWeek.bind(this), 
+                checked: this.state.showDaysOfWeek}
+              ), 
+              React.createElement("label", {htmlFor: "showDaysOfWeek"}, "Show days of week")
+            ), 
+            React.createElement("li", null, 
+              React.createElement("input", {
+                id: "forceFullWeeks", 
+                type: "checkbox", 
+                onChange: this.forceFullWeeks.bind(this), 
+                checked: this.state.forceFullWeeks}
+              ), 
+              React.createElement("label", {htmlFor: "forceFullWeeks"}, "Force full weeks")
+            )
+          )
+        )
+      )
+    );
+  }});
+
 
 ReactDOM.render(
-  React.createElement(Calendar.Calendar, {
-    showDaysOfWeek: true, 
-    onPickDate: datePicked, 
-    selectedDay: selectedDay}
-  ),
-  document.getElementById('calendar')
+  React.createElement(Demo, null),
+  document.getElementById('demo')
 );
 
-
-},{"react":164,"react-dom":31,"react-yearly-calendar":35}],2:[function(require,module,exports){
+},{"moment":29,"react":164,"react-dom":31,"react-yearly-calendar":35}],2:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -4481,32 +4554,66 @@ module.exports = warning;
 var process = module.exports = {};
 var queue = [];
 var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
 
 function drainQueue() {
     if (draining) {
         return;
     }
+    var timeout = setTimeout(cleanUpNextTick);
     draining = true;
-    var currentQueue;
+
     var len = queue.length;
     while(len) {
         currentQueue = queue;
         queue = [];
-        var i = -1;
-        while (++i < len) {
-            currentQueue[i]();
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
         }
+        queueIndex = -1;
         len = queue.length;
     }
+    currentQueue = null;
     draining = false;
+    clearTimeout(timeout);
 }
+
 process.nextTick = function (fun) {
-    queue.push(fun);
-    if (!draining) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
         setTimeout(drainQueue, 0);
     }
 };
 
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
 process.title = 'browser';
 process.browser = true;
 process.env = {};
@@ -4528,7 +4635,6 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
-// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
@@ -4559,7 +4665,6 @@ var React = require('react');
 var moment = require('moment');
 var _ = require('underscore');
 var Day = require('./Day').Day;
-// const CalendarControls = require('./CalendarControls');
 
 var propTypes = {
   year: React.PropTypes.number.isRequired,
@@ -4687,17 +4792,21 @@ var Calendar = exports.Calendar = (function (_React$Component) {
       });
 
       return React.createElement(
-        'table',
-        { className: 'calendar' },
+        'div',
+        null,
         React.createElement(
-          'thead',
-          { className: 'day-headers' },
-          weekDays
-        ),
-        React.createElement(
-          'tbody',
-          null,
-          months
+          'table',
+          { className: 'calendar' },
+          React.createElement(
+            'thead',
+            { className: 'day-headers' },
+            weekDays
+          ),
+          React.createElement(
+            'tbody',
+            null,
+            months
+          )
         )
       );
     }
@@ -4709,7 +4818,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
 Calendar.propTypes = propTypes;
 Calendar.defaultProps = defaultProps;
 },{"./Day":34,"moment":29,"react":164,"underscore":165}],33:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -4725,46 +4834,57 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require('react');
 
+var propTypes = {
+  year: React.PropTypes.number.isRequired,
+  onPrev: React.PropTypes.func,
+  onNext: React.PropTypes.func
+};
+
 var CalendarControls = exports.CalendarControls = (function (_React$Component) {
   _inherits(CalendarControls, _React$Component);
 
-  function CalendarControls() {
+  function CalendarControls(props) {
     _classCallCheck(this, CalendarControls);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(CalendarControls).apply(this, arguments));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(CalendarControls).call(this, props));
   }
 
   _createClass(CalendarControls, [{
-    key: "onNext",
+    key: 'onNext',
     value: function onNext() {
       this.props.onNext();
     }
   }, {
-    key: "onPrev",
+    key: 'onPrev',
     value: function onPrev() {
       this.props.onPrev();
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
-      return;
-      React.createElement(
-        "div",
-        { className: "clndr-controls" },
+      return React.createElement(
+        'div',
+        { className: 'calendar-controls' },
         React.createElement(
-          "div",
-          { onClick: this.onPrev.bind(this) },
-          "Prev"
+          'div',
+          {
+            className: 'control',
+            onClick: this.onPrev.bind(this)
+          },
+          '«'
         ),
         React.createElement(
-          "div",
-          { className: "current-month" },
-          this.props.date.format('MMMM YYYY').bind(this)
+          'div',
+          { className: 'current-year' },
+          this.props.year
         ),
         React.createElement(
-          "div",
-          { onClick: this.onNext.bind(this) },
-          "Next"
+          'div',
+          {
+            className: 'control',
+            onClick: this.onNext.bind(this)
+          },
+          '»'
         )
       );
     }
@@ -4772,6 +4892,8 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
 
   return CalendarControls;
 })(React.Component);
+
+CalendarControls.propTypes = propTypes;
 },{"react":164}],34:[function(require,module,exports){
 'use strict';
 
@@ -4801,10 +4923,10 @@ var defaultProps = {
 var Day = exports.Day = (function (_React$Component) {
   _inherits(Day, _React$Component);
 
-  function Day() {
+  function Day(props) {
     _classCallCheck(this, Day);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Day).apply(this, arguments));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Day).call(this, props));
   }
 
   _createClass(Day, [{
@@ -4842,10 +4964,9 @@ Day.defaultProps = defaultProps;
 
 module.exports = {
 	Calendar: require('./Calendar'),
-	CalendarControls: require('./CalendarControls'),
-	Day: require('./Day')
+	CalendarControls: require('./CalendarControls')
 };
-},{"./Calendar":32,"./CalendarControls":33,"./Day":34}],36:[function(require,module,exports){
+},{"./Calendar":32,"./CalendarControls":33}],36:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.

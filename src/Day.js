@@ -10,6 +10,10 @@ const defaultProps = {
 };
 
 export class Day extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   onClick() {
     if (this.props.onClick) {
       this.props.onClick(this.props.day);
