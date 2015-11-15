@@ -58,8 +58,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
           React.createElement(CalendarControls, {
             year: this.state.year, 
             showTodayButton: this.state.showTodayBtn, 
-            onPrev: this.onPrevYear.bind(this), 
-            onNext: this.onNextYear.bind(this), 
+            onPrevYear: this.onPrevYear.bind(this), 
+            onNextYear: this.onNextYear.bind(this), 
             goToToday: this.goToToday.bind(this)}
           ), 
           React.createElement(Calendar, {
@@ -71,7 +71,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
           )
         ), 
 
-        React.createElement("h5", null, "Proudly brought to you by ", React.createElement("a", {href: "http://belka.us"}, "Belka")), 
+        React.createElement("h5", null, "Proudly brought to you by ", React.createElement("a", {href: "http://belka.us/en"}, "Belka")), 
 
         React.createElement("div", {className: "options"}, 
           React.createElement("b", null, "Options"), 
@@ -102,7 +102,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
                 onChange: this.toggleShowTodayBtn.bind(this), 
                 checked: this.state.showTodayBtn}
               ), 
-              React.createElement("label", {htmlFor: "showTodayBtn"}, "Show 'today' button")
+              React.createElement("label", {htmlFor: "showTodayBtn"}, "Show 'Today' button")
             )
           )
         )
@@ -4857,8 +4857,8 @@ var React = require('react');
 
 var propTypes = {
   year: React.PropTypes.number.isRequired,
-  onPrev: React.PropTypes.func,
-  onNext: React.PropTypes.func,
+  onPrevYear: React.PropTypes.func,
+  onNextYear: React.PropTypes.func,
   goToToday: React.PropTypes.func,
   showTodayButton: React.PropTypes.boolean
 };
@@ -4873,14 +4873,14 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
   }
 
   _createClass(CalendarControls, [{
-    key: 'onNext',
-    value: function onNext() {
-      this.props.onNext();
+    key: 'onNextYear',
+    value: function onNextYear() {
+      this.props.onNextYear();
     }
   }, {
-    key: 'onPrev',
-    value: function onPrev() {
-      this.props.onPrev();
+    key: 'onPrevYear',
+    value: function onPrevYear() {
+      this.props.onPrevYear();
     }
   }, {
     key: 'goToToday',
@@ -4909,7 +4909,7 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
           'div',
           {
             className: 'control',
-            onClick: this.onPrev.bind(this)
+            onClick: this.onPrevYear.bind(this)
           },
           '«'
         ),
@@ -4922,7 +4922,7 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
           'div',
           {
             className: 'control',
-            onClick: this.onNext.bind(this)
+            onClick: this.onNextYear.bind(this)
           },
           '»'
         ),
