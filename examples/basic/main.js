@@ -70,7 +70,7 @@ class Demo extends React.Component {
           />
         </div>
 
-        <h5>Proudly brought to you by <a href="http://belka.us">Belka</a></h5>
+        <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
 
         <div className='options'>
           <b>Options</b>
