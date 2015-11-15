@@ -7,7 +7,7 @@ $ npm install react-yearly-calendar
 ```
 
 # See the demo
-http://belaklab.github.io/react-yearly-calendar/
+[http://belkalab.github.io/react-yearly-calendar/](http://belkalab.github.io/react-yearly-calendar)
 
 Or taste an example usage below:
 ```js
