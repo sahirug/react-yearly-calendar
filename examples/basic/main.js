@@ -57,8 +57,8 @@ class Demo extends React.Component {
           <CalendarControls
             year={this.state.year}
             showTodayButton={this.state.showTodayBtn}
-            onPrev={this.onPrevYear.bind(this)}
-            onNext={this.onNextYear.bind(this)}
+            onPrevYear={this.onPrevYear.bind(this)}
+            onNextYear={this.onNextYear.bind(this)}
             goToToday={this.goToToday.bind(this)}
           />
           <Calendar
