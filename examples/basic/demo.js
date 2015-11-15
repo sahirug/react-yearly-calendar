@@ -12,7 +12,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     this.state = {
       year: moment().year(),
       selectedDay: moment(),
-      showDaysOfWeek: true
+      showDaysOfWeek: true,
+      showTodayBtn: true
     };
   }
 
@@ -35,15 +36,19 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     this.setState({ selectedDay: date });
   }});
 
-  Object.defineProperty(Demo.prototype,"showDaysOfWeek",{writable:true,configurable:true,value:function() {"use strict";
+  Object.defineProperty(Demo.prototype,"toggleShowDaysOfWeek",{writable:true,configurable:true,value:function() {"use strict";
     this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
   }});
 
-  Object.defineProperty(Demo.prototype,"forceFullWeeks",{writable:true,configurable:true,value:function(){"use strict";
+  Object.defineProperty(Demo.prototype,"toggleForceFullWeeks",{writable:true,configurable:true,value:function(){"use strict";
     this.setState({
       showDaysOfWeek: true,
       forceFullWeeks: !this.state.forceFullWeeks
     });
+  }});
+
+  Object.defineProperty(Demo.prototype,"toggleShowTodayBtn",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }});
 
   Object.defineProperty(Demo.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
@@ -52,6 +57,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
         React.createElement("div", {id: "calendar"}, 
           React.createElement(CalendarControls, {
             year: this.state.year, 
+            showTodayButton: this.state.showTodayBtn, 
             onPrev: this.onPrevYear.bind(this), 
             onNext: this.onNextYear.bind(this), 
             goToToday: this.goToToday.bind(this)}
@@ -65,6 +71,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
           )
         ), 
 
+        React.createElement("h5", null, "Proudly brought to you by ", React.createElement("a", {href: "http://belka.us"}, "Belka")), 
+
         React.createElement("div", {className: "options"}, 
           React.createElement("b", null, "Options"), 
           React.createElement("br", null), 
@@ -73,7 +81,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("input", {
                 id: "showDaysOfWeek", 
                 type: "checkbox", 
-                onChange: this.showDaysOfWeek.bind(this), 
+                onChange: this.toggleShowDaysOfWeek.bind(this), 
                 checked: this.state.showDaysOfWeek}
               ), 
               React.createElement("label", {htmlFor: "showDaysOfWeek"}, "Show days of week")
@@ -82,10 +90,19 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("input", {
                 id: "forceFullWeeks", 
                 type: "checkbox", 
-                onChange: this.forceFullWeeks.bind(this), 
+                onChange: this.toggleForceFullWeeks.bind(this), 
                 checked: this.state.forceFullWeeks}
               ), 
               React.createElement("label", {htmlFor: "forceFullWeeks"}, "Force full weeks")
+            ), 
+            React.createElement("li", null, 
+              React.createElement("input", {
+                id: "showTodayBtn", 
+                type: "checkbox", 
+                onChange: this.toggleShowTodayBtn.bind(this), 
+                checked: this.state.showTodayBtn}
+              ), 
+              React.createElement("label", {htmlFor: "showTodayBtn"}, "Show 'today' button")
             )
           )
         )
@@ -4842,7 +4859,8 @@ var propTypes = {
   year: React.PropTypes.number.isRequired,
   onPrev: React.PropTypes.func,
   onNext: React.PropTypes.func,
-  goToToday: React.PropTypes.func
+  goToToday: React.PropTypes.func,
+  showTodayButton: React.PropTypes.boolean
 };
 
 var CalendarControls = exports.CalendarControls = (function (_React$Component) {
@@ -4872,6 +4890,18 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var todayButton = undefined;
+      if (this.props.showTodayButton) {
+        todayButton = React.createElement(
+          'div',
+          {
+            className: 'control today',
+            onClick: this.goToToday.bind(this)
+          },
+          'Today'
+        );
+      }
+
       return React.createElement(
         'div',
         { className: 'calendar-controls' },
@@ -4896,14 +4926,7 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
           },
           '»'
         ),
-        React.createElement(
-          'div',
-          {
-            className: 'control today',
-            onClick: this.goToToday.bind(this)
-          },
-          'Today'
-        )
+        todayButton
       );
     }
   }]);

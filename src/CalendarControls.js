@@ -4,7 +4,8 @@ const propTypes = {
   year: React.PropTypes.number.isRequired,
   onPrev: React.PropTypes.func,
   onNext: React.PropTypes.func,
-  goToToday: React.PropTypes.func
+  goToToday: React.PropTypes.func,
+  showTodayButton: React.PropTypes.boolean
 };
 
 export class CalendarControls extends React.Component {
@@ -25,7 +26,19 @@ export class CalendarControls extends React.Component {
   }
 
   render() {
-    return(
+    let todayButton;
+    if( this.props.showTodayButton ) {
+      todayButton = (
+        <div
+          className='control today'
+          onClick={this.goToToday.bind(this)}
+        >
+          Today
+        </div>
+      );
+    }
+
+    return (
       <div className='calendar-controls'>
         <div
           className='control'
@@ -42,12 +55,7 @@ export class CalendarControls extends React.Component {
         >
           &raquo;
         </div>
-        <div
-          className='control today'
-          onClick={this.goToToday.bind(this)}
-        >
-          Today
-        </div>
+        {todayButton}
       </div>
     );
   }

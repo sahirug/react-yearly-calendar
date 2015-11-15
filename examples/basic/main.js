@@ -11,7 +11,8 @@ class Demo extends React.Component {
     this.state = {
       year: moment().year(),
       selectedDay: moment(),
-      showDaysOfWeek: true
+      showDaysOfWeek: true,
+      showTodayBtn: true
     };
   }
 
@@ -34,15 +35,19 @@ class Demo extends React.Component {
     this.setState({ selectedDay: date });
   }
 
-  showDaysOfWeek() {
+  toggleShowDaysOfWeek() {
     this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
   }
 
-  forceFullWeeks(){
+  toggleForceFullWeeks(){
     this.setState({
       showDaysOfWeek: true,
       forceFullWeeks: !this.state.forceFullWeeks
     });
+  }
+
+  toggleShowTodayBtn() {
+    this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }
 
   render() {
@@ -51,6 +56,7 @@ class Demo extends React.Component {
         <div id='calendar'>
           <CalendarControls
             year={this.state.year}
+            showTodayButton={this.state.showTodayBtn}
             onPrev={this.onPrevYear.bind(this)}
             onNext={this.onNextYear.bind(this)}
             goToToday={this.goToToday.bind(this)}
@@ -65,7 +71,7 @@ class Demo extends React.Component {
         </div>
 
         <h5>Proudly brought to you by <a href="http://belka.us">Belka</a></h5>
-        
+
         <div className='options'>
           <b>Options</b>
           <br />
@@ -74,7 +80,7 @@ class Demo extends React.Component {
               <input
                 id='showDaysOfWeek'
                 type='checkbox'
-                onChange={this.showDaysOfWeek.bind(this)}
+                onChange={this.toggleShowDaysOfWeek.bind(this)}
                 checked={this.state.showDaysOfWeek}
               />
               <label htmlFor='showDaysOfWeek'>Show days of week</label>
@@ -83,10 +89,19 @@ class Demo extends React.Component {
               <input
                 id='forceFullWeeks'
                 type='checkbox'
-                onChange={this.forceFullWeeks.bind(this)}
+                onChange={this.toggleForceFullWeeks.bind(this)}
                 checked={this.state.forceFullWeeks}
               />
               <label htmlFor='forceFullWeeks'>Force full weeks</label>
+            </li>
+            <li>
+              <input
+                id='showTodayBtn'
+                type='checkbox'
+                onChange={this.toggleShowTodayBtn.bind(this)}
+                checked={this.state.showTodayBtn}
+              />
+              <label htmlFor='showTodayBtn'>Show 'Today' button</label>
             </li>
           </ul>
         </div>
