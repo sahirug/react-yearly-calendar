@@ -1,6 +1,6 @@
 {
   "name": "react-yearly-calendar",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A yearly calendar built in React.js",
   "repository": {
     "type": "git",
