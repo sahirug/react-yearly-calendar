@@ -3,7 +3,8 @@ const React = require('react');
 const propTypes = {
   year: React.PropTypes.number.isRequired,
   onPrev: React.PropTypes.func,
-  onNext: React.PropTypes.func
+  onNext: React.PropTypes.func,
+  goToToday: React.PropTypes.func
 };
 
 export class CalendarControls extends React.Component {
@@ -17,6 +18,10 @@ export class CalendarControls extends React.Component {
 
   onPrev() {
     this.props.onPrev();
+  }
+
+  goToToday() {
+    this.props.goToToday();
   }
 
   render() {
@@ -36,6 +41,12 @@ export class CalendarControls extends React.Component {
           onClick={this.onNext.bind(this)}
         >
           &raquo;
+        </div>
+        <div
+          className='control today'
+          onClick={this.goToToday.bind(this)}
+        >
+          Today
         </div>
       </div>
     );

@@ -23,6 +23,13 @@ class Demo extends React.Component {
     this.setState({ year: this.state.year+1 });
   }
 
+  goToToday() {
+    this.setState({
+      selectedDay: moment(),
+      year: moment().year()
+    });
+  }
+
   datePicked(date) {
     this.setState({ selectedDay: date });
   }
@@ -30,6 +37,7 @@ class Demo extends React.Component {
   showDaysOfWeek() {
     this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
   }
+
   forceFullWeeks(){
     this.setState({
       showDaysOfWeek: true,
@@ -45,6 +53,7 @@ class Demo extends React.Component {
             year={this.state.year}
             onPrev={this.onPrevYear.bind(this)}
             onNext={this.onNextYear.bind(this)}
+            goToToday={this.goToToday.bind(this)}
           />
           <Calendar
             year={this.state.year}
@@ -55,6 +64,8 @@ class Demo extends React.Component {
           />
         </div>
 
+        <h5>Proudly brought to you by <a href="http://belka.us">Belka</a></h5>
+        
         <div className='options'>
           <b>Options</b>
           <br />

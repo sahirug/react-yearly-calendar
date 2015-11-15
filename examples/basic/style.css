@@ -62,6 +62,7 @@ td.bolder {
 }
 
 div#calendar {
+  position: relative;
   border: 1px solid lightblue;
   background-color: aliceblue;
   overflow: hidden;
@@ -109,6 +110,13 @@ a {
   color: #AA0000;
   font-size: 0.8em;
   cursor: pointer;
+}
+
+.calendar-controls .today {
+  position: absolute;
+  right: 15px;
+  line-height: 35px;
+  font-size: 0.6em;
 }
 
 .options {

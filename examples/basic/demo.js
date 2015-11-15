@@ -24,6 +24,13 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     this.setState({ year: this.state.year+1 });
   }});
 
+  Object.defineProperty(Demo.prototype,"goToToday",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({
+      selectedDay: moment(),
+      year: moment().year()
+    });
+  }});
+
   Object.defineProperty(Demo.prototype,"datePicked",{writable:true,configurable:true,value:function(date) {"use strict";
     this.setState({ selectedDay: date });
   }});
@@ -31,6 +38,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
   Object.defineProperty(Demo.prototype,"showDaysOfWeek",{writable:true,configurable:true,value:function() {"use strict";
     this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
   }});
+
   Object.defineProperty(Demo.prototype,"forceFullWeeks",{writable:true,configurable:true,value:function(){"use strict";
     this.setState({
       showDaysOfWeek: true,
@@ -45,7 +53,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
           React.createElement(CalendarControls, {
             year: this.state.year, 
             onPrev: this.onPrevYear.bind(this), 
-            onNext: this.onNextYear.bind(this)}
+            onNext: this.onNextYear.bind(this), 
+            goToToday: this.goToToday.bind(this)}
           ), 
           React.createElement(Calendar, {
             year: this.state.year, 
@@ -4832,7 +4841,8 @@ var React = require('react');
 var propTypes = {
   year: React.PropTypes.number.isRequired,
   onPrev: React.PropTypes.func,
-  onNext: React.PropTypes.func
+  onNext: React.PropTypes.func,
+  goToToday: React.PropTypes.func
 };
 
 var CalendarControls = exports.CalendarControls = (function (_React$Component) {
@@ -4853,6 +4863,11 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
     key: 'onPrev',
     value: function onPrev() {
       this.props.onPrev();
+    }
+  }, {
+    key: 'goToToday',
+    value: function goToToday() {
+      this.props.goToToday();
     }
   }, {
     key: 'render',
@@ -4880,6 +4895,14 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
             onClick: this.onNext.bind(this)
           },
           '»'
+        ),
+        React.createElement(
+          'div',
+          {
+            className: 'control today',
+            onClick: this.goToToday.bind(this)
+          },
+          'Today'
         )
       );
     }
