@@ -4703,7 +4703,7 @@ var defaultProps = {
   selectedDay: moment()
 };
 
-var Calendar = exports.Calendar = (function (_React$Component) {
+var Calendar = (function (_React$Component) {
   _inherits(Calendar, _React$Component);
 
   function Calendar(props) {
@@ -4715,7 +4715,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
   _createClass(Calendar, [{
     key: 'monthDays',
     value: function monthDays(month) {
-      var _this2 = this;
+      var _this = this;
 
       var monthStart = moment([this.props.year, month, 1]); // current day
 
@@ -4729,7 +4729,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
 
       // day-generating loop
       return _.range(1, totalDays + 1).map(function (i) {
-        var day = moment([_this2.props.year, month, i - prevMonthDaysCount]);
+        var day = moment([_this.props.year, month, i - prevMonthDaysCount]);
 
         // pick appropriate classes
         var classes = [];
@@ -4739,7 +4739,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
           classes.push('next-month');
         } else {
           // 'selected' class sholud be applied only to days in this month
-          if (day.isSame(_this2.props.selectedDay, 'day')) {
+          if (day.isSame(_this.props.selectedDay, 'day')) {
             classes.push('selected');
           }
         }
@@ -4752,7 +4752,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
           key: 'day-' + i,
           day: day,
           classes: classes.join(' '),
-          onClick: _this2.props.onPickDate
+          onClick: _this.props.onPickDate
         });
       });
     }
@@ -4777,7 +4777,7 @@ var Calendar = exports.Calendar = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       var weekDays = undefined;
       if (this.props.showDaysOfWeek) {
@@ -4809,9 +4809,9 @@ var Calendar = exports.Calendar = (function (_React$Component) {
           React.createElement(
             'td',
             { className: 'month-name' },
-            _this3.monthName(month)
+            _this2.monthName(month)
           ),
-          _this3.monthDays(month)
+          _this2.monthDays(month)
         );
       });
 
@@ -4834,6 +4834,8 @@ var Calendar = exports.Calendar = (function (_React$Component) {
 
   return Calendar;
 })(React.Component);
+
+exports.default = Calendar;
 
 Calendar.propTypes = propTypes;
 Calendar.defaultProps = defaultProps;
@@ -4859,10 +4861,10 @@ var propTypes = {
   onPrevYear: React.PropTypes.func,
   onNextYear: React.PropTypes.func,
   goToToday: React.PropTypes.func,
-  showTodayButton: React.PropTypes.boolean
+  showTodayButton: React.PropTypes.bool
 };
 
-var CalendarControls = exports.CalendarControls = (function (_React$Component) {
+var CalendarControls = (function (_React$Component) {
   _inherits(CalendarControls, _React$Component);
 
   function CalendarControls(props) {
@@ -4932,6 +4934,8 @@ var CalendarControls = exports.CalendarControls = (function (_React$Component) {
 
   return CalendarControls;
 })(React.Component);
+
+exports.default = CalendarControls;
 
 CalendarControls.propTypes = propTypes;
 },{"react":164}],34:[function(require,module,exports){
@@ -5003,8 +5007,8 @@ Day.defaultProps = defaultProps;
 'use strict';
 
 module.exports = {
-	Calendar: require('./Calendar'),
-	CalendarControls: require('./CalendarControls')
+	Calendar: require('./Calendar').default,
+	CalendarControls: require('./CalendarControls').default
 };
 },{"./Calendar":32,"./CalendarControls":33}],36:[function(require,module,exports){
 /**
