@@ -10,11 +10,7 @@ const defaultProps = {
 };
 
 export class Day extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  onClick() {
+  _onClick() {
     if (this.props.onClick) {
       this.props.onClick(this.props.day);
     }
@@ -23,7 +19,7 @@ export class Day extends React.Component {
   render() {
     return (
       <td
-        onClick={this.onClick.bind(this)}
+        onClick={this._onClick.bind(this)}
         className={this.props.classes}
       >
         <span className='day-number'>

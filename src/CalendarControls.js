@@ -9,29 +9,13 @@ const propTypes = {
 };
 
 export default class CalendarControls extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  onNextYear() {
-    this.props.onNextYear();
-  }
-
-  onPrevYear() {
-    this.props.onPrevYear();
-  }
-
-  goToToday() {
-    this.props.goToToday();
-  }
-
   render() {
     let todayButton;
     if( this.props.showTodayButton ) {
       todayButton = (
         <div
           className='control today'
-          onClick={this.goToToday.bind(this)}
+          onClick={this.props.goToToday.bind(this)}
         >
           Today
         </div>
@@ -42,7 +26,7 @@ export default class CalendarControls extends React.Component {
       <div className='calendar-controls'>
         <div
           className='control'
-          onClick={this.onPrevYear.bind(this)}
+          onClick={this.props.onPrevYear.bind(this)}
         >
           &laquo;
         </div>
@@ -51,7 +35,7 @@ export default class CalendarControls extends React.Component {
         </div>
         <div
           className='control'
-          onClick={this.onNextYear.bind(this)}
+          onClick={this.props.onNextYear.bind(this)}
         >
           &raquo;
         </div>
