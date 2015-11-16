@@ -1,7 +1,6 @@
 const React = require('react');
 const moment = require('moment');
-const _ = require('underscore');
-const Day = require('./Day').Day;
+import {Day} from './Day';
 
 const propTypes = {
   year: React.PropTypes.number.isRequired,
@@ -18,12 +17,30 @@ const defaultProps = {
   selectedDay: moment()
 };
 
+// Grabbed from the underscore.js source code
+let range = function(start, stop, step) {
+  if (stop == null) {
+    stop = start || 0;
+    start = 0;
+  }
+  step = step || 1;
+
+  var length = Math.max(Math.ceil((stop - start) / step), 0);
+  var range = Array(length);
+
+  for (var idx = 0; idx < length; idx++, start += step) {
+    range[idx] = start;
+  }
+
+  return range;
+};
+
 export default class Calendar extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  monthDays(month) {
+  _monthDays(month) {
     const monthStart = moment([this.props.year, month, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
@@ -35,7 +52,7 @@ export default class Calendar extends React.Component {
     const totalDays = this.props.forceFullWeeks? 42: 37;
 
     // day-generating loop
-    return _.range(1, totalDays+1).map( i => {
+    return range(1, totalDays+1).map( i => {
       let day = moment([this.props.year, month, i - prevMonthDaysCount]);
 
       // pick appropriate classes
@@ -104,13 +121,13 @@ export default class Calendar extends React.Component {
       );
     }
 
-    const months  = _.range(0,12).map((month, i) => {
+    const months  = range(0,12).map((month, i) => {
       return (
         <tr key={'month' + i}>
           <td className='month-name'>
             {this.monthName(month)}
           </td>
-          {this.monthDays(month)}
+          {this._monthDays(month)}
         </tr>
       );
     });
