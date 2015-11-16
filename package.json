@@ -16,7 +16,8 @@
     "react.js",
     "calendar",
     "year",
-    "yearly"
+    "yearly",
+    "react-component"
   ],
   "author": "Belka <giovanni@belka.us> (http://belka.us)",
   "license": "MIT",
