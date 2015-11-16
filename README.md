@@ -24,7 +24,7 @@ function onDatePicked(date) {
 ReactDOM.render(
   <Calendar
     onPickDate={onDatePicked}
-  />
+  />,
   document.getElementById('calendar')
 );
 ```
