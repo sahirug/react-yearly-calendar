@@ -18,7 +18,7 @@ const defaultProps = {
   selectedDay: moment()
 };
 
-export class Calendar extends React.Component {
+export default class Calendar extends React.Component {
   constructor(props) {
     super(props);
   }

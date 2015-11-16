@@ -1,4 +1,4 @@
 module.exports = {
-	Calendar: require('./Calendar'),
-	CalendarControls: require('./CalendarControls')
+	Calendar: require('./Calendar').default,
+	CalendarControls: require('./CalendarControls').default
 };

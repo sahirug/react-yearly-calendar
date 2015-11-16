@@ -5,10 +5,10 @@ const propTypes = {
   onPrevYear: React.PropTypes.func,
   onNextYear: React.PropTypes.func,
   goToToday: React.PropTypes.func,
-  showTodayButton: React.PropTypes.boolean
+  showTodayButton: React.PropTypes.bool
 };
 
-export class CalendarControls extends React.Component {
+export default class CalendarControls extends React.Component {
   constructor(props) {
     super(props);
   }

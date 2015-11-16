@@ -14,8 +14,7 @@ $ npm install react-yearly-calendar
 Or taste an example usage below:
 ```js
 var ReactDOM = require('react-dom');
-var {Calendar}  = require('react-yearly-calendar').Calendar;
-var {CalendarControls}  = require('react-yearly-calendar').CalendarControls;
+var {Calendar, CalendarControls} = require('react-yearly-calendar');
 
 function onDatePicked(date) {
   alert(date);
@@ -41,7 +40,7 @@ ReactDOM.render(
 #### CalendarControls
 
 -  **year: React.PropTypes.number.isRequired**: current year number [*default: current year*],
--  **showTodayButton: React.PropTypes.boolean**: show `today` button on top left [*default: true*]
+-  **showTodayButton: React.PropTypes.bool**: show `today` button on top left [*default: true*]
 
 ## Callbacks
 

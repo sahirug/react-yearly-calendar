@@ -1,8 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const moment = require('moment');
-const {Calendar} = require('react-yearly-calendar').Calendar;
-const {CalendarControls} = require('react-yearly-calendar').CalendarControls;
+const {Calendar, CalendarControls} = require('react-yearly-calendar');
 
 class Demo extends React.Component {
   constructor(props) {

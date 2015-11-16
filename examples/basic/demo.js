@@ -2,8 +2,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const moment = require('moment');
-const $__0=  require('react-yearly-calendar').Calendar,Calendar=$__0.Calendar;
-const $__1=  require('react-yearly-calendar').CalendarControls,CalendarControls=$__1.CalendarControls;
+const $__0=   require('react-yearly-calendar'),Calendar=$__0.Calendar,CalendarControls=$__0.CalendarControls;
 
 var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____Class0.hasOwnProperty(____Class0____Key)){Demo[____Class0____Key]=____Class0[____Class0____Key];}}var ____SuperProtoOf____Class0=____Class0===null?null:____Class0.prototype;Demo.prototype=Object.create(____SuperProtoOf____Class0);Demo.prototype.constructor=Demo;Demo.__superConstructor__=____Class0;
   function Demo(props) {"use strict";
