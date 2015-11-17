@@ -15,7 +15,7 @@ export default class CalendarControls extends React.Component {
       todayButton = (
         <div
           className='control today'
-          onClick={this.props.goToToday.bind(this)}
+          onClick={() => this.props.goToToday()}
         >
           Today
         </div>
@@ -26,7 +26,7 @@ export default class CalendarControls extends React.Component {
       <div className='calendar-controls'>
         <div
           className='control'
-          onClick={this.props.onPrevYear.bind(this)}
+          onClick={() => this.props.onPrevYear()}
         >
           &laquo;
         </div>
@@ -35,7 +35,7 @@ export default class CalendarControls extends React.Component {
         </div>
         <div
           className='control'
-          onClick={this.props.onNextYear.bind(this)}
+          onClick={() => this.props.onNextYear()}
         >
           &raquo;
         </div>
