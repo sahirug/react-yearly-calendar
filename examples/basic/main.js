@@ -39,9 +39,10 @@ class Demo extends React.Component {
   }
 
   toggleForceFullWeeks(){
+    var next_forceFullWeeks = !this.state.forceFullWeeks;
     this.setState({
-      showDaysOfWeek: true,
-      forceFullWeeks: !this.state.forceFullWeeks
+      showDaysOfWeek: next_forceFullWeeks,
+      forceFullWeeks: next_forceFullWeeks
     });
   }
 
