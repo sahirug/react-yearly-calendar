@@ -1,4 +1,2 @@
-module.exports = {
-	Calendar: require('./Calendar').default,
-	CalendarControls: require('./CalendarControls').default
-};
+export { default as Calendar } from './Calendar';
+export { default as CalendarControls } from './CalendarControls';
