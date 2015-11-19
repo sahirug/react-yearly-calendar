@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 
 const propTypes = {
   classes: React.PropTypes.string,
@@ -11,19 +11,19 @@ const defaultProps = {
 
 export class Day extends React.Component {
   _onClick() {
-    if (this.props.onClick) {
-      this.props.onClick(this.props.day);
-    }
+    const { onClick, day } = this.props;
+    onClick && onClick(day);
   }
 
   render() {
+    const { classes, day } = this.props;
     return (
       <td
         onClick={this._onClick.bind(this)}
-        className={this.props.classes}
+        className={classes}
       >
         <span className='day-number'>
-          {this.props.day.date()}
+          {day.date()}
         </span>
       </td>
     );

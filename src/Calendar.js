@@ -1,6 +1,6 @@
-const React = require('react');
-const moment = require('moment');
-import {Day} from './Day';
+import React from 'react';
+import moment from 'moment';
+import { Day } from './Day';
 
 const propTypes = {
   year: React.PropTypes.number.isRequired,
@@ -17,7 +17,7 @@ const defaultProps = {
   selectedDay: moment()
 };
 
-// Grabbed from the underscore.js source code
+// Grabbed from the underscore.js source code (https://github.com/jashkenas/underscore/blob/master/underscore.js#L691)
 let range = function(start, stop, step) {
   if (stop == null) {
     stop = start || 0;
@@ -41,7 +41,8 @@ export default class Calendar extends React.Component {
   }
 
   _monthDays(month) {
-    const monthStart = moment([this.props.year, month, 1]); // current day
+    const { year, forceFullWeeks, selectedDay, onPickDate } = this.props;
+    const monthStart = moment([year, month, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
     const prevMonthDaysCount = monthStart.weekday();
@@ -49,11 +50,11 @@ export default class Calendar extends React.Component {
     const numberOfDays = monthStart.daysInMonth();
     // insert days at the end to match up 37 (max number of days in a month + 6)
     // or 42 (if user prefers seeing the week closing with Sunday)
-    const totalDays = this.props.forceFullWeeks? 42: 37;
+    const totalDays = forceFullWeeks? 42: 37;
 
     // day-generating loop
     return range(1, totalDays+1).map( i => {
-      let day = moment([this.props.year, month, i - prevMonthDaysCount]);
+      let day = moment([year, month, i - prevMonthDaysCount]);
 
       // pick appropriate classes
       let classes = [];
@@ -63,12 +64,12 @@ export default class Calendar extends React.Component {
         classes.push('next-month');
       } else {
         // 'selected' class sholud be applied only to days in this month
-        if( day.isSame(this.props.selectedDay, 'day') ) {
+        if( day.isSame(selectedDay, 'day') ) {
           classes.push('selected');
         }
       }
 
-      if( (i-1)%7==0 ) {
+      if( (i-1)%7 === 0 ) {
         classes.push('bolder');
       }
 
@@ -77,21 +78,19 @@ export default class Calendar extends React.Component {
           key={'day-' + i}
           day={day}
           classes={classes.join(' ')}
-          onClick={this.props.onPickDate}
+          onClick={onPickDate}
         />
       );
     });
   }
 
-  monthName(month) {
-    let date = moment([this.props.year, month, 1]);
-
-    return date.format('MMM');
+  monthName(month, year) {
+    return moment([year, month, 1]).format('MMM');
   }
 
-  daysOfWeek() {
+  daysOfWeek(forceFullWeeks) {
     var daysOfWeek = [];
-    const totalDays = this.props.forceFullWeeks? 42: 37;
+    const totalDays = forceFullWeeks? 42: 37;
     for (let i = 0; i < totalDays; i++) {
       daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
     }
@@ -100,6 +99,7 @@ export default class Calendar extends React.Component {
   }
 
   render() {
+    const { year, forceFullWeeks } = this.props;
     let weekDays;
     if(this.props.showDaysOfWeek) {
       weekDays = (
@@ -121,11 +121,11 @@ export default class Calendar extends React.Component {
       );
     }
 
-    const months  = range(0,12).map((month, i) => {
+    const months = range(0,12).map((month, i) => {
       return (
         <tr key={'month' + i}>
           <td className='month-name'>
-            {this.monthName(month)}
+            {this.monthName(month, year)}
           </td>
           {this._monthDays(month)}
         </tr>
