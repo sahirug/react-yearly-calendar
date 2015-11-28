@@ -6,6 +6,7 @@ const propTypes = {
   year: React.PropTypes.number.isRequired,
   forceFullWeeks: React.PropTypes.bool,
   showDaysOfWeek: React.PropTypes.bool,
+  firstDayOfWeek: React.PropTypes.number,
   onPickDate: React.PropTypes.func
 };
 
@@ -13,6 +14,7 @@ const defaultProps = {
   year: moment().year(),
   forceFullWeeks: false,
   showDaysOfWeek: true,
+  firstDayOfWeek: 0,
   onPickDate: null,
   selectedDay: moment()
 };
@@ -41,11 +43,14 @@ export default class Calendar extends React.Component {
   }
 
   _monthDays(month) {
-    const { year, forceFullWeeks, selectedDay, onPickDate } = this.props;
+    const { year, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek } = this.props;
     const monthStart = moment([year, month, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
-    const prevMonthDaysCount = monthStart.weekday();
+    let prevMonthDaysCount = monthStart.weekday();
+    while ( prevMonthDaysCount < firstDayOfWeek ) {
+      prevMonthDaysCount += 7;
+    }
     // days in month
     const numberOfDays = monthStart.daysInMonth();
     // insert days at the end to match up 37 (max number of days in a month + 6)
@@ -53,7 +58,7 @@ export default class Calendar extends React.Component {
     const totalDays = forceFullWeeks? 42: 37;
 
     // day-generating loop
-    return range(1, totalDays+1).map( i => {
+    return range(firstDayOfWeek + 1, totalDays+firstDayOfWeek+1).map( i => {
       let day = moment([year, month, i - prevMonthDaysCount]);
 
       // pick appropriate classes
@@ -70,6 +75,7 @@ export default class Calendar extends React.Component {
       }
 
       if( (i-1)%7 === 0 ) {
+        // sunday
         classes.push('bolder');
       }
 
@@ -89,9 +95,10 @@ export default class Calendar extends React.Component {
   }
 
   daysOfWeek(forceFullWeeks) {
+    const { firstDayOfWeek } = this.props;
     var daysOfWeek = [];
     const totalDays = forceFullWeeks? 42: 37;
-    for (let i = 0; i < totalDays; i++) {
+    for (let i = firstDayOfWeek; i < totalDays + firstDayOfWeek; i++) {
       daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
     }
 
@@ -99,7 +106,7 @@ export default class Calendar extends React.Component {
   }
 
   render() {
-    const { year, forceFullWeeks } = this.props;
+    const { year, forceFullWeeks, firstDayOfWeek } = this.props;
     let weekDays;
     if(this.props.showDaysOfWeek) {
       weekDays = (
@@ -111,7 +118,7 @@ export default class Calendar extends React.Component {
             return (
               <th
                 key={'weekday-' + i}
-                className={i%7==0? 'bolder': ''}
+                className={(i+firstDayOfWeek)%7==0? 'bolder': ''}
               >
                 {day}
               </th>

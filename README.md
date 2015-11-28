@@ -36,6 +36,7 @@ ReactDOM.render(
 - **selectedDay: moment.js object**: selected day [*default: today*],
 - **forceFullWeeks: React.PropTypes.bool**: match calendar row end with row start [*default: false*],
 - **showDaysOfWeek: React.PropTypes.bool**: show days of week table header [*default: true*]
+- **firstDayOfWeek: React.PropTypes.number**: select first day of week [*default: 0 = Sunday*]
 
 #### CalendarControls
 

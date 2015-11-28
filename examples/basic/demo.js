@@ -12,7 +12,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
       year: moment().year(),
       selectedDay: moment(),
       showDaysOfWeek: true,
-      showTodayBtn: true
+      showTodayBtn: true,
+      firstDayOfWeek: 0 // sunday
     };
   }
 
@@ -51,6 +52,10 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }});
 
+  Object.defineProperty(Demo.prototype,"selectFirstDayOfWeek",{writable:true,configurable:true,value:function(e) {"use strict";
+    this.setState({ firstDayOfWeek: parseInt(event.target.value) });
+  }});
+
   Object.defineProperty(Demo.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
     return (
       React.createElement("div", null, 
@@ -67,6 +72,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
             selectedDay: this.state.selectedDay, 
             showDaysOfWeek: this.state.showDaysOfWeek, 
             forceFullWeeks: this.state.forceFullWeeks, 
+            firstDayOfWeek: this.state.firstDayOfWeek, 
             onPickDate: this.datePicked.bind(this)}
           )
         ), 
@@ -103,6 +109,18 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
                 checked: this.state.showTodayBtn}
               ), 
               React.createElement("label", {htmlFor: "showTodayBtn"}, "Show 'Today' button")
+            ), 
+            React.createElement("li", null, 
+              React.createElement("label", {htmlFor: "firstDayOfWeek"}, "First day of week"), 
+              React.createElement("select", {
+                id: "firstDayOfWeek", 
+                onChange: function(e)  {return this.selectFirstDayOfWeek(e);}.bind(this), 
+                value: this.state.firstDayOfWeek
+              }, 
+                [0,1,2,3,4,5,6].map( function(i) 
+                  {return React.createElement("option", {value: i}, moment().weekday(i).format("ddd"));}
+                )
+              )
             )
           )
         )
@@ -4569,7 +4587,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _Day = require('./Day');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4577,25 +4605,24 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var React = require('react');
-var moment = require('moment');
-
 var propTypes = {
-  year: React.PropTypes.number.isRequired,
-  forceFullWeeks: React.PropTypes.bool,
-  showDaysOfWeek: React.PropTypes.bool,
-  onPickDate: React.PropTypes.func
+  year: _react2.default.PropTypes.number.isRequired,
+  forceFullWeeks: _react2.default.PropTypes.bool,
+  showDaysOfWeek: _react2.default.PropTypes.bool,
+  firstDayOfWeek: _react2.default.PropTypes.number,
+  onPickDate: _react2.default.PropTypes.func
 };
 
 var defaultProps = {
-  year: moment().year(),
+  year: (0, _moment2.default)().year(),
   forceFullWeeks: false,
   showDaysOfWeek: true,
+  firstDayOfWeek: 0,
   onPickDate: null,
-  selectedDay: moment()
+  selectedDay: (0, _moment2.default)()
 };
 
-// Grabbed from the underscore.js source code
+// Grabbed from the underscore.js source code (https://github.com/jashkenas/underscore/blob/master/underscore.js#L691)
 var range = function range(start, stop, step) {
   if (stop == null) {
     stop = start || 0;
@@ -4625,21 +4652,29 @@ var Calendar = (function (_React$Component) {
   _createClass(Calendar, [{
     key: '_monthDays',
     value: function _monthDays(month) {
-      var _this = this;
+      var _props = this.props;
+      var year = _props.year;
+      var forceFullWeeks = _props.forceFullWeeks;
+      var selectedDay = _props.selectedDay;
+      var onPickDate = _props.onPickDate;
+      var firstDayOfWeek = _props.firstDayOfWeek;
 
-      var monthStart = moment([this.props.year, month, 1]); // current day
+      var monthStart = (0, _moment2.default)([year, month, 1]); // current day
 
       // number of days to insert before the first of the month to correctly align the weekdays
       var prevMonthDaysCount = monthStart.weekday();
+      while (prevMonthDaysCount < firstDayOfWeek) {
+        prevMonthDaysCount += 7;
+      }
       // days in month
       var numberOfDays = monthStart.daysInMonth();
       // insert days at the end to match up 37 (max number of days in a month + 6)
       // or 42 (if user prefers seeing the week closing with Sunday)
-      var totalDays = this.props.forceFullWeeks ? 42 : 37;
+      var totalDays = forceFullWeeks ? 42 : 37;
 
       // day-generating loop
-      return range(1, totalDays + 1).map(function (i) {
-        var day = moment([_this.props.year, month, i - prevMonthDaysCount]);
+      return range(firstDayOfWeek + 1, totalDays + firstDayOfWeek + 1).map(function (i) {
+        var day = (0, _moment2.default)([year, month, i - prevMonthDaysCount]);
 
         // pick appropriate classes
         var classes = [];
@@ -4649,37 +4684,38 @@ var Calendar = (function (_React$Component) {
           classes.push('next-month');
         } else {
           // 'selected' class sholud be applied only to days in this month
-          if (day.isSame(_this.props.selectedDay, 'day')) {
+          if (day.isSame(selectedDay, 'day')) {
             classes.push('selected');
           }
         }
 
-        if ((i - 1) % 7 == 0) {
+        if ((i - 1) % 7 === 0) {
+          // sunday
           classes.push('bolder');
         }
 
-        return React.createElement(_Day.Day, {
+        return _react2.default.createElement(_Day.Day, {
           key: 'day-' + i,
           day: day,
           classes: classes.join(' '),
-          onClick: _this.props.onPickDate
+          onClick: onPickDate
         });
       });
     }
   }, {
     key: 'monthName',
-    value: function monthName(month) {
-      var date = moment([this.props.year, month, 1]);
-
-      return date.format('MMM');
+    value: function monthName(month, year) {
+      return (0, _moment2.default)([year, month, 1]).format('MMM');
     }
   }, {
     key: 'daysOfWeek',
-    value: function daysOfWeek() {
+    value: function daysOfWeek(forceFullWeeks) {
+      var firstDayOfWeek = this.props.firstDayOfWeek;
+
       var daysOfWeek = [];
-      var totalDays = this.props.forceFullWeeks ? 42 : 37;
-      for (var i = 0; i < totalDays; i++) {
-        daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
+      var totalDays = forceFullWeeks ? 42 : 37;
+      for (var i = firstDayOfWeek; i < totalDays + firstDayOfWeek; i++) {
+        daysOfWeek.push((0, _moment2.default)().weekday(i).format('dd').charAt(0));
       }
 
       return daysOfWeek;
@@ -4689,22 +4725,27 @@ var Calendar = (function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      var _props2 = this.props;
+      var year = _props2.year;
+      var forceFullWeeks = _props2.forceFullWeeks;
+      var firstDayOfWeek = _props2.firstDayOfWeek;
+
       var weekDays = undefined;
       if (this.props.showDaysOfWeek) {
-        weekDays = React.createElement(
+        weekDays = _react2.default.createElement(
           'tr',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'th',
             null,
             ' '
           ),
           this.daysOfWeek().map(function (day, i) {
-            return React.createElement(
+            return _react2.default.createElement(
               'th',
               {
                 key: 'weekday-' + i,
-                className: i % 7 == 0 ? 'bolder' : ''
+                className: (i + firstDayOfWeek) % 7 == 0 ? 'bolder' : ''
               },
               day
             );
@@ -4713,27 +4754,27 @@ var Calendar = (function (_React$Component) {
       }
 
       var months = range(0, 12).map(function (month, i) {
-        return React.createElement(
+        return _react2.default.createElement(
           'tr',
           { key: 'month' + i },
-          React.createElement(
+          _react2.default.createElement(
             'td',
             { className: 'month-name' },
-            _this2.monthName(month)
+            _this2.monthName(month, year)
           ),
           _this2._monthDays(month)
         );
       });
 
-      return React.createElement(
+      return _react2.default.createElement(
         'table',
         { className: 'calendar' },
-        React.createElement(
+        _react2.default.createElement(
           'thead',
           { className: 'day-headers' },
           weekDays
         ),
-        React.createElement(
+        _react2.default.createElement(
           'tbody',
           null,
           months
@@ -4743,7 +4784,7 @@ var Calendar = (function (_React$Component) {
   }]);
 
   return Calendar;
-})(React.Component);
+})(_react2.default.Component);
 
 exports.default = Calendar;
 
@@ -4758,20 +4799,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var React = require('react');
-
 var propTypes = {
-  year: React.PropTypes.number.isRequired,
-  onPrevYear: React.PropTypes.func,
-  onNextYear: React.PropTypes.func,
-  goToToday: React.PropTypes.func,
-  showTodayButton: React.PropTypes.bool
+  year: _react2.default.PropTypes.number.isRequired,
+  onPrevYear: _react2.default.PropTypes.func,
+  onNextYear: _react2.default.PropTypes.func,
+  goToToday: _react2.default.PropTypes.func,
+  showTodayButton: _react2.default.PropTypes.bool
 };
 
 var CalendarControls = (function (_React$Component) {
@@ -4786,39 +4831,51 @@ var CalendarControls = (function (_React$Component) {
   _createClass(CalendarControls, [{
     key: 'render',
     value: function render() {
+      var _props = this.props;
+      var showTodayButton = _props.showTodayButton;
+      var goToToday = _props.goToToday;
+      var onPrevYear = _props.onPrevYear;
+      var onNextYear = _props.onNextYear;
+
       var todayButton = undefined;
-      if (this.props.showTodayButton) {
-        todayButton = React.createElement(
+      if (showTodayButton) {
+        todayButton = _react2.default.createElement(
           'div',
           {
             className: 'control today',
-            onClick: this.props.goToToday.bind(this)
+            onClick: function onClick() {
+              return goToToday();
+            }
           },
           'Today'
         );
       }
 
-      return React.createElement(
+      return _react2.default.createElement(
         'div',
         { className: 'calendar-controls' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           {
             className: 'control',
-            onClick: this.props.onPrevYear.bind(this)
+            onClick: function onClick() {
+              return onPrevYear();
+            }
           },
           '«'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'current-year' },
           this.props.year
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           {
             className: 'control',
-            onClick: this.props.onNextYear.bind(this)
+            onClick: function onClick() {
+              return onNextYear();
+            }
           },
           '»'
         ),
@@ -4828,7 +4885,7 @@ var CalendarControls = (function (_React$Component) {
   }]);
 
   return CalendarControls;
-})(React.Component);
+})(_react2.default.Component);
 
 exports.default = CalendarControls;
 
@@ -4841,6 +4898,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Day = undefined;
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4848,11 +4912,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var React = require('react');
-
 var propTypes = {
-  classes: React.PropTypes.string,
-  onClick: React.PropTypes.func
+  classes: _react2.default.PropTypes.string,
+  onClick: _react2.default.PropTypes.func
 };
 
 var defaultProps = {
@@ -4871,40 +4933,63 @@ var Day = exports.Day = (function (_React$Component) {
   _createClass(Day, [{
     key: '_onClick',
     value: function _onClick() {
-      if (this.props.onClick) {
-        this.props.onClick(this.props.day);
-      }
+      var _props = this.props;
+      var onClick = _props.onClick;
+      var day = _props.day;
+
+      onClick && onClick(day);
     }
   }, {
     key: 'render',
     value: function render() {
-      return React.createElement(
+      var _props2 = this.props;
+      var classes = _props2.classes;
+      var day = _props2.day;
+
+      return _react2.default.createElement(
         'td',
         {
           onClick: this._onClick.bind(this),
-          className: this.props.classes
+          className: classes
         },
-        React.createElement(
+        _react2.default.createElement(
           'span',
           { className: 'day-number' },
-          this.props.day.date()
+          day.date()
         )
       );
     }
   }]);
 
   return Day;
-})(React.Component);
+})(_react2.default.Component);
 
 Day.propTypes = propTypes;
 Day.defaultProps = defaultProps;
 },{"react":163}],34:[function(require,module,exports){
 'use strict';
 
-module.exports = {
-	Calendar: require('./Calendar').default,
-	CalendarControls: require('./CalendarControls').default
-};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Calendar = require('./Calendar');
+
+Object.defineProperty(exports, 'Calendar', {
+  enumerable: true,
+  get: function get() {
+    return _Calendar.default;
+  }
+});
+
+var _CalendarControls = require('./CalendarControls');
+
+Object.defineProperty(exports, 'CalendarControls', {
+  enumerable: true,
+  get: function get() {
+    return _CalendarControls.default;
+  }
+});
 },{"./Calendar":31,"./CalendarControls":32}],35:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -8143,6 +8228,7 @@ var HTMLDOMPropertyConfig = {
     multiple: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
     muted: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
     name: null,
+    nonce: MUST_USE_ATTRIBUTE,
     noValidate: HAS_BOOLEAN_VALUE,
     open: HAS_BOOLEAN_VALUE,
     optimum: null,
@@ -8154,6 +8240,7 @@ var HTMLDOMPropertyConfig = {
     readOnly: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
     rel: null,
     required: HAS_BOOLEAN_VALUE,
+    reversed: HAS_BOOLEAN_VALUE,
     role: MUST_USE_ATTRIBUTE,
     rows: MUST_USE_ATTRIBUTE | HAS_POSITIVE_NUMERIC_VALUE,
     rowSpan: null,
@@ -8595,6 +8682,7 @@ assign(React, {
 });
 
 React.__SECRET_DOM_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOM;
+React.__SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOMServer;
 
 module.exports = React;
 },{"./Object.assign":56,"./ReactDOM":69,"./ReactDOMServer":79,"./ReactIsomorphic":97,"./deprecated":140}],59:[function(require,module,exports){
@@ -18741,7 +18829,7 @@ module.exports = ReactUpdates;
 
 'use strict';
 
-module.exports = '0.14.2';
+module.exports = '0.14.3';
 },{}],119:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.

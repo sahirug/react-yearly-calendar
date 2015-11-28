@@ -128,3 +128,7 @@ div.options {
   padding: 10px 15px;
   margin-top: 30px;
 }
+
+div.options select {
+  margin-left: 10px
+}

@@ -11,7 +11,8 @@ class Demo extends React.Component {
       year: moment().year(),
       selectedDay: moment(),
       showDaysOfWeek: true,
-      showTodayBtn: true
+      showTodayBtn: true,
+      firstDayOfWeek: 0 // sunday
     };
   }
 
@@ -50,6 +51,10 @@ class Demo extends React.Component {
     this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }
 
+  selectFirstDayOfWeek(e) {
+    this.setState({ firstDayOfWeek: parseInt(event.target.value) });
+  }
+
   render() {
     return (
       <div>
@@ -66,6 +71,7 @@ class Demo extends React.Component {
             selectedDay={this.state.selectedDay}
             showDaysOfWeek={this.state.showDaysOfWeek}
             forceFullWeeks={this.state.forceFullWeeks}
+            firstDayOfWeek={this.state.firstDayOfWeek}
             onPickDate={this.datePicked.bind(this)}
           />
         </div>
@@ -102,6 +108,18 @@ class Demo extends React.Component {
                 checked={this.state.showTodayBtn}
               />
               <label htmlFor='showTodayBtn'>Show 'Today' button</label>
+            </li>
+            <li>
+              <label htmlFor='firstDayOfWeek'>First day of week</label>
+              <select
+                id='firstDayOfWeek'
+                onChange={(e) => this.selectFirstDayOfWeek(e)}
+                value={this.state.firstDayOfWeek}
+              >
+                {[0,1,2,3,4,5,6].map( i =>
+                  <option value={i}>{moment().weekday(i).format("ddd")}</option>
+                )}
+              </select>
             </li>
           </ul>
         </div>
