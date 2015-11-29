@@ -54,8 +54,29 @@ table.calendar td.next-month {
 }
 
 table.calendar td.selected {
-  color: red;
+  background-color: orange;
+  color: white;
   font-weight: bold;
+}
+
+table.calendar td.range {
+  background-color: rgba(255, 165, 0, 0.7);
+  font-weight: bold;
+  color: white;
+}
+
+table.calendar td.range-left {
+  border-radius: 15px 0 0 15px;
+  overflow: hidden;
+  background: orange;
+  border-right: 3px solid rgb(205, 115, 0);
+}
+
+table.calendar td.range-right {
+  border-radius: 0 15px 15px 0;
+  overflow: hidden;
+  background: orange;
+  border-left: 2px solid rgb(205, 115, 0);
 }
 
 table.calendar td.bolder {

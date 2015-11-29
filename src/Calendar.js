@@ -7,6 +7,7 @@ const propTypes = {
   forceFullWeeks: React.PropTypes.bool,
   showDaysOfWeek: React.PropTypes.bool,
   firstDayOfWeek: React.PropTypes.number,
+  selectRange: React.PropTypes.bool,
   onPickDate: React.PropTypes.func
 };
 
@@ -15,6 +16,7 @@ const defaultProps = {
   forceFullWeeks: false,
   showDaysOfWeek: true,
   firstDayOfWeek: 0,
+  selectRange: false,
   onPickDate: null,
   selectedDay: moment()
 };
@@ -43,7 +45,7 @@ export default class Calendar extends React.Component {
   }
 
   _monthDays(month) {
-    const { year, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek } = this.props;
+    const { year, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek, selectRange, selectedRange } = this.props;
     const monthStart = moment([year, month, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
@@ -68,9 +70,25 @@ export default class Calendar extends React.Component {
       } else if ( i > (numberOfDays + prevMonthDaysCount) ) {
         classes.push('next-month');
       } else {
-        // 'selected' class sholud be applied only to days in this month
-        if( day.isSame(selectedDay, 'day') ) {
-          classes.push('selected');
+        if(selectRange) {
+          // TODO validate range
+          if( day.isBetween(selectedRange[0], selectedRange[1], 'day') ) {
+            classes.push('range');
+          }
+
+          if( day.isSame(selectedRange[0], 'day') ) {
+            classes.push('range');
+            classes.push('range-left');
+          }
+          else if( day.isSame(selectedRange[1], 'day') ) {
+            classes.push('range');
+            classes.push('range-right');
+          }
+        }
+        else {
+          if( day.isSame(selectedDay, 'day') ) {
+            classes.push('selected');
+          }
         }
       }
 

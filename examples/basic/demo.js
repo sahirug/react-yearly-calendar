@@ -13,6 +13,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
       selectedDay: moment(),
       showDaysOfWeek: true,
       showTodayBtn: true,
+      selectRange: false,
       firstDayOfWeek: 0 // sunday
     };
   }
@@ -52,6 +53,10 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }});
 
+  Object.defineProperty(Demo.prototype,"toggleSelectRange",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({ selectRange: !this.state.selectRange });
+  }});
+
   Object.defineProperty(Demo.prototype,"selectFirstDayOfWeek",{writable:true,configurable:true,value:function(e) {"use strict";
     this.setState({ firstDayOfWeek: parseInt(event.target.value) });
   }});
@@ -73,6 +78,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
             showDaysOfWeek: this.state.showDaysOfWeek, 
             forceFullWeeks: this.state.forceFullWeeks, 
             firstDayOfWeek: this.state.firstDayOfWeek, 
+            selectRange: this.state.selectRange, 
+            selectedRange: [moment([2015,2,15]), moment([2015,3,14])], 
             onPickDate: this.datePicked.bind(this)}
           )
         ), 
@@ -121,6 +128,15 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
                   {return React.createElement("option", {value: i}, moment().weekday(i).format("ddd"));}
                 )
               )
+            ), 
+            React.createElement("li", null, 
+              React.createElement("input", {
+                id: "selectRange", 
+                type: "checkbox", 
+                onChange: this.toggleSelectRange.bind(this), 
+                checked: this.state.selectRange}
+              ), 
+              React.createElement("label", {htmlFor: "selectRange"}, "Select Date range")
             )
           )
         )
@@ -4610,6 +4626,7 @@ var propTypes = {
   forceFullWeeks: _react2.default.PropTypes.bool,
   showDaysOfWeek: _react2.default.PropTypes.bool,
   firstDayOfWeek: _react2.default.PropTypes.number,
+  selectRange: _react2.default.PropTypes.bool,
   onPickDate: _react2.default.PropTypes.func
 };
 
@@ -4618,6 +4635,7 @@ var defaultProps = {
   forceFullWeeks: false,
   showDaysOfWeek: true,
   firstDayOfWeek: 0,
+  selectRange: false,
   onPickDate: null,
   selectedDay: (0, _moment2.default)()
 };
@@ -4658,6 +4676,8 @@ var Calendar = (function (_React$Component) {
       var selectedDay = _props.selectedDay;
       var onPickDate = _props.onPickDate;
       var firstDayOfWeek = _props.firstDayOfWeek;
+      var selectRange = _props.selectRange;
+      var selectedRange = _props.selectedRange;
 
       var monthStart = (0, _moment2.default)([year, month, 1]); // current day
 
@@ -4683,9 +4703,23 @@ var Calendar = (function (_React$Component) {
         } else if (i > numberOfDays + prevMonthDaysCount) {
           classes.push('next-month');
         } else {
-          // 'selected' class sholud be applied only to days in this month
-          if (day.isSame(selectedDay, 'day')) {
-            classes.push('selected');
+          if (selectRange) {
+            // TODO validate range
+            if (day.isBetween(selectedRange[0], selectedRange[1], 'day')) {
+              classes.push('range');
+            }
+
+            if (day.isSame(selectedRange[0], 'day')) {
+              classes.push('range');
+              classes.push('range-left');
+            } else if (day.isSame(selectedRange[1], 'day')) {
+              classes.push('range');
+              classes.push('range-right');
+            }
+          } else {
+            if (day.isSame(selectedDay, 'day')) {
+              classes.push('selected');
+            }
           }
         }
 

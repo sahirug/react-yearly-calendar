@@ -12,6 +12,7 @@ class Demo extends React.Component {
       selectedDay: moment(),
       showDaysOfWeek: true,
       showTodayBtn: true,
+      selectRange: false,
       firstDayOfWeek: 0 // sunday
     };
   }
@@ -51,6 +52,10 @@ class Demo extends React.Component {
     this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }
 
+  toggleSelectRange() {
+    this.setState({ selectRange: !this.state.selectRange });
+  }
+
   selectFirstDayOfWeek(e) {
     this.setState({ firstDayOfWeek: parseInt(event.target.value) });
   }
@@ -72,6 +77,8 @@ class Demo extends React.Component {
             showDaysOfWeek={this.state.showDaysOfWeek}
             forceFullWeeks={this.state.forceFullWeeks}
             firstDayOfWeek={this.state.firstDayOfWeek}
+            selectRange={this.state.selectRange}
+            selectedRange={[moment([2015,2,15]), moment([2015,3,14])]}
             onPickDate={this.datePicked.bind(this)}
           />
         </div>
@@ -120,6 +127,15 @@ class Demo extends React.Component {
                   <option value={i}>{moment().weekday(i).format("ddd")}</option>
                 )}
               </select>
+            </li>
+            <li>
+              <input
+                id='selectRange'
+                type='checkbox'
+                onChange={this.toggleSelectRange.bind(this)}
+                checked={this.state.selectRange}
+              />
+              <label htmlFor='selectRange'>Select Date range</label>
             </li>
           </ul>
         </div>
