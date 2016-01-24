@@ -45,7 +45,7 @@ class Demo extends React.Component {
   rangePicked(start, end) {
     this.setState({
       selectedRange: [ start, end ],
-      selectedDay: start 
+      selectedDay: start
     });
   }
 
@@ -74,26 +74,26 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { year } = this.state;
+    const { year, showTodayButton, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
       <div>
         <div id='calendar'>
           <CalendarControls
-            year={this.state.year}
-            showTodayButton={this.state.showTodayBtn}
+            year={year}
+            showTodayButton={showTodayBtn}
             onPrevYear={this.onPrevYear.bind(this)}
             onNextYear={this.onNextYear.bind(this)}
             goToToday={this.goToToday.bind(this)}
           />
           <Calendar
-            year={this.state.year}
-            selectedDay={this.state.selectedDay}
-            showDaysOfWeek={this.state.showDaysOfWeek}
-            forceFullWeeks={this.state.forceFullWeeks}
-            firstDayOfWeek={this.state.firstDayOfWeek}
-            selectRange={this.state.selectRange}
-            selectedRange={this.state.selectedRange}
+            year={year}
+            selectedDay={selectedDay}
+            showDaysOfWeek={showDaysOfWeek}
+            forceFullWeeks={forceFullWeeks}
+            firstDayOfWeek={firstDayOfWeek}
+            selectRange={selectRange}
+            selectedRange={selectedRange}
             onPickDate={this.datePicked.bind(this)}
             onPickRange={this.rangePicked.bind(this)}
           />
@@ -109,8 +109,8 @@ class Demo extends React.Component {
               <input
                 id='showDaysOfWeek'
                 type='checkbox'
+                checked={showDaysOfWeek}
                 onChange={this.toggleShowDaysOfWeek.bind(this)}
-                checked={this.state.showDaysOfWeek}
               />
               <label htmlFor='showDaysOfWeek'>Show days of week</label>
             </li>
@@ -118,8 +118,8 @@ class Demo extends React.Component {
               <input
                 id='forceFullWeeks'
                 type='checkbox'
+                checked={forceFullWeeks}
                 onChange={this.toggleForceFullWeeks.bind(this)}
-                checked={this.state.forceFullWeeks}
               />
               <label htmlFor='forceFullWeeks'>Force full weeks</label>
             </li>
@@ -127,8 +127,8 @@ class Demo extends React.Component {
               <input
                 id='showTodayBtn'
                 type='checkbox'
+                checked={showTodayBtn}
                 onChange={this.toggleShowTodayBtn.bind(this)}
-                checked={this.state.showTodayBtn}
               />
               <label htmlFor='showTodayBtn'>Show 'Today' button</label>
             </li>
@@ -136,8 +136,8 @@ class Demo extends React.Component {
               <label htmlFor='firstDayOfWeek'>First day of week</label>
               <select
                 id='firstDayOfWeek'
+                value={firstDayOfWeek}
                 onChange={(e) => this.selectFirstDayOfWeek(e)}
-                value={this.state.firstDayOfWeek}
               >
                 {[0,1,2,3,4,5,6].map( i =>
                   <option value={i}>{moment().weekday(i).format("ddd")}</option>
@@ -148,8 +148,8 @@ class Demo extends React.Component {
               <input
                 id='selectRange'
                 type='checkbox'
+                checked={selectRange}
                 onChange={this.toggleSelectRange.bind(this)}
-                checked={this.state.selectRange}
               />
               <label htmlFor='selectRange'>Select Date range</label>
             </li>
