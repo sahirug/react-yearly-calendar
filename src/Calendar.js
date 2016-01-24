@@ -112,8 +112,9 @@ export default class Calendar extends React.Component {
     return moment([year, month, 1]).format('MMM');
   }
 
-  daysOfWeek(forceFullWeeks) {
-    const { firstDayOfWeek } = this.props;
+  daysOfWeek() {
+    const { firstDayOfWeek, forceFullWeeks } = this.props;
+
     var daysOfWeek = [];
     const totalDays = forceFullWeeks? 42: 37;
     for (let i = firstDayOfWeek; i < totalDays + firstDayOfWeek; i++) {
@@ -124,7 +125,7 @@ export default class Calendar extends React.Component {
   }
 
   render() {
-    const { year, forceFullWeeks, firstDayOfWeek } = this.props;
+    const { year, firstDayOfWeek } = this.props;
     let weekDays;
     if(this.props.showDaysOfWeek) {
       weekDays = (
