@@ -2,7 +2,8 @@ import React from 'react';
 
 const propTypes = {
   classes: React.PropTypes.string,
-  onClick: React.PropTypes.func
+  onClick: React.PropTypes.func.required,
+  onHover: React.PropTypes.func
 };
 
 const defaultProps = {
@@ -12,7 +13,12 @@ const defaultProps = {
 export class Day extends React.Component {
   _onClick() {
     const { onClick, day } = this.props;
-    onClick && onClick(day);
+    onClick(day);
+  }
+
+  _onHover() {
+    const { onHover, day } = this.props;
+    onHover && onHover(day);
   }
 
   render() {
@@ -20,6 +26,7 @@ export class Day extends React.Component {
     return (
       <td
         onClick={this._onClick.bind(this)}
+        onMouseEnter={this._onHover.bind(this)}
         className={classes}
       >
         <span className='day-number'>

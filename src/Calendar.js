@@ -8,7 +8,8 @@ const propTypes = {
   showDaysOfWeek: React.PropTypes.bool,
   firstDayOfWeek: React.PropTypes.number,
   selectRange: React.PropTypes.bool,
-  onPickDate: React.PropTypes.func
+  onPickDate: React.PropTypes.func,
+  onPickRange: React.PropTypes.func
 };
 
 const defaultProps = {
@@ -18,6 +19,7 @@ const defaultProps = {
   firstDayOfWeek: 0,
   selectRange: false,
   onPickDate: null,
+  onPickRange: null,
   selectedDay: moment()
 };
 
@@ -42,10 +44,48 @@ let range = function(start, stop, step) {
 export default class Calendar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      selectingRange: undefined
+    }
+  }
+
+  _dayClicked(date) {
+    let { selectingRange } = this.state;
+    const { selectRange, onPickRange, onPickDate } = this.props;
+
+    if( !selectRange ) {
+      onPickDate && onPickDate(date);
+      return;
+    }
+
+    if( !selectingRange ) {
+      selectingRange = [date, date];
+    } else {
+      onPickRange && onPickRange(selectingRange[0], date);
+      selectingRange = undefined;
+    }
+
+    this.setState({
+      selectingRange
+    })
+  }
+
+  _dayHovered(hoveredDay) {
+    let { selectingRange } = this.state;
+
+    if( selectingRange ) {
+      selectingRange[ 1 ] = hoveredDay;
+
+      this.setState({
+        selectingRange
+      });
+    }
   }
 
   _monthDays(month) {
     const { year, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek, selectRange, selectedRange } = this.props;
+    const { selectingRange } = this.state;
     const monthStart = moment([year, month, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
@@ -71,16 +111,26 @@ export default class Calendar extends React.Component {
         classes.push('next-month');
       } else {
         if(selectRange) {
-          // TODO validate range
-          if( day.isBetween(selectedRange[0], selectedRange[1], 'day') ) {
+          // selectingRange is used while user is selecting a range
+          // (has clicked on start day, and is hovering end day - but not yet clicked)
+          let start = (selectingRange || selectedRange)[0];
+          let end = (selectingRange || selectedRange)[1];
+
+          // validate range
+          if( end.isBefore(start) ) {
+            start = (selectingRange || selectedRange)[1];
+            end = (selectingRange || selectedRange)[0];
+          }
+
+          if( day.isBetween(start, end, 'day') ) {
             classes.push('range');
           }
 
-          if( day.isSame(selectedRange[0], 'day') ) {
+          if( day.isSame(start, 'day') ) {
             classes.push('range');
             classes.push('range-left');
           }
-          else if( day.isSame(selectedRange[1], 'day') ) {
+          else if( day.isSame(end, 'day') ) {
             classes.push('range');
             classes.push('range-right');
           }
@@ -102,7 +152,8 @@ export default class Calendar extends React.Component {
           key={`day-${i}`}
           day={day}
           classes={classes.join(' ')}
-          onClick={onPickDate}
+          onClick={this._dayClicked.bind(this)}
+          onHover={selectRange ? this._dayHovered.bind(this) : null}
         />
       );
     });
