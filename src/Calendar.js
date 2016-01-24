@@ -99,7 +99,7 @@ export default class Calendar extends React.Component {
 
       return (
         <Day
-          key={'day-' + i}
+          key={`day-${i}`}
           day={day}
           classes={classes.join(' ')}
           onClick={onPickDate}
@@ -144,7 +144,7 @@ export default class Calendar extends React.Component {
 
     const months = range(0,12).map((month, i) => {
       return (
-        <tr key={'month' + i}>
+        <tr key={`month-${i}`} >
           <td className='month-name'>
             {this._monthName(month, year)}
           </td>
