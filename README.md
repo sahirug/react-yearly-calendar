@@ -83,7 +83,7 @@ $ npm install
 ```
 
 ## License
-react-yearly-calendar is Copyright (c) 2015 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
+react-yearly-calendar is Copyright (c) 2016 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
 
 ## About Belka
 ![Alt text](http://s2.postimg.org/rcjk3hf5x/logo_rosso.jpg)
