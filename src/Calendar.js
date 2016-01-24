@@ -108,32 +108,23 @@ export default class Calendar extends React.Component {
     });
   }
 
-  monthName(month, year) {
+  _monthName(month, year) {
     return moment([year, month, 1]).format('MMM');
   }
 
-  daysOfWeek() {
+  _daysOfWeek() {
     const { firstDayOfWeek, forceFullWeeks } = this.props;
-
-    var daysOfWeek = [];
     const totalDays = forceFullWeeks? 42: 37;
-    for (let i = firstDayOfWeek; i < totalDays + firstDayOfWeek; i++) {
-      daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
-    }
 
-    return daysOfWeek;
-  }
+    return (
+      <tr>
+        <th>
+          &nbsp;
+        </th>
+        {
+          range(firstDayOfWeek, totalDays + firstDayOfWeek).map( i => {
+            let day = moment().weekday(i).format('dd').charAt(0);
 
-  render() {
-    const { year, firstDayOfWeek } = this.props;
-    let weekDays;
-    if(this.props.showDaysOfWeek) {
-      weekDays = (
-        <tr>
-          <th>
-            &nbsp;
-          </th>
-          {this.daysOfWeek().map((day, i) => {
             return (
               <th
                 key={'weekday-' + i}
@@ -141,17 +132,21 @@ export default class Calendar extends React.Component {
               >
                 {day}
               </th>
-            );
-          })}
-        </tr>
-      );
-    }
+            )
+          })
+        }
+      </tr>
+    )
+  }
+
+  render() {
+    const { year, firstDayOfWeek } = this.props;
 
     const months = range(0,12).map((month, i) => {
       return (
         <tr key={'month' + i}>
           <td className='month-name'>
-            {this.monthName(month, year)}
+            {this._monthName(month, year)}
           </td>
           {this._monthDays(month)}
         </tr>
@@ -161,7 +156,7 @@ export default class Calendar extends React.Component {
     return (
       <table className='calendar'>
         <thead className='day-headers'>
-          {weekDays}
+          {this.props.showDaysOfWeek ? this._daysOfWeek() : null}
         </thead>
         <tbody>
           {months}
