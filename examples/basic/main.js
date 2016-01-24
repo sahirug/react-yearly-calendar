@@ -7,9 +7,12 @@ class Demo extends React.Component {
   constructor(props) {
     super(props);
 
+    const today = moment();
+
     this.state = {
-      year: moment().year(),
-      selectedDay: moment(),
+      year: today.year(),
+      selectedDay: today,
+      selectedRange: [today, moment(today).add(15, 'day') ],
       showDaysOfWeek: true,
       showTodayBtn: true,
       selectRange: false,
@@ -33,7 +36,17 @@ class Demo extends React.Component {
   }
 
   datePicked(date) {
-    this.setState({ selectedDay: date });
+    this.setState({
+      selectedDay: date,
+      selectedRange: [date, moment(date).add(15, 'day') ],
+     });
+  }
+
+  rangePicked(start, end) {
+    this.setState({
+      selectedRange: [ start, end ],
+      selectedDay: start 
+    });
   }
 
   toggleShowDaysOfWeek() {
@@ -61,6 +74,8 @@ class Demo extends React.Component {
   }
 
   render() {
+    const { year } = this.state;
+
     return (
       <div>
         <div id='calendar'>
@@ -78,15 +93,16 @@ class Demo extends React.Component {
             forceFullWeeks={this.state.forceFullWeeks}
             firstDayOfWeek={this.state.firstDayOfWeek}
             selectRange={this.state.selectRange}
-            selectedRange={[moment([2015,2,15]), moment([2015,3,14])]}
+            selectedRange={this.state.selectedRange}
             onPickDate={this.datePicked.bind(this)}
+            onPickRange={this.rangePicked.bind(this)}
           />
         </div>
 
         <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
 
         <div className='options'>
-          <b>Options</b>
+          <b>Demo Options</b>
           <br />
           <ul>
             <li>
@@ -138,6 +154,8 @@ class Demo extends React.Component {
               <label htmlFor='selectRange'>Select Date range</label>
             </li>
           </ul>
+          <br />
+          <i>All these options are available as Calendar props</i>
         </div>
       </div>
     );

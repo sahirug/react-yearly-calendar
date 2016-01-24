@@ -8,9 +8,12 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
   function Demo(props) {"use strict";
     ____Class0.call(this,props);
 
+    const today = moment();
+
     this.state = {
-      year: moment().year(),
-      selectedDay: moment(),
+      year: today.year(),
+      selectedDay: today,
+      selectedRange: [today, moment(today).add(15, 'day') ],
       showDaysOfWeek: true,
       showTodayBtn: true,
       selectRange: false,
@@ -34,7 +37,17 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
   }});
 
   Object.defineProperty(Demo.prototype,"datePicked",{writable:true,configurable:true,value:function(date) {"use strict";
-    this.setState({ selectedDay: date });
+    this.setState({
+      selectedDay: date,
+      selectedRange: [date, moment(date).add(15, 'day') ],
+     });
+  }});
+
+  Object.defineProperty(Demo.prototype,"rangePicked",{writable:true,configurable:true,value:function(start, end) {"use strict";
+    this.setState({
+      selectedRange: [ start, end ],
+      selectedDay: start 
+    });
   }});
 
   Object.defineProperty(Demo.prototype,"toggleShowDaysOfWeek",{writable:true,configurable:true,value:function() {"use strict";
@@ -62,6 +75,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
   }});
 
   Object.defineProperty(Demo.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+    const $__0=    this.state,year=$__0.year;
+
     return (
       React.createElement("div", null, 
         React.createElement("div", {id: "calendar"}, 
@@ -79,15 +94,16 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
             forceFullWeeks: this.state.forceFullWeeks, 
             firstDayOfWeek: this.state.firstDayOfWeek, 
             selectRange: this.state.selectRange, 
-            selectedRange: [moment([2015,2,15]), moment([2015,3,14])], 
-            onPickDate: this.datePicked.bind(this)}
+            selectedRange: this.state.selectedRange, 
+            onPickDate: this.datePicked.bind(this), 
+            onPickRange: this.rangePicked.bind(this)}
           )
         ), 
 
         React.createElement("h5", null, "Proudly brought to you by ", React.createElement("a", {href: "http://belka.us/en"}, "Belka")), 
 
         React.createElement("div", {className: "options"}, 
-          React.createElement("b", null, "Options"), 
+          React.createElement("b", null, "Demo Options"), 
           React.createElement("br", null), 
           React.createElement("ul", null, 
             React.createElement("li", null, 
@@ -138,7 +154,9 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               ), 
               React.createElement("label", {htmlFor: "selectRange"}, "Select Date range")
             )
-          )
+          ), 
+          React.createElement("br", null), 
+          React.createElement("i", null, "All these options are available as Calendar props")
         )
       )
     );
@@ -4627,7 +4645,8 @@ var propTypes = {
   showDaysOfWeek: _react2.default.PropTypes.bool,
   firstDayOfWeek: _react2.default.PropTypes.number,
   selectRange: _react2.default.PropTypes.bool,
-  onPickDate: _react2.default.PropTypes.func
+  onPickDate: _react2.default.PropTypes.func,
+  onPickRange: _react2.default.PropTypes.func
 };
 
 var defaultProps = {
@@ -4637,6 +4656,7 @@ var defaultProps = {
   firstDayOfWeek: 0,
   selectRange: false,
   onPickDate: null,
+  onPickRange: null,
   selectedDay: (0, _moment2.default)()
 };
 
@@ -4664,20 +4684,66 @@ var Calendar = (function (_React$Component) {
   function Calendar(props) {
     _classCallCheck(this, Calendar);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Calendar).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Calendar).call(this, props));
+
+    _this.state = {
+      selectingRange: undefined
+    };
+    return _this;
   }
 
   _createClass(Calendar, [{
+    key: '_dayClicked',
+    value: function _dayClicked(date) {
+      var selectingRange = this.state.selectingRange;
+      var _props = this.props;
+      var selectRange = _props.selectRange;
+      var onPickRange = _props.onPickRange;
+      var onPickDate = _props.onPickDate;
+
+      if (!selectRange) {
+        onPickDate && onPickDate(date);
+        return;
+      }
+
+      if (!selectingRange) {
+        selectingRange = [date, date];
+      } else {
+        onPickRange && onPickRange(selectingRange[0], date);
+        selectingRange = undefined;
+      }
+
+      this.setState({
+        selectingRange: selectingRange
+      });
+    }
+  }, {
+    key: '_dayHovered',
+    value: function _dayHovered(hoveredDay) {
+      var selectingRange = this.state.selectingRange;
+
+      if (selectingRange) {
+        selectingRange[1] = hoveredDay;
+
+        this.setState({
+          selectingRange: selectingRange
+        });
+      }
+    }
+  }, {
     key: '_monthDays',
     value: function _monthDays(month) {
-      var _props = this.props;
-      var year = _props.year;
-      var forceFullWeeks = _props.forceFullWeeks;
-      var selectedDay = _props.selectedDay;
-      var onPickDate = _props.onPickDate;
-      var firstDayOfWeek = _props.firstDayOfWeek;
-      var selectRange = _props.selectRange;
-      var selectedRange = _props.selectedRange;
+      var _this2 = this;
+
+      var _props2 = this.props;
+      var year = _props2.year;
+      var forceFullWeeks = _props2.forceFullWeeks;
+      var selectedDay = _props2.selectedDay;
+      var onPickDate = _props2.onPickDate;
+      var firstDayOfWeek = _props2.firstDayOfWeek;
+      var selectRange = _props2.selectRange;
+      var selectedRange = _props2.selectedRange;
+      var selectingRange = this.state.selectingRange;
 
       var monthStart = (0, _moment2.default)([year, month, 1]); // current day
 
@@ -4704,15 +4770,25 @@ var Calendar = (function (_React$Component) {
           classes.push('next-month');
         } else {
           if (selectRange) {
-            // TODO validate range
-            if (day.isBetween(selectedRange[0], selectedRange[1], 'day')) {
+            // selectingRange is used while user is selecting a range
+            // (has clicked on start day, and is hovering end day - but not yet clicked)
+            var start = (selectingRange || selectedRange)[0];
+            var end = (selectingRange || selectedRange)[1];
+
+            // validate range
+            if (end.isBefore(start)) {
+              start = (selectingRange || selectedRange)[1];
+              end = (selectingRange || selectedRange)[0];
+            }
+
+            if (day.isBetween(start, end, 'day')) {
               classes.push('range');
             }
 
-            if (day.isSame(selectedRange[0], 'day')) {
+            if (day.isSame(start, 'day')) {
               classes.push('range');
               classes.push('range-left');
-            } else if (day.isSame(selectedRange[1], 'day')) {
+            } else if (day.isSame(end, 'day')) {
               classes.push('range');
               classes.push('range-right');
             }
@@ -4732,71 +4808,66 @@ var Calendar = (function (_React$Component) {
           key: 'day-' + i,
           day: day,
           classes: classes.join(' '),
-          onClick: onPickDate
+          onClick: _this2._dayClicked.bind(_this2),
+          onHover: selectRange ? _this2._dayHovered.bind(_this2) : null
         });
       });
     }
   }, {
-    key: 'monthName',
-    value: function monthName(month, year) {
+    key: '_monthName',
+    value: function _monthName(month, year) {
       return (0, _moment2.default)([year, month, 1]).format('MMM');
     }
   }, {
-    key: 'daysOfWeek',
-    value: function daysOfWeek(forceFullWeeks) {
-      var firstDayOfWeek = this.props.firstDayOfWeek;
+    key: '_daysOfWeek',
+    value: function _daysOfWeek() {
+      var _props3 = this.props;
+      var firstDayOfWeek = _props3.firstDayOfWeek;
+      var forceFullWeeks = _props3.forceFullWeeks;
 
-      var daysOfWeek = [];
       var totalDays = forceFullWeeks ? 42 : 37;
-      for (var i = firstDayOfWeek; i < totalDays + firstDayOfWeek; i++) {
-        daysOfWeek.push((0, _moment2.default)().weekday(i).format('dd').charAt(0));
-      }
 
-      return daysOfWeek;
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'th',
+          null,
+          ' '
+        ),
+        range(firstDayOfWeek, totalDays + firstDayOfWeek).map(function (i) {
+          var day = (0, _moment2.default)().weekday(i).format('dd').charAt(0);
+
+          return _react2.default.createElement(
+            'th',
+            {
+              key: 'weekday-' + i,
+              className: (i + firstDayOfWeek) % 7 == 0 ? 'bolder' : ''
+            },
+            day
+          );
+        })
+      );
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var _props2 = this.props;
-      var year = _props2.year;
-      var forceFullWeeks = _props2.forceFullWeeks;
-      var firstDayOfWeek = _props2.firstDayOfWeek;
-
-      var weekDays = undefined;
-      if (this.props.showDaysOfWeek) {
-        weekDays = _react2.default.createElement(
-          'tr',
-          null,
-          _react2.default.createElement(
-            'th',
-            null,
-            ' '
-          ),
-          this.daysOfWeek().map(function (day, i) {
-            return _react2.default.createElement(
-              'th',
-              {
-                key: 'weekday-' + i,
-                className: (i + firstDayOfWeek) % 7 == 0 ? 'bolder' : ''
-              },
-              day
-            );
-          })
-        );
-      }
+      var _props4 = this.props;
+      var year = _props4.year;
+      var firstDayOfWeek = _props4.firstDayOfWeek;
 
       var months = range(0, 12).map(function (month, i) {
         return _react2.default.createElement(
           'tr',
-          { key: 'month' + i },
+          { key: 'month-' + i },
           _react2.default.createElement(
             'td',
             { className: 'month-name' },
-            _this2.monthName(month, year)
+            _this3._monthName(month, year)
           ),
-          _this2._monthDays(month)
+          _this3._monthDays(month)
         );
       });
 
@@ -4806,7 +4877,7 @@ var Calendar = (function (_React$Component) {
         _react2.default.createElement(
           'thead',
           { className: 'day-headers' },
-          weekDays
+          this.props.showDaysOfWeek ? this._daysOfWeek() : null
         ),
         _react2.default.createElement(
           'tbody',
@@ -4948,7 +5019,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var propTypes = {
   classes: _react2.default.PropTypes.string,
-  onClick: _react2.default.PropTypes.func
+  onClick: _react2.default.PropTypes.func.required,
+  onHover: _react2.default.PropTypes.func
 };
 
 var defaultProps = {
@@ -4971,19 +5043,29 @@ var Day = exports.Day = (function (_React$Component) {
       var onClick = _props.onClick;
       var day = _props.day;
 
-      onClick && onClick(day);
+      onClick(day);
+    }
+  }, {
+    key: '_onHover',
+    value: function _onHover() {
+      var _props2 = this.props;
+      var onHover = _props2.onHover;
+      var day = _props2.day;
+
+      onHover && onHover(day);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props2 = this.props;
-      var classes = _props2.classes;
-      var day = _props2.day;
+      var _props3 = this.props;
+      var classes = _props3.classes;
+      var day = _props3.day;
 
       return _react2.default.createElement(
         'td',
         {
           onClick: this._onClick.bind(this),
+          onMouseEnter: this._onHover.bind(this),
           className: classes
         },
         _react2.default.createElement(
