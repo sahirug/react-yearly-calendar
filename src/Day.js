@@ -30,7 +30,7 @@ export class Day extends React.Component {
         className={classes}
       >
         <span className='day-number'>
-          {day.date()}
+          {isNaN(day.date())? "": day.date()}
         </span>
       </td>
     );

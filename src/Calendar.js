@@ -9,7 +9,8 @@ const propTypes = {
   firstDayOfWeek: React.PropTypes.number,
   selectRange: React.PropTypes.bool,
   onPickDate: React.PropTypes.func,
-  onPickRange: React.PropTypes.func
+  onPickRange: React.PropTypes.func,
+  customClasses: React.PropTypes.object
 };
 
 const defaultProps = {
@@ -20,7 +21,8 @@ const defaultProps = {
   selectRange: false,
   onPickDate: null,
   onPickRange: null,
-  selectedDay: moment()
+  selectedDay: moment(),
+  customClasses: {}
 };
 
 // Grabbed from the underscore.js source code (https://github.com/jashkenas/underscore/blob/master/underscore.js#L691)
@@ -84,7 +86,7 @@ export default class Calendar extends React.Component {
   }
 
   _monthDays(month) {
-    const { year, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek, selectRange, selectedRange } = this.props;
+    const { year, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek, selectRange, selectedRange, customClasses } = this.props;
     const { selectingRange } = this.state;
     const monthStart = moment([year, month, 1]); // current day
 
@@ -147,6 +149,33 @@ export default class Calendar extends React.Component {
         classes.push('bolder');
       }
 
+      Object.keys(customClasses).map( k => {
+        const obj = customClasses[k];
+        // Order here is important! Everything is instance of Object in js
+        if( typeof obj === "string" ) {
+          if( obj.indexOf( day.format('ddd') ) > -1 ){
+            classes.push( k )
+          }
+        } else if( obj instanceof Array ) {
+          obj.map( d => {
+            if( day.format("YYYY-MM-DD") === d)
+              classes.push(k)
+          });
+        } else if( obj instanceof Function ) {
+          if( obj(day) ) {
+            classes.push(k)
+          }
+        } else /*if( obj instanceof Object )*/ {
+          if( obj.start && obj.end ) {
+            let startDate = moment(obj.start, "YYYY-MM-DD").add(-1, 'days');
+            let endDate = moment(obj.end, "YYYY-MM-DD").add(1, 'days');
+            if ( day.isBetween(startDate, endDate) ) {
+              classes.push(k)
+            }
+          }
+        }
+      })
+
       return (
         <Day
           key={`day-${i}`}
@@ -178,8 +207,8 @@ export default class Calendar extends React.Component {
 
             return (
               <th
-                key={'weekday-' + i}
-                className={(i+firstDayOfWeek)%7==0? 'bolder': ''}
+                key={`weekday-${i}`}
+                className={ i%7 === 0 ? 'bolder': ''}
               >
                 {day}
               </th>
