@@ -46,7 +46,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
   Object.defineProperty(Demo.prototype,"rangePicked",{writable:true,configurable:true,value:function(start, end) {"use strict";
     this.setState({
       selectedRange: [ start, end ],
-      selectedDay: start 
+      selectedDay: start
     });
   }});
 
@@ -75,26 +75,26 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
   }});
 
   Object.defineProperty(Demo.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-    const $__0=    this.state,year=$__0.year;
+    const $__0=           this.state,year=$__0.year,showTodayBtn=$__0.showTodayBtn,selectedDay=$__0.selectedDay,showDaysOfWeek=$__0.showDaysOfWeek,forceFullWeeks=$__0.forceFullWeeks,firstDayOfWeek=$__0.firstDayOfWeek,selectRange=$__0.selectRange,selectedRange=$__0.selectedRange;
 
     return (
       React.createElement("div", null, 
         React.createElement("div", {id: "calendar"}, 
           React.createElement(CalendarControls, {
-            year: this.state.year, 
-            showTodayButton: this.state.showTodayBtn, 
+            year: year, 
+            showTodayButton: showTodayBtn, 
             onPrevYear: this.onPrevYear.bind(this), 
             onNextYear: this.onNextYear.bind(this), 
             goToToday: this.goToToday.bind(this)}
           ), 
           React.createElement(Calendar, {
-            year: this.state.year, 
-            selectedDay: this.state.selectedDay, 
-            showDaysOfWeek: this.state.showDaysOfWeek, 
-            forceFullWeeks: this.state.forceFullWeeks, 
-            firstDayOfWeek: this.state.firstDayOfWeek, 
-            selectRange: this.state.selectRange, 
-            selectedRange: this.state.selectedRange, 
+            year: year, 
+            selectedDay: selectedDay, 
+            showDaysOfWeek: showDaysOfWeek, 
+            forceFullWeeks: forceFullWeeks, 
+            firstDayOfWeek: firstDayOfWeek, 
+            selectRange: selectRange, 
+            selectedRange: selectedRange, 
             onPickDate: this.datePicked.bind(this), 
             onPickRange: this.rangePicked.bind(this)}
           )
@@ -110,8 +110,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("input", {
                 id: "showDaysOfWeek", 
                 type: "checkbox", 
-                onChange: this.toggleShowDaysOfWeek.bind(this), 
-                checked: this.state.showDaysOfWeek}
+                checked: showDaysOfWeek, 
+                onChange: this.toggleShowDaysOfWeek.bind(this)}
               ), 
               React.createElement("label", {htmlFor: "showDaysOfWeek"}, "Show days of week")
             ), 
@@ -119,8 +119,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("input", {
                 id: "forceFullWeeks", 
                 type: "checkbox", 
-                onChange: this.toggleForceFullWeeks.bind(this), 
-                checked: this.state.forceFullWeeks}
+                checked: forceFullWeeks, 
+                onChange: this.toggleForceFullWeeks.bind(this)}
               ), 
               React.createElement("label", {htmlFor: "forceFullWeeks"}, "Force full weeks")
             ), 
@@ -128,8 +128,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("input", {
                 id: "showTodayBtn", 
                 type: "checkbox", 
-                onChange: this.toggleShowTodayBtn.bind(this), 
-                checked: this.state.showTodayBtn}
+                checked: showTodayBtn, 
+                onChange: this.toggleShowTodayBtn.bind(this)}
               ), 
               React.createElement("label", {htmlFor: "showTodayBtn"}, "Show 'Today' button")
             ), 
@@ -137,8 +137,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("label", {htmlFor: "firstDayOfWeek"}, "First day of week"), 
               React.createElement("select", {
                 id: "firstDayOfWeek", 
-                onChange: function(e)  {return this.selectFirstDayOfWeek(e);}.bind(this), 
-                value: this.state.firstDayOfWeek
+                value: firstDayOfWeek, 
+                onChange: function(e)  {return this.selectFirstDayOfWeek(e);}.bind(this)
               }, 
                 [0,1,2,3,4,5,6].map( function(i) 
                   {return React.createElement("option", {value: i}, moment().weekday(i).format("ddd"));}
@@ -149,8 +149,8 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
               React.createElement("input", {
                 id: "selectRange", 
                 type: "checkbox", 
-                onChange: this.toggleSelectRange.bind(this), 
-                checked: this.state.selectRange}
+                checked: selectRange, 
+                onChange: this.toggleSelectRange.bind(this)}
               ), 
               React.createElement("label", {htmlFor: "selectRange"}, "Select Date range")
             )
@@ -4646,7 +4646,8 @@ var propTypes = {
   firstDayOfWeek: _react2.default.PropTypes.number,
   selectRange: _react2.default.PropTypes.bool,
   onPickDate: _react2.default.PropTypes.func,
-  onPickRange: _react2.default.PropTypes.func
+  onPickRange: _react2.default.PropTypes.func,
+  customClasses: _react2.default.PropTypes.object
 };
 
 var defaultProps = {
@@ -4657,7 +4658,8 @@ var defaultProps = {
   selectRange: false,
   onPickDate: null,
   onPickRange: null,
-  selectedDay: (0, _moment2.default)()
+  selectedDay: (0, _moment2.default)(),
+  customClasses: {}
 };
 
 // Grabbed from the underscore.js source code (https://github.com/jashkenas/underscore/blob/master/underscore.js#L691)
@@ -4743,6 +4745,7 @@ var Calendar = (function (_React$Component) {
       var firstDayOfWeek = _props2.firstDayOfWeek;
       var selectRange = _props2.selectRange;
       var selectedRange = _props2.selectedRange;
+      var customClasses = _props2.customClasses;
       var selectingRange = this.state.selectingRange;
 
       var monthStart = (0, _moment2.default)([year, month, 1]); // current day
@@ -4804,6 +4807,32 @@ var Calendar = (function (_React$Component) {
           classes.push('bolder');
         }
 
+        Object.keys(customClasses).map(function (k) {
+          var obj = customClasses[k];
+          // Order here is important! Everything is instance of Object in js
+          if (typeof obj === "string") {
+            if (obj.indexOf(day.format('ddd')) > -1) {
+              classes.push(k);
+            }
+          } else if (obj instanceof Array) {
+            obj.map(function (d) {
+              if (day.format("YYYY-MM-DD") === d) classes.push(k);
+            });
+          } else if (obj instanceof Function) {
+            if (obj(day)) {
+              classes.push(k);
+            }
+          } else /*if( obj instanceof Object )*/{
+              if (obj.start && obj.end) {
+                var startDate = (0, _moment2.default)(obj.start, "YYYY-MM-DD").add(-1, 'days');
+                var endDate = (0, _moment2.default)(obj.end, "YYYY-MM-DD").add(1, 'days');
+                if (day.isBetween(startDate, endDate)) {
+                  classes.push(k);
+                }
+              }
+            }
+        });
+
         return _react2.default.createElement(_Day.Day, {
           key: 'day-' + i,
           day: day,
@@ -4842,7 +4871,7 @@ var Calendar = (function (_React$Component) {
             'th',
             {
               key: 'weekday-' + i,
-              className: (i + firstDayOfWeek) % 7 == 0 ? 'bolder' : ''
+              className: i % 7 === 0 ? 'bolder' : ''
             },
             day
           );
@@ -5071,7 +5100,7 @@ var Day = exports.Day = (function (_React$Component) {
         _react2.default.createElement(
           'span',
           { className: 'day-number' },
-          day.date()
+          isNaN(day.date()) ? "" : day.date()
         )
       );
     }

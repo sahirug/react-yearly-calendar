@@ -74,7 +74,7 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { year, showTodayButton, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
+    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
       <div>
