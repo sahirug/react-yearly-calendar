@@ -7,7 +7,7 @@ class Demo extends React.Component {
   constructor(props) {
     super(props);
 
-    const today = moment();
+    var today = moment();
 
     this.state = {
       year: today.year(),
@@ -29,7 +29,7 @@ class Demo extends React.Component {
   }
 
   goToToday() {
-    const today = moment();
+    var today = moment();
 
     this.setState({
       selectedDay: today,
@@ -77,7 +77,7 @@ class Demo extends React.Component {
   }
 
   render() {
-    const customCSSclasses = {
+    var customCSSclasses = {
       holidays: [
         "2016-04-25",
         "2016-05-01",
@@ -101,9 +101,9 @@ class Demo extends React.Component {
       winter: day => day.isBefore( moment([2016,2,21]) ) || day.isAfter( moment([2016,11,21]))
     }
     // alternatively, customClasses can be a function accepting a moment object
-    //const customCSSclasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.isAfter( moment([day.year(),11,21]) ) ) ? 'winter': 'summer'
+    //var customCSSclasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.isAfter( moment([day.year(),11,21]) ) ) ? 'winter': 'summer'
 
-    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
+    var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
       <div>

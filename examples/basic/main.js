@@ -7,7 +7,7 @@ class Demo extends React.Component {
   constructor(props) {
     super(props);
 
-    const today = moment();
+    var today = moment();
 
     this.state = {
       year: today.year(),
@@ -29,7 +29,7 @@ class Demo extends React.Component {
   }
 
   goToToday() {
-    const today = moment();
+    var today = moment();
 
     this.setState({
       selectedDay: today,
@@ -77,7 +77,7 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
+    var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
       <div>
