@@ -29,9 +29,12 @@ class Demo extends React.Component {
   }
 
   goToToday() {
+    const today = moment();
+
     this.setState({
-      selectedDay: moment(),
-      year: moment().year()
+      selectedDay: today,
+      selectedRange: [today, moment(today).add(15, 'day') ],
+      year: today.year()
     });
   }
 
@@ -82,9 +85,9 @@ class Demo extends React.Component {
           <CalendarControls
             year={year}
             showTodayButton={showTodayBtn}
-            onPrevYear={this.onPrevYear.bind(this)}
-            onNextYear={this.onNextYear.bind(this)}
-            goToToday={this.goToToday.bind(this)}
+            onPrevYear={() => this.onPrevYear()}
+            onNextYear={() => this.onNextYear()}
+            goToToday={() => this.goToToday()}
           />
           <Calendar
             year={year}
@@ -94,8 +97,8 @@ class Demo extends React.Component {
             firstDayOfWeek={firstDayOfWeek}
             selectRange={selectRange}
             selectedRange={selectedRange}
-            onPickDate={this.datePicked.bind(this)}
-            onPickRange={this.rangePicked.bind(this)}
+            onPickDate={(date) => this.datePicked(date)}
+            onPickRange={(start, end) => this.rangePicked(start, end)}
           />
         </div>
 
@@ -110,7 +113,7 @@ class Demo extends React.Component {
                 id='showDaysOfWeek'
                 type='checkbox'
                 checked={showDaysOfWeek}
-                onChange={this.toggleShowDaysOfWeek.bind(this)}
+                onChange={() => this.toggleShowDaysOfWeek()}
               />
               <label htmlFor='showDaysOfWeek'>Show days of week</label>
             </li>
@@ -119,7 +122,7 @@ class Demo extends React.Component {
                 id='forceFullWeeks'
                 type='checkbox'
                 checked={forceFullWeeks}
-                onChange={this.toggleForceFullWeeks.bind(this)}
+                onChange={() => this.toggleForceFullWeeks()}
               />
               <label htmlFor='forceFullWeeks'>Force full weeks</label>
             </li>
@@ -128,7 +131,7 @@ class Demo extends React.Component {
                 id='showTodayBtn'
                 type='checkbox'
                 checked={showTodayBtn}
-                onChange={this.toggleShowTodayBtn.bind(this)}
+                onChange={() => this.toggleShowTodayBtn()}
               />
               <label htmlFor='showTodayBtn'>Show 'Today' button</label>
             </li>
@@ -140,7 +143,7 @@ class Demo extends React.Component {
                 onChange={(e) => this.selectFirstDayOfWeek(e)}
               >
                 {[0,1,2,3,4,5,6].map( i =>
-                  <option value={i}>{moment().weekday(i).format("ddd")}</option>
+                  <option key={i} value={i}>{moment().weekday(i).format("ddd")}</option>
                 )}
               </select>
             </li>
@@ -149,13 +152,13 @@ class Demo extends React.Component {
                 id='selectRange'
                 type='checkbox'
                 checked={selectRange}
-                onChange={this.toggleSelectRange.bind(this)}
+                onChange={() => this.toggleSelectRange()}
               />
               <label htmlFor='selectRange'>Select Date range</label>
             </li>
           </ul>
           <br />
-          <i>All these options are available as Calendar props</i>
+          <i>All these options are available as Calendar props.</i>
         </div>
       </div>
     );
