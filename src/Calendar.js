@@ -11,7 +11,10 @@ const propTypes = {
   selectRange: React.PropTypes.bool,
   onPickDate: React.PropTypes.func,
   onPickRange: React.PropTypes.func,
-  customClasses: React.PropTypes.object
+  customClasses: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.func
+  ])
 };
 
 const defaultProps = {
@@ -23,7 +26,7 @@ const defaultProps = {
   onPickDate: null,
   onPickRange: null,
   selectedDay: moment(),
-  customClasses: {}
+  customClasses: null
 };
 
 export default class Calendar extends React.Component {

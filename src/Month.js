@@ -153,6 +153,11 @@ export class Month extends React.Component {
             classes.push('selected');
           }
         }
+
+        // call here customClasses function to avoid giving improper classses to prev/next month
+        if( customClasses instanceof Function ) {
+          classes.push( customClasses(day) );
+        }
       }
 
       if( (i-1)%7 === 0 ) {
@@ -160,32 +165,34 @@ export class Month extends React.Component {
         classes.push('bolder');
       }
 
-      Object.keys(customClasses).map( k => {
-        const obj = customClasses[k];
-        // Order here is important! Everything is instance of Object in js
-        if( typeof obj === "string" ) {
-          if( obj.indexOf( day.format('ddd') ) > -1 ){
-            classes.push( k )
-          }
-        } else if( obj instanceof Array ) {
-          obj.map( d => {
-            if( day.format("YYYY-MM-DD") === d)
-              classes.push(k)
-          });
-        } else if( obj instanceof Function ) {
-          if( obj(day) ) {
-            classes.push(k)
-          }
-        } else /*if( obj instanceof Object )*/ {
-          if( obj.start && obj.end ) {
-            let startDate = moment(obj.start, "YYYY-MM-DD").add(-1, 'days');
-            let endDate = moment(obj.end, "YYYY-MM-DD").add(1, 'days');
-            if ( day.isBetween(startDate, endDate) ) {
+      if( customClasses ) {
+        Object.keys(customClasses).map( k => {
+          const obj = customClasses[k];
+          // Order here is important! Everything is instance of Object in js
+          if( typeof obj === "string" ) {
+            if( obj.indexOf( day.format('ddd') ) > -1 ){
+              classes.push( k )
+            }
+          } else if( obj instanceof Array ) {
+            obj.map( d => {
+              if( day.format("YYYY-MM-DD") === d)
+                classes.push(k)
+            });
+          } else if( obj instanceof Function ) {
+            if( obj(day) ) {
               classes.push(k)
             }
+          } else /*if( obj instanceof Object )*/ {
+            if( obj.start && obj.end ) {
+              let startDate = moment(obj.start, "YYYY-MM-DD").add(-1, 'days');
+              let endDate = moment(obj.end, "YYYY-MM-DD").add(1, 'days');
+              if ( day.isBetween(startDate, endDate) ) {
+                classes.push(k)
+              }
+            }
           }
-        }
-      })
+        })
+      }
 
       return (
         <Day
