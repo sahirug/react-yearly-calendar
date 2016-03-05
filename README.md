@@ -11,6 +11,8 @@ $ npm install react-yearly-calendar
 # Demo
 **[http://belkalab.github.io/react-yearly-calendar/](http://belkalab.github.io/react-yearly-calendar)**
 
+![http://belkalab.github.io/react-yearly-calendar/](examples/screen.png)
+
 Or taste an example usage below:
 ```js
 var ReactDOM = require('react-dom');
@@ -22,6 +24,7 @@ function onDatePicked(date) {
 
 ReactDOM.render(
   <Calendar
+    year={2016}
     onPickDate={onDatePicked}
   />,
   document.getElementById('calendar')
@@ -32,27 +35,41 @@ ReactDOM.render(
 
 #### Calendar
 
-- **year: React.PropTypes.number.isRequired**: current year number [*default: current year*],
-- **selectedDay: moment.js object**: selected day [*default: today*],
-- **forceFullWeeks: React.PropTypes.bool**: match calendar row end with row start [*default: false*],
-- **showDaysOfWeek: React.PropTypes.bool**: show days of week table header [*default: true*]
+| Prop | Type | Description | Default |
+|------|------|-------------|---------|
+| **year** | React.PropTypes.number.isRequired | year to be displayed | current year |
+| selectedDay | moment.js object | selected day | today |
+| forceFullWeeks | React.PropTypes.bool | match calendar row end with row start | false |
+| showDaysOfWeek | React.PropTypes.bool | show days of week table header | true |
+| firstDayOfWeek | React.PropTypes.number | select first day of week | 0 (Sunday) |
+| selectRange | React.PropTypes.bool | enable selecting ranges | false |
+| selectedRange | `[moment.js obj, moment.js obj]` | selected range of dates in the form `[start, end]` | |
+| customClasses | React.PropTypes.object, React.PropTypes.func | custom days/periods coloring (see section below) | |
 
 #### CalendarControls
 
--  **year: React.PropTypes.number.isRequired**: current year number [*default: current year*],
--  **showTodayButton: React.PropTypes.bool**: show `today` button on top left [*default: true*]
+| Prop | Type | Description | Default |
+|------|------|-------------|---------|
+| **year** | React.PropTypes.number.isRequired | current year number | current year |
+| showTodayButton | React.PropTypes.bool | show *Today* button on top left | true |
+
 
 ## Callbacks
 
 #### Calendar
 
-- **onPickDate: React.PropTypes.func**: *func(selectedDay)* called when user clicks on a day
+| Prop | Type | Syntax | Description |
+|------|------|--------|-------------|
+| onPickDate| React.PropTypes.func | function(selectedDay) {} | called when user clicks on a day |
+| onPickRange| React.PropTypes.func | function(rangeStart, rangeEnd) {} | called when user selects a range of dates (only in `selectRange` mode) |
 
 #### CalendarControls
 
--  **onPrevYear: React.PropTypes.func**: *func()* called on user clicking `«` (*previous year button*),
--  **onNextYear: React.PropTypes.func**: *func()* called on user clicking `»` (*next year button*),
--  **goToToday: React.PropTypes.func**: *func()* called on user clicking the `today` button
+| Prop | Type | Syntax | Description |
+|------|------|--------|-------------|
+| onPrevYear| React.PropTypes.func | function() {} | called on user clicking `«` (*previous year button*) |
+| onNextYear| React.PropTypes.func | function() {} | called on user clicking `»` (*next year button*) |
+| goToToday| React.PropTypes.func | function() {} | called on user clicking the `today` button |
 
 ## Styling guide
 The calendar is rendered as an html `table` element, to ensure proper displaying even in case the style isn't being loaded.
@@ -66,12 +83,58 @@ Take a look at the css file in `examples/basic/style.css`. Here are some head-up
  - `table.calendar td.prev-month`, `table.calendar td.next-month`: classes applied to the days of the previous and next month showed in a month's row to fill it up. Day numbers and callbacks are present even in these cells, so we suggest to play with text color to make days less intrusive and add `pointer-events: none` to prevent clicking.
  - `table.calendar td.selected`: the currently selected day
  - `table.calendar td.bolder`: the days which are Sundays
-
+ - `table.calendar td.range`: the days in the selected range
+ - `table.calendar td.range-left`, `table.calendar td.range-right`: the left and right boundaries of the selected range 
+____
 
  - `div.calendar-controls`: the main CalendarControls container
  - `div.calendar-controls .current-year`: the current year
  - `div.calendar-controls .controls`: applies to *next* and *previous* arrows and to *today* button
  - `div.calendar-controls .today`: the *today* button
+
+## Custom days/periods colors
+
+By passing the `customClasses` prop, you can have a fine control on which CSS classes are assigned to each day.
+
+- `customClasses` can be a function accepting a *moment* object as a parameter, giving back the css class to be applied to the given day.
+
+```js
+const customClasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.isAfter( moment([day.year(),11,21]) ) ) ? 'cheap low-season': 'expensive high-season'
+```
+
+- If `customClasses` is an object, the Calendar will use the keys as css classes and the values as rules to apply them.
+	- if the value is **an array** of strings in the form `YYYY-MM-DD`, those days will be given the css class. Useful for **single days**, like holidays!
+	- if the value is **an object** with a `start` and an `end` value (still in the `YYYY-MM-DD` form), the days in that **period** will be given the css class. Nice for seasons!
+	- if the value is **a string** of comma-separated, three-letter weekdays names in the form `"ddd,ddd"`, the class will be given to the **days of the week** appearing on the string. Great for closing days during the week!
+	- if the value is **a function** returning a boolean value, the class will be assigned using the function itself as a test. A must have for the finest tuning!
+	
+Confused? see the example below!
+
+```js
+const customClasses = {
+  holidays: [
+    "2016-04-25",
+    "2016-05-01",
+    "2016-06-02",
+    "2016-08-15",
+    "2016-11-01"
+  ],
+  spring: {
+    start: "2016-03-21",
+    end: "2016-6-20"
+  },
+  summer: {
+    start: "2016-06-21",
+    end: "2016-09-22"
+  },
+  autumn: {
+    start: "2016-09-23",
+    end: "2016-12-21"
+  },
+  weekend: "Sat,Sun",
+  winter: day => day.isBefore( moment([2016,2,21]) ) || day.isAfter( moment([2016,11,21]))
+}
+```
 
 ## Build it yourself
 
@@ -82,7 +145,7 @@ $ npm install
 ```
 
 ## License
-react-yearly-calendar is Copyright (c) 2015 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
+react-yearly-calendar is Copyright (c) 2016 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
 
 ## About Belka
 ![Alt text](http://s2.postimg.org/rcjk3hf5x/logo_rosso.jpg)

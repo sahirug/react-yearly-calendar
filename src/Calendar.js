@@ -1,141 +1,122 @@
 import React from 'react';
 import moment from 'moment';
-import { Day } from './Day';
+import { Month } from './Month';
+import { range } from './utils';
 
 const propTypes = {
   year: React.PropTypes.number.isRequired,
   forceFullWeeks: React.PropTypes.bool,
   showDaysOfWeek: React.PropTypes.bool,
-  onPickDate: React.PropTypes.func
+  firstDayOfWeek: React.PropTypes.number,
+  selectRange: React.PropTypes.bool,
+  onPickDate: React.PropTypes.func,
+  onPickRange: React.PropTypes.func,
+  customClasses: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.func
+  ])
 };
 
 const defaultProps = {
   year: moment().year(),
   forceFullWeeks: false,
   showDaysOfWeek: true,
+  firstDayOfWeek: 0,
+  selectRange: false,
   onPickDate: null,
-  selectedDay: moment()
-};
-
-// Grabbed from the underscore.js source code (https://github.com/jashkenas/underscore/blob/master/underscore.js#L691)
-let range = function(start, stop, step) {
-  if (stop == null) {
-    stop = start || 0;
-    start = 0;
-  }
-  step = step || 1;
-
-  var length = Math.max(Math.ceil((stop - start) / step), 0);
-  var range = Array(length);
-
-  for (var idx = 0; idx < length; idx++, start += step) {
-    range[idx] = start;
-  }
-
-  return range;
+  onPickRange: null,
+  selectedDay: moment(),
+  customClasses: null
 };
 
 export default class Calendar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      selectingRange: undefined
+    }
   }
 
-  _monthDays(month) {
-    const { year, forceFullWeeks, selectedDay, onPickDate } = this.props;
-    const monthStart = moment([year, month, 1]); // current day
+  dayClicked(date) {
+    let { selectingRange , useless } = this.state;
+    const { selectRange, onPickRange, onPickDate } = this.props;
 
-    // number of days to insert before the first of the month to correctly align the weekdays
-    const prevMonthDaysCount = monthStart.weekday();
-    // days in month
-    const numberOfDays = monthStart.daysInMonth();
-    // insert days at the end to match up 37 (max number of days in a month + 6)
-    // or 42 (if user prefers seeing the week closing with Sunday)
-    const totalDays = forceFullWeeks? 42: 37;
-
-    // day-generating loop
-    return range(1, totalDays+1).map( i => {
-      let day = moment([year, month, i - prevMonthDaysCount]);
-
-      // pick appropriate classes
-      let classes = [];
-      if( i <= prevMonthDaysCount ) {
-        classes.push('prev-month');
-      } else if ( i > (numberOfDays + prevMonthDaysCount) ) {
-        classes.push('next-month');
-      } else {
-        // 'selected' class sholud be applied only to days in this month
-        if( day.isSame(selectedDay, 'day') ) {
-          classes.push('selected');
-        }
-      }
-
-      if( (i-1)%7 === 0 ) {
-        classes.push('bolder');
-      }
-
-      return (
-        <Day
-          key={'day-' + i}
-          day={day}
-          classes={classes.join(' ')}
-          onClick={onPickDate}
-        />
-      );
-    });
-  }
-
-  monthName(month, year) {
-    return moment([year, month, 1]).format('MMM');
-  }
-
-  daysOfWeek(forceFullWeeks) {
-    var daysOfWeek = [];
-    const totalDays = forceFullWeeks? 42: 37;
-    for (let i = 0; i < totalDays; i++) {
-      daysOfWeek.push(moment().weekday(i).format('dd').charAt(0));
+    if( !selectRange ) {
+      onPickDate && onPickDate(date);
+      return;
     }
 
-    return daysOfWeek;
+    if( !selectingRange ) {
+      selectingRange = [date, date];
+    } else {
+      onPickRange && onPickRange(selectingRange[0], date);
+      selectingRange = undefined;
+    }
+
+    this.setState({
+      selectingRange
+    })
   }
 
-  render() {
-    const { year, forceFullWeeks } = this.props;
-    let weekDays;
-    if(this.props.showDaysOfWeek) {
-      weekDays = (
-        <tr>
-          <th>
-            &nbsp;
-          </th>
-          {this.daysOfWeek().map((day, i) => {
+  dayHovered(hoveredDay) {
+    let { selectingRange } = this.state;
+
+    if( selectingRange ) {
+      selectingRange[ 1 ] = hoveredDay;
+
+      this.setState({
+        selectingRange
+      });
+    }
+  }
+
+  _daysOfWeek() {
+    const { firstDayOfWeek, forceFullWeeks } = this.props;
+    const totalDays = forceFullWeeks? 42: 37;
+
+    return (
+      <tr>
+        <th>
+          &nbsp;
+        </th>
+        {
+          range(firstDayOfWeek, totalDays + firstDayOfWeek).map( i => {
+            let day = moment().weekday(i).format('dd').charAt(0);
+
             return (
               <th
-                key={'weekday-' + i}
-                className={i%7==0? 'bolder': ''}
+                key={`weekday-${i}`}
+                className={ i%7 === 0 ? 'bolder': ''}
               >
                 {day}
               </th>
-            );
-          })}
-        </tr>
-      );
-    }
+            )
+          })
+        }
+      </tr>
+    )
+  }
 
-    const months = range(0,12).map((month, i) => {
-      return (
-        <tr key={'month' + i}>
-          <td className='month-name'>
-            {this.monthName(month, year)}
-          </td>
-          {this._monthDays(month)}
-        </tr>
-      );
-    });
+  render() {
+    const { year, firstDayOfWeek } = this.props;
+    const { selectingRange } = this.state;
+
+    const months = range(0,12).map( month =>
+      <Month
+        month={month}
+        key={`month-${month}`}
+        dayClicked={(d) => this.dayClicked(d)}
+        dayHovered={(d) => this.dayHovered(d)}
+        {...this.props}
+        selectingRange={selectingRange}
+      />
+    );
 
     return (
       <table className='calendar'>
         <thead className='day-headers'>
-          {weekDays}
+          {this.props.showDaysOfWeek ? this._daysOfWeek() : null}
         </thead>
         <tbody>
           {months}

@@ -77,6 +77,32 @@ class Demo extends React.Component {
   }
 
   render() {
+    var customCSSclasses = {
+      holidays: [
+        "2016-04-25",
+        "2016-05-01",
+        "2016-06-02",
+        "2016-08-15",
+        "2016-11-01"
+      ],
+      spring: {
+        start: "2016-03-21",
+        end: "2016-6-20"
+      },
+      summer: {
+        start: "2016-06-21",
+        end: "2016-09-22"
+      },
+      autumn: {
+        start: "2016-09-23",
+        end: "2016-12-21"
+      },
+      weekend: "Sat,Sun",
+      winter: day => day.isBefore( moment([2016,2,21]) ) || day.isAfter( moment([2016,11,21]))
+    }
+    // alternatively, customClasses can be a function accepting a moment object
+    //var customCSSclasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.isAfter( moment([day.year(),11,21]) ) ) ? 'winter': 'summer'
+
     var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
@@ -99,6 +125,7 @@ class Demo extends React.Component {
             selectedRange={selectedRange}
             onPickDate={(date) => this.datePicked(date)}
             onPickRange={(start, end) => this.rangePicked(start, end)}
+            customClasses={customCSSclasses}
           />
         </div>
 
@@ -158,7 +185,7 @@ class Demo extends React.Component {
             </li>
           </ul>
           <br />
-          <i>All these options are available as Calendar props.</i>
+          <i>All these options are available as Calendar props. Colors are assigned with an object mapping class names to week days, periods or single days.</i>
         </div>
       </div>
     );
