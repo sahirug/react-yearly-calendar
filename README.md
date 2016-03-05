@@ -35,32 +35,41 @@ ReactDOM.render(
 
 #### Calendar
 
-- **year: React.PropTypes.number.isRequired**: year to be displayed [*default: current year*],
-- **selectedDay: moment.js object**: selected day [*default: today*],
-- **forceFullWeeks: React.PropTypes.bool**: match calendar row end with row start [*default: false*],
-- **showDaysOfWeek: React.PropTypes.bool**: show days of week table header [*default: true*]
-- **firstDayOfWeek: React.PropTypes.number**: select first day of week [*default: 0 = Sunday*]
-- **selectRange: React.PropTypes.bool**: enable selecting ranges [*default: false*]
-- **selectedRange: [moment.js obj, moment.js obj]**: selected range of dates in the form `[start, end]` [*default: none*]
-- **customClasses: React.PropTypes.object || React.PropTypes.func**: custom days/periods coloring (see below)
+| Prop | Type | Description | Default |
+|------|------|-------------|---------|
+| **year** | React.PropTypes.number.isRequired | year to be displayed | current year |
+| selectedDay | moment.js object | selected day | today |
+| forceFullWeeks | React.PropTypes.bool | match calendar row end with row start | false |
+| showDaysOfWeek | React.PropTypes.bool | show days of week table header | true |
+| firstDayOfWeek | React.PropTypes.number | select first day of week | 0 (Sunday) |
+| selectRange | React.PropTypes.bool | enable selecting ranges | false |
+| selectedRange | `[moment.js obj, moment.js obj]` | selected range of dates in the form `[start, end]` | |
+| customClasses | React.PropTypes.object, React.PropTypes.func | custom days/periods coloring (see section below) | |
 
 #### CalendarControls
 
--  **year: React.PropTypes.number.isRequired**: current year number [*default: current year*],
--  **showTodayButton: React.PropTypes.bool**: show `today` button on top left [*default: true*]
+| Prop | Type | Description | Default |
+|------|------|-------------|---------|
+| **year** | React.PropTypes.number.isRequired | current year number | current year |
+| showTodayButton | React.PropTypes.bool | show *Today* button on top left | true |
+
 
 ## Callbacks
 
 #### Calendar
 
-- **onPickDate: React.PropTypes.func**: *func(selectedDay)* called when user clicks on a day
-- **onPickRange: React.PropTypes.func**: *func(start, end)* called when user selects a range of dates (only if `selectRange` mode is enabled)
+| Prop | Type | Syntax | Description |
+|------|------|--------|-------------|
+| onPickDate| React.PropTypes.func | function(selectedDay) {} | called when user clicks on a day |
+| onPickRange| React.PropTypes.func | function(rangeStart, rangeEnd) {} | called when user selects a range of dates (only in `selectRange` mode) |
 
 #### CalendarControls
 
--  **onPrevYear: React.PropTypes.func**: *func()* called on user clicking `«` (*previous year button*),
--  **onNextYear: React.PropTypes.func**: *func()* called on user clicking `»` (*next year button*),
--  **goToToday: React.PropTypes.func**: *func()* called on user clicking the `today` button
+| Prop | Type | Syntax | Description |
+|------|------|--------|-------------|
+| onPrevYear| React.PropTypes.func | function() {} | called on user clicking `«` (*previous year button*) |
+| onNextYear| React.PropTypes.func | function() {} | called on user clicking `»` (*next year button*) |
+| goToToday| React.PropTypes.func | function() {} | called on user clicking the `today` button |
 
 ## Styling guide
 The calendar is rendered as an html `table` element, to ensure proper displaying even in case the style isn't being loaded.
@@ -96,8 +105,8 @@ const customClasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.
 - If `customClasses` is an object, the Calendar will use the keys as css classes and the values as rules to apply them.
 	- if the value is **an array** of strings in the form `YYYY-MM-DD`, those days will be given the css class. Useful for **single days**, like holidays!
 	- if the value is **an object** with a `start` and an `end` value (still in the `YYYY-MM-DD` form), the days in that **period** will be given the css class. Nice for seasons!
-	- if the value is **a string** of comma-separated, three-letters weekdays names in the form `"ddd,ddd"`, the class will be given to the **days of the week** appearing on the string. Great for closing days during the week!
-	- if the value is **a function** returning a boolean value, the class will be called using the function itself as a test. A must have for the finest tuning!
+	- if the value is **a string** of comma-separated, three-letter weekdays names in the form `"ddd,ddd"`, the class will be given to the **days of the week** appearing on the string. Great for closing days during the week!
+	- if the value is **a function** returning a boolean value, the class will be assigned using the function itself as a test. A must have for the finest tuning!
 	
 Confused? see the example below!
 
