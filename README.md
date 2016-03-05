@@ -11,6 +11,8 @@ $ npm install react-yearly-calendar
 # Demo
 **[http://belkalab.github.io/react-yearly-calendar/](http://belkalab.github.io/react-yearly-calendar)**
 
+![http://belkalab.github.io/react-yearly-calendar/](examples/screen.png)
+
 Or taste an example usage below:
 ```js
 var ReactDOM = require('react-dom');
@@ -72,7 +74,9 @@ Take a look at the css file in `examples/basic/style.css`. Here are some head-up
  - `table.calendar td.prev-month`, `table.calendar td.next-month`: classes applied to the days of the previous and next month showed in a month's row to fill it up. Day numbers and callbacks are present even in these cells, so we suggest to play with text color to make days less intrusive and add `pointer-events: none` to prevent clicking.
  - `table.calendar td.selected`: the currently selected day
  - `table.calendar td.bolder`: the days which are Sundays
-
+ - `table.calendar td.range`: the days in the selected range
+ - `table.calendar td.range-left`, `table.calendar td.range-right`: the left and right boundaries of the selected range 
+____
 
  - `div.calendar-controls`: the main CalendarControls container
  - `div.calendar-controls .current-year`: the current year
