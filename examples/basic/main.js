@@ -15,6 +15,7 @@ class Demo extends React.Component {
       selectedRange: [today, moment(today).add(15, 'day') ],
       showDaysOfWeek: true,
       showTodayBtn: true,
+      showWeekSeparators: true,
       selectRange: false,
       firstDayOfWeek: 0 // sunday
     };
@@ -59,13 +60,17 @@ class Demo extends React.Component {
   toggleForceFullWeeks(){
     var next_forceFullWeeks = !this.state.forceFullWeeks;
     this.setState({
-      showDaysOfWeek: next_forceFullWeeks,
+      showDaysOfWeek: true,
       forceFullWeeks: next_forceFullWeeks
     });
   }
 
   toggleShowTodayBtn() {
     this.setState({ showTodayBtn: !this.state.showTodayBtn });
+  }
+
+  toggleShowWeekSeparators() {
+    this.setState({ showWeekSeparators: !this.state.showWeekSeparators });
   }
 
   toggleSelectRange() {
@@ -77,7 +82,7 @@ class Demo extends React.Component {
   }
 
   render() {
-    var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, firstDayOfWeek, selectRange, selectedRange } = this.state;
+    var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, showWeekSeparators, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
       <div>
@@ -94,6 +99,7 @@ class Demo extends React.Component {
             selectedDay={selectedDay}
             showDaysOfWeek={showDaysOfWeek}
             forceFullWeeks={forceFullWeeks}
+            showWeekSeparators={showWeekSeparators}
             firstDayOfWeek={firstDayOfWeek}
             selectRange={selectRange}
             selectedRange={selectedRange}
@@ -134,6 +140,15 @@ class Demo extends React.Component {
                 onChange={() => this.toggleShowTodayBtn()}
               />
               <label htmlFor='showTodayBtn'>Show 'Today' button</label>
+            </li>
+            <li>
+              <input
+                id='showWeekSeparators'
+                type='checkbox'
+                checked={showWeekSeparators}
+                onChange={() => this.toggleShowWeekSeparators()}
+              />
+            <label htmlFor='showWeekSeparators'>Show week separators</label>
             </li>
             <li>
               <label htmlFor='firstDayOfWeek'>First day of week</label>
