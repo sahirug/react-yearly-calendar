@@ -16,6 +16,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
       selectedRange: [today, moment(today).add(15, 'day') ],
       showDaysOfWeek: true,
       showTodayBtn: true,
+      showWeekSeparators: true,
       selectRange: false,
       firstDayOfWeek: 0 // sunday
     };
@@ -69,6 +70,10 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     this.setState({ showTodayBtn: !this.state.showTodayBtn });
   }});
 
+  Object.defineProperty(Demo.prototype,"toggleShowWeekSeparators",{writable:true,configurable:true,value:function() {"use strict";
+    this.setState({ showWeekSeparators: !this.state.showWeekSeparators });
+  }});
+
   Object.defineProperty(Demo.prototype,"toggleSelectRange",{writable:true,configurable:true,value:function() {"use strict";
     this.setState({ selectRange: !this.state.selectRange });
   }});
@@ -104,7 +109,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
     // alternatively, customClasses can be a function accepting a moment object
     //var customCSSclasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.isAfter( moment([day.year(),11,21]) ) ) ? 'winter': 'summer'
 
-    var $__0=           this.state,year=$__0.year,showTodayBtn=$__0.showTodayBtn,selectedDay=$__0.selectedDay,showDaysOfWeek=$__0.showDaysOfWeek,forceFullWeeks=$__0.forceFullWeeks,firstDayOfWeek=$__0.firstDayOfWeek,selectRange=$__0.selectRange,selectedRange=$__0.selectedRange;
+    var $__0=            this.state,year=$__0.year,showTodayBtn=$__0.showTodayBtn,selectedDay=$__0.selectedDay,showDaysOfWeek=$__0.showDaysOfWeek,forceFullWeeks=$__0.forceFullWeeks,showWeekSeparators=$__0.showWeekSeparators,firstDayOfWeek=$__0.firstDayOfWeek,selectRange=$__0.selectRange,selectedRange=$__0.selectedRange;
 
     return (
       React.createElement("div", null, 
@@ -121,6 +126,7 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
             selectedDay: selectedDay, 
             showDaysOfWeek: showDaysOfWeek, 
             forceFullWeeks: forceFullWeeks, 
+            showWeekSeparators: showWeekSeparators, 
             firstDayOfWeek: firstDayOfWeek, 
             selectRange: selectRange, 
             selectedRange: selectedRange, 
@@ -162,6 +168,15 @@ var ____Class0=React.Component;for(var ____Class0____Key in ____Class0){if(____C
                 onChange: function()  {return this.toggleShowTodayBtn();}.bind(this)}
               ), 
               React.createElement("label", {htmlFor: "showTodayBtn"}, "Show 'Today' button")
+            ), 
+            React.createElement("li", null, 
+              React.createElement("input", {
+                id: "showWeekSeparators", 
+                type: "checkbox", 
+                checked: showWeekSeparators, 
+                onChange: function()  {return this.toggleShowWeekSeparators();}.bind(this)}
+              ), 
+            React.createElement("label", {htmlFor: "showWeekSeparators"}, "Show week separators")
             ), 
             React.createElement("li", null, 
               React.createElement("label", {htmlFor: "firstDayOfWeek"}, "First day of week"), 
@@ -5096,6 +5111,7 @@ var propTypes = {
   year: _react2.default.PropTypes.number.isRequired,
   forceFullWeeks: _react2.default.PropTypes.bool,
   showDaysOfWeek: _react2.default.PropTypes.bool,
+  showWeekSeparators: _react2.default.PropTypes.bool,
   firstDayOfWeek: _react2.default.PropTypes.number,
   selectRange: _react2.default.PropTypes.bool,
   onPickDate: _react2.default.PropTypes.func,
@@ -5107,6 +5123,7 @@ var defaultProps = {
   year: (0, _moment2.default)().year(),
   forceFullWeeks: false,
   showDaysOfWeek: true,
+  showWeekSeparators: true,
   firstDayOfWeek: 0,
   selectRange: false,
   onPickDate: null,
@@ -5175,8 +5192,29 @@ var Calendar = (function (_React$Component) {
       var _props2 = this.props;
       var firstDayOfWeek = _props2.firstDayOfWeek;
       var forceFullWeeks = _props2.forceFullWeeks;
+      var showWeekSeparators = _props2.showWeekSeparators;
 
       var totalDays = forceFullWeeks ? 42 : 37;
+
+      var days = [];
+      (0, _utils.range)(firstDayOfWeek, totalDays + firstDayOfWeek).map(function (i) {
+        var day = (0, _moment2.default)().weekday(i).format('dd').charAt(0);
+
+        if (showWeekSeparators) {
+          if (i % 7 === firstDayOfWeek && days.length) {
+            // push week separator
+            days.push(_react2.default.createElement('th', { className: 'week-separator' }));
+          }
+        }
+        days.push(_react2.default.createElement(
+          'th',
+          {
+            key: 'weekday-' + i,
+            className: i % 7 === 0 ? 'bolder' : ''
+          },
+          day
+        ));
+      });
 
       return _react2.default.createElement(
         'tr',
@@ -5186,18 +5224,7 @@ var Calendar = (function (_React$Component) {
           null,
           ' '
         ),
-        (0, _utils.range)(firstDayOfWeek, totalDays + firstDayOfWeek).map(function (i) {
-          var day = (0, _moment2.default)().weekday(i).format('dd').charAt(0);
-
-          return _react2.default.createElement(
-            'th',
-            {
-              key: 'weekday-' + i,
-              className: i % 7 === 0 ? 'bolder' : ''
-            },
-            day
-          );
-        })
+        days
       );
     }
   }, {
@@ -5514,9 +5541,9 @@ var Month = exports.Month = (function (_React$Component) {
       var selectingRangeStart = _state.selectingRangeStart;
       var selectingRangeEnd = _state.selectingRangeEnd;
 
-      //full repaint when selectRange  or forceFullWeeks are changed
+      //full repaint for some global-affecting rendering props
 
-      if (this.props.selectRange !== nextProps.selectRange || this.props.forceFullWeeks !== nextProps.forceFullWeeks || this.props.firstDayOfWeek !== nextProps.firstDayOfWeek || this.props.customClasses !== nextProps.customClasses) {
+      if (this.props.selectRange !== nextProps.selectRange || this.props.forceFullWeeks !== nextProps.forceFullWeeks || this.props.firstDayOfWeek !== nextProps.firstDayOfWeek || this.props.customClasses !== nextProps.customClasses || this.props.showWeekSeparators !== nextProps.showWeekSeparators) {
         return true;
       }
 
@@ -5608,6 +5635,7 @@ var Month = exports.Month = (function (_React$Component) {
       var year = _props3.year;
       var month = _props3.month;
       var forceFullWeeks = _props3.forceFullWeeks;
+      var showWeekSeparators = _props3.showWeekSeparators;
       var selectedDay = _props3.selectedDay;
       var onPickDate = _props3.onPickDate;
       var firstDayOfWeek = _props3.firstDayOfWeek;
@@ -5630,7 +5658,8 @@ var Month = exports.Month = (function (_React$Component) {
       var totalDays = forceFullWeeks ? 42 : 37;
 
       // day-generating loop
-      return (0, _utils.range)(firstDayOfWeek + 1, totalDays + firstDayOfWeek + 1).map(function (i) {
+      var days = [];
+      (0, _utils.range)(firstDayOfWeek + 1, totalDays + firstDayOfWeek + 1).map(function (i) {
         var day = (0, _moment2.default)([year, month, i - prevMonthDaysCount]);
 
         // pick appropriate classes
@@ -5708,7 +5737,13 @@ var Month = exports.Month = (function (_React$Component) {
           });
         }
 
-        return _react2.default.createElement(_Day.Day, {
+        if (showWeekSeparators) {
+          if ((i - 1) % 7 === firstDayOfWeek && days.length) {
+            // push week separator
+            days.push(_react2.default.createElement('td', { className: 'week-separator' }));
+          }
+        }
+        days.push(_react2.default.createElement(_Day.Day, {
           key: 'day-' + i,
           day: day,
           classes: classes.join(' '),
@@ -5718,8 +5753,10 @@ var Month = exports.Month = (function (_React$Component) {
           dayHovered: function dayHovered(d) {
             return _this2._dayHovered(d);
           }
-        });
+        }));
       });
+
+      return days;
     }
   }, {
     key: 'render',
