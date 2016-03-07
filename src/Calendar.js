@@ -7,6 +7,7 @@ const propTypes = {
   year: React.PropTypes.number.isRequired,
   forceFullWeeks: React.PropTypes.bool,
   showDaysOfWeek: React.PropTypes.bool,
+  showWeekSeparators: React.PropTypes.bool,
   firstDayOfWeek: React.PropTypes.number,
   selectRange: React.PropTypes.bool,
   onPickDate: React.PropTypes.func,
@@ -21,6 +22,7 @@ const defaultProps = {
   year: moment().year(),
   forceFullWeeks: false,
   showDaysOfWeek: true,
+  showWeekSeparators: true,
   firstDayOfWeek: 0,
   selectRange: false,
   onPickDate: null,
@@ -72,28 +74,35 @@ export default class Calendar extends React.Component {
   }
 
   _daysOfWeek() {
-    const { firstDayOfWeek, forceFullWeeks } = this.props;
+    const { firstDayOfWeek, forceFullWeeks, showWeekSeparators } = this.props;
     const totalDays = forceFullWeeks? 42: 37;
+
+    const days = [];
+    range(firstDayOfWeek, totalDays + firstDayOfWeek).map( i => {
+      let day = moment().weekday(i).format('dd').charAt(0);
+
+      if( showWeekSeparators ) {
+        if(i%7 === firstDayOfWeek && days.length)  {
+          // push week separator
+          days.push(
+            <th className='week-separator'></th>
+          )
+        }
+      }
+      days.push (
+        <th
+          key={`weekday-${i}`}
+          className={ i%7 === 0 ? 'bolder': ''}
+        >
+          {day}
+        </th>
+      )
+    });
 
     return (
       <tr>
-        <th>
-          &nbsp;
-        </th>
-        {
-          range(firstDayOfWeek, totalDays + firstDayOfWeek).map( i => {
-            let day = moment().weekday(i).format('dd').charAt(0);
-
-            return (
-              <th
-                key={`weekday-${i}`}
-                className={ i%7 === 0 ? 'bolder': ''}
-              >
-                {day}
-              </th>
-            )
-          })
-        }
+        <th>&nbsp;</th>
+        {days}
       </tr>
     )
   }

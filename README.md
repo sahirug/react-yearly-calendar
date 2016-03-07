@@ -40,7 +40,8 @@ ReactDOM.render(
 | **year** | React.PropTypes.number.isRequired | year to be displayed | current year |
 | selectedDay | moment.js object | selected day | today |
 | forceFullWeeks | React.PropTypes.bool | match calendar row end with row start | false |
-| showDaysOfWeek | React.PropTypes.bool | show days of week table header | true |
+| showDaysOfWeek | React.PropTypes.bool | show table header with days of week | true |
+| showWeekSeparators | React.PropTypes.bool | shows a blank column between one week and another | true |
 | firstDayOfWeek | React.PropTypes.number | select first day of week | 0 (Sunday) |
 | selectRange | React.PropTypes.bool | enable selecting ranges | false |
 | selectedRange | `[moment.js obj, moment.js obj]` | selected range of dates in the form `[start, end]` | |
@@ -81,6 +82,7 @@ Take a look at the css file in `examples/basic/style.css`. Here are some head-up
  - `table.calendar thead th.bolder`: adds `bolder` class to Sundays
  - `table.calendar td.month-name`: first column in table body, showing month names
  - `table.calendar td.prev-month`, `table.calendar td.next-month`: classes applied to the days of the previous and next month showed in a month's row to fill it up. Day numbers and callbacks are present even in these cells, so we suggest to play with text color to make days less intrusive and add `pointer-events: none` to prevent clicking.
+ - `table.calendar td.week-separator`: class applied to table cells used to separate one week from another. As above, `pointer-events: none` is suggested
  - `table.calendar td.selected`: the currently selected day
  - `table.calendar td.bolder`: the days which are Sundays
  - `table.calendar td.range`: the days in the selected range

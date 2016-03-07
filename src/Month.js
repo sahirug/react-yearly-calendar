@@ -28,8 +28,8 @@ export class Month extends React.Component {
     const { month, selectingRange, selectedRange } = this.props;
     const { selectingRangeStart, selectingRangeEnd } = this.state;
 
-    //full repaint when selectRange  or forceFullWeeks are changed
-    if ( this.props.selectRange!==nextProps.selectRange || this.props.forceFullWeeks!==nextProps.forceFullWeeks || this.props.firstDayOfWeek!==nextProps.firstDayOfWeek || this.props.customClasses!==nextProps.customClasses ) {
+    //full repaint for some global-affecting rendering props
+    if ( this.props.selectRange!==nextProps.selectRange || this.props.forceFullWeeks!==nextProps.forceFullWeeks || this.props.firstDayOfWeek!==nextProps.firstDayOfWeek || this.props.customClasses!==nextProps.customClasses || this.props.showWeekSeparators!==nextProps.showWeekSeparators ) {
       return true;
     }
 
@@ -98,7 +98,7 @@ export class Month extends React.Component {
   }
 
   _monthDays() {
-    const { year, month, forceFullWeeks, selectedDay, onPickDate, firstDayOfWeek, selectingRange, selectRange, selectedRange, customClasses } = this.props;
+    const { year, month, forceFullWeeks, showWeekSeparators, selectedDay, onPickDate, firstDayOfWeek, selectingRange, selectRange, selectedRange, customClasses } = this.props;
     const monthStart = moment([year, month, 1]); // current day
 
     // number of days to insert before the first of the month to correctly align the weekdays
@@ -113,7 +113,8 @@ export class Month extends React.Component {
     const totalDays = forceFullWeeks? 42: 37;
 
     // day-generating loop
-    return range(firstDayOfWeek + 1, totalDays+firstDayOfWeek+1).map( i => {
+    const days = [];
+    range(firstDayOfWeek + 1, totalDays+firstDayOfWeek+1).map( i => {
       let day = moment([year, month, i - prevMonthDaysCount]);
 
       // pick appropriate classes
@@ -194,7 +195,16 @@ export class Month extends React.Component {
         })
       }
 
-      return (
+
+      if(showWeekSeparators) {
+        if((i-1)%7 === firstDayOfWeek && days.length) {
+          // push week separator
+          days.push(
+            <td className='week-separator'></td>
+          )
+        }
+      }
+      days.push(
         <Day
           key={`day-${i}`}
           day={day}
@@ -204,6 +214,8 @@ export class Month extends React.Component {
         />
       );
     });
+
+    return days;
   }
 
   render() {
