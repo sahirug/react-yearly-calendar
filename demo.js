@@ -5097,7 +5097,7 @@ var Month = exports.Month = (function (_React$Component) {
 
       //full repaint for some global-affecting rendering props
 
-      if (this.props.selectRange !== nextProps.selectRange || this.props.forceFullWeeks !== nextProps.forceFullWeeks || this.props.firstDayOfWeek !== nextProps.firstDayOfWeek || this.props.customClasses !== nextProps.customClasses || this.props.showWeekSeparators !== nextProps.showWeekSeparators) {
+      if (this.props.year !== nextProps.year || this.props.forceFullWeeks !== nextProps.forceFullWeeks || this.props.showWeekSeparators !== nextProps.showWeekSeparators || this.props.firstDayOfWeek !== nextProps.firstDayOfWeek || this.props.selectRange !== nextProps.selectRange || this.props.customClasses !== nextProps.customClasses) {
         return true;
       }
 
