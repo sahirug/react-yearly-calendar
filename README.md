@@ -3,6 +3,7 @@
 [React](http://facebook.github.io/react/) calendar component with yearly view.
 
 [![npm version](https://badge.fury.io/js/react-yearly-calendar.svg)](https://badge.fury.io/js/react-yearly-calendar)
+![Alt text](https://img.shields.io/badge/license-MIT-green.svg?style=flat)
 
 ```bash
 $ npm install react-yearly-calendar
