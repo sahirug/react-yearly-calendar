@@ -205,7 +205,10 @@ export class Month extends React.Component {
         if((i-1)%7 === firstDayOfWeek && days.length) {
           // push week separator
           days.push(
-            <td className='week-separator'></td>
+            <td
+              className='week-separator'
+              key={`seperator-${i}`}
+            />
           )
         }
       }

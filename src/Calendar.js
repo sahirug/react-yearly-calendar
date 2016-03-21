@@ -85,7 +85,10 @@ export default class Calendar extends React.Component {
         if(i%7 === firstDayOfWeek && days.length)  {
           // push week separator
           days.push(
-            <th className='week-separator'></th>
+            <th
+              className='week-separator'
+              key={`seperator-${i}`}
+            />
           )
         }
       }
