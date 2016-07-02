@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.10.6",
+    "notevil": "^1.0.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-yearly-calendar": "latest"

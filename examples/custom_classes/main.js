@@ -2,6 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const moment = require('moment');
 const {Calendar, CalendarControls} = require('react-yearly-calendar');
+const safeEval = require('notevil')
 
 class Demo extends React.Component {
   constructor(props) {
@@ -67,7 +68,6 @@ class Demo extends React.Component {
   }
 
   datePicked(date, classes) {
-    console.log(classes);
     this.setState({
       selectedDay: date,
       selectedRange: [date, moment(date).add(15, 'day') ],
@@ -110,11 +110,14 @@ class Demo extends React.Component {
   }
 
   updateClasses() {
-    var customCSSclasses = this.refs.customClassesInput.value;
+    var { customCSSclasses } = this.state;
+    var input = this.refs.customClassesInput.value;
+    var context = { customCSSclasses, moment }
 
     try {
-      eval('customCSSclasses = ' + customCSSclasses);
+      safeEval( input, context );
 
+      customCSSclasses = context.customCSSclasses;
       this.setState({
         customCSSclasses,
         customClassesError: false
@@ -123,6 +126,7 @@ class Demo extends React.Component {
       this.setState({
         customClassesError: true
       });
+      throw e;
     }
   }
 
@@ -228,7 +232,7 @@ class Demo extends React.Component {
             <p className='interactiveDemo'>Available classes (already styled in the CSS) are: <i>holidays</i>, <i>spring</i>, <i>summer</i>,<br/> <i>autumn</i>, <i>winter</i>, <i>weekend</i>. Other classes will be applied, but will have<br/> no visual difference until you apply some styling to them.</p>
             <textarea ref='customClassesInput' className={this.state.customClassesError? 'error' : ''}>
               {
-  `{
+  `customCSSclasses = {
     holidays: [
       '2016-04-25',
       '2016-05-01',
