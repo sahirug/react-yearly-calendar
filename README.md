@@ -111,7 +111,7 @@ const customClasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.
 	- if the value is **a string** of comma-separated, three-letter weekdays names in the form `"ddd,ddd"`, the class will be given to the **days of the week** appearing on the string. Great for closing days during the week!
 	- if the value is **a function** returning a boolean value, the class will be assigned using the function itself as a test. A must have for the finest tuning!
 
-Confused? see the example below!
+Confused? see the snipped below or try it yourself with this [interactive example](http://belkalab.github.io/react-yearly-calendar)!
 
 ```js
 const customClasses = {

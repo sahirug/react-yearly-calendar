@@ -187,3 +187,36 @@ div.options {
 div.options select {
   margin-left: 10px;
 }
+
+div.options .half {
+  width: 48%;
+  display: inline-table;;
+}
+
+div.options textarea {
+  height: 320px;
+  width: 100%;
+  resize: vertical;
+  padding: 5px;
+}
+
+div.options textarea.error {
+  border-color: darkred;
+  box-shadow: darkred 0 0 5px inset;
+}
+
+div.options .half a {
+  font-size: 0.7em;
+  margin-left: 10px;
+}
+
+p.interactiveDemo {
+  font-style: italic;
+}
+
+p.interactiveDemo i {
+  background-color: #E2E2E2;
+  font-style: normal;
+  font-family: monospace;
+  padding: 2px 5px;
+}
