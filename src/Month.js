@@ -13,8 +13,8 @@ export class Month extends React.Component {
     this.state = {}
   }
 
-  _dayClicked(day) {
-    this.props.dayClicked(day);
+  _dayClicked(day, classes) {
+    this.props.dayClicked(day, classes);
   }
 
   _dayHovered(day) {
@@ -217,7 +217,7 @@ export class Month extends React.Component {
           key={`day-${i}`}
           day={day}
           classes={classes.join(' ')}
-          dayClicked={(d) => this._dayClicked(d)}
+          dayClicked={(d) => this._dayClicked(d, classes.join(' '))}
           dayHovered={(d) => this._dayHovered(d)}
         />
       );

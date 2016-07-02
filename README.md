@@ -62,7 +62,7 @@ ReactDOM.render(
 
 | Prop | Type | Syntax | Description |
 |------|------|--------|-------------|
-| onPickDate| React.PropTypes.func | function(selectedDay) {} | called when user clicks on a day |
+| onPickDate| React.PropTypes.func | function(selectedDay, dayClasses) {} | called when user clicks on a day. `dayClasses` is a string representing the classes applied to that day |
 | onPickRange| React.PropTypes.func | function(rangeStart, rangeEnd) {} | called when user selects a range of dates (only in `selectRange` mode) |
 
 #### CalendarControls
@@ -87,7 +87,7 @@ Take a look at the css file in `examples/basic/style.css`. Here are some head-up
  - `table.calendar td.selected`: the currently selected day
  - `table.calendar td.bolder`: the days which are Sundays
  - `table.calendar td.range`: the days in the selected range
- - `table.calendar td.range-left`, `table.calendar td.range-right`: the left and right boundaries of the selected range 
+ - `table.calendar td.range-left`, `table.calendar td.range-right`: the left and right boundaries of the selected range
 ____
 
  - `div.calendar-controls`: the main CalendarControls container
@@ -110,7 +110,7 @@ const customClasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.
 	- if the value is **an object** with a `start` and an `end` value (still in the `YYYY-MM-DD` form), the days in that **period** will be given the css class. Nice for seasons!
 	- if the value is **a string** of comma-separated, three-letter weekdays names in the form `"ddd,ddd"`, the class will be given to the **days of the week** appearing on the string. Great for closing days during the week!
 	- if the value is **a function** returning a boolean value, the class will be assigned using the function itself as a test. A must have for the finest tuning!
-	
+
 Confused? see the example below!
 
 ```js

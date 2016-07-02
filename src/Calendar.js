@@ -40,12 +40,12 @@ export default class Calendar extends React.Component {
     }
   }
 
-  dayClicked(date) {
+  dayClicked(date, classes) {
     let { selectingRange , useless } = this.state;
     const { selectRange, onPickRange, onPickDate } = this.props;
 
     if( !selectRange ) {
-      onPickDate && onPickDate(date);
+      onPickDate && onPickDate(date, classes);
       return;
     }
 
@@ -118,7 +118,7 @@ export default class Calendar extends React.Component {
       <Month
         month={month}
         key={`month-${month}`}
-        dayClicked={(d) => this.dayClicked(d)}
+        dayClicked={(d, classes) => this.dayClicked(d, classes)}
         dayHovered={(d) => this.dayHovered(d)}
         {...this.props}
         selectingRange={selectingRange}
