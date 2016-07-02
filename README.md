@@ -111,30 +111,30 @@ const customClasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.
 	- if the value is **a string** of comma-separated, three-letter weekdays names in the form `"ddd,ddd"`, the class will be given to the **days of the week** appearing on the string. Great for closing days during the week!
 	- if the value is **a function** returning a boolean value, the class will be assigned using the function itself as a test. A must have for the finest tuning!
 
-Confused? see the snipped below or try it yourself with this [interactive example](http://belkalab.github.io/react-yearly-calendar/custom_classes/)!
+Confused? see the snippet below or try it yourself with this [interactive example](http://belkalab.github.io/react-yearly-calendar/custom_classes/)!
 
 ```js
-const customClasses = {
+const customCSSclasses = {
   holidays: [
-    "2016-04-25",
-    "2016-05-01",
-    "2016-06-02",
-    "2016-08-15",
-    "2016-11-01"
+    '2016-04-25',
+    '2016-05-01',
+    '2016-06-02',
+    '2016-08-15',
+    '2016-11-01'
   ],
   spring: {
-    start: "2016-03-21",
-    end: "2016-6-20"
+    start: '2016-03-21',
+    end: '2016-6-20'
   },
   summer: {
-    start: "2016-06-21",
-    end: "2016-09-22"
+    start: '2016-06-21',
+    end: '2016-09-22'
   },
   autumn: {
-    start: "2016-09-23",
-    end: "2016-12-21"
+    start: '2016-09-23',
+    end: '2016-12-21'
   },
-  weekend: "Sat,Sun",
+  weekend: 'Sat,Sun',
   winter: day => day.isBefore( moment([2016,2,21]) ) || day.isAfter( moment([2016,11,21]))
 }
 ```
