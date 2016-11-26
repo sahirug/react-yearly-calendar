@@ -141,16 +141,15 @@ export class Month extends React.Component {
             end = (selectingRange || selectedRange)[0];
           }
 
-          if( day.isBetween(start, end, 'day') ) {
+          if( day.isBetween(start, end, 'day', '[]') ) {
             classes.push('range');
           }
 
           if( day.isSame(start, 'day') ) {
-            classes.push('range');
             classes.push('range-left');
           }
-          else if( day.isSame(end, 'day') ) {
-            classes.push('range');
+
+          if( day.isSame(end, 'day') ) {
             classes.push('range-right');
           }
         }
