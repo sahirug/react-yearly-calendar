@@ -23,7 +23,7 @@
   "author": "Belka <giovanni@belka.us> (http://belka.us)",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.10.6",
+    "moment": "^2.13.0",
     "react": "^15.1.0"
   },
   "devDependencies": {
