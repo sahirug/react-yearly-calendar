@@ -83,13 +83,15 @@ table.calendar td.range {
 }
 
 table.calendar td.range-left {
-  border-radius: 15px 0 0 15px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
   overflow: hidden;
   background: orangered;
 }
 
 table.calendar td.range-right {
-  border-radius: 0 15px 15px 0;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
   overflow: hidden;
   background: orangered;
 }
