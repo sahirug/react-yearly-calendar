@@ -94,6 +94,10 @@ ____
  - `div.calendar-controls .current-year`: the current year
  - `div.calendar-controls .controls`: applies to *next* and *previous* arrows and to *today* button
  - `div.calendar-controls .today`: the *today* button
+ 
+### Responsive
+A first attempt at making this design responsive can be seen [here](http://code.belka.us/react-yearly-calendar/responsive/) (windows width < 1200 triggers mobile layout). Discussion on this is really welcome [on issue #10](https://github.com/BelkaLab/react-yearly-calendar/issues/10)
+
 
 ## Custom days/periods colors
 
