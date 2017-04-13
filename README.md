@@ -155,7 +155,7 @@ $ npm install
 react-yearly-calendar is Copyright (c) 2016 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
 
 ## About Belka
-![Alt text](http://s2.postimg.org/rcjk3hf5x/logo_rosso.jpg)
+[![logo_rosso.jpg](https://s11.postimg.org/4emy4pklv/logo_rosso.jpg)](https://postimg.org/image/wrifv66bz/)
 
 [Belka](http://belka.us/en) is a Digital Agency specialized in design, mobile applications development and custom solutions.
 We love open source software! You can [see our projects](http://belka.us/en/portfolio/) or look at our case studies.
