@@ -8257,7 +8257,7 @@ if ("production" !== 'production') {
 module.exports = ReactComponent;
 },{"./ReactNoopUpdateQueue":55,"./canDefineProperty":61,"./reactProdInvariant":65,"fbjs/lib/emptyObject":39,"fbjs/lib/invariant":40,"fbjs/lib/warning":41}],49:[function(require,module,exports){
 /**
- * Copyright 2016-present, Facebook, Inc.
+ * Copyright 2017-present, Facebook, Inc.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the

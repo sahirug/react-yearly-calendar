@@ -25,7 +25,7 @@ function onDatePicked(date) {
 
 ReactDOM.render(
   <Calendar
-    year={2016}
+    year={2017}
     onPickDate={onDatePicked}
   />,
   document.getElementById('calendar')
@@ -120,26 +120,26 @@ Confused? see the snippet below or try it yourself with this [interactive exampl
 ```js
 const customCSSclasses = {
   holidays: [
-    '2016-04-25',
-    '2016-05-01',
-    '2016-06-02',
-    '2016-08-15',
-    '2016-11-01'
+    '2017-04-25',
+    '2017-05-01',
+    '2017-06-02',
+    '2017-08-15',
+    '2017-11-01'
   ],
   spring: {
-    start: '2016-03-21',
-    end: '2016-6-20'
+    start: '2017-03-21',
+    end: '2017-6-20'
   },
   summer: {
-    start: '2016-06-21',
-    end: '2016-09-22'
+    start: '2017-06-21',
+    end: '2017-09-22'
   },
   autumn: {
-    start: '2016-09-23',
-    end: '2016-12-21'
+    start: '2017-09-23',
+    end: '2017-12-21'
   },
   weekend: 'Sat,Sun',
-  winter: day => day.isBefore( moment([2016,2,21]) ) || day.isAfter( moment([2016,11,21]))
+  winter: day => day.isBefore( moment([2017,2,21]) ) || day.isAfter( moment([2017,11,21]))
 }
 ```
 
@@ -152,7 +152,7 @@ $ npm install
 ```
 
 ## License
-react-yearly-calendar is Copyright (c) 2016 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
+react-yearly-calendar is Copyright (c) 2017 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
 
 ## About Belka
 ![logo_rosso.jpg](https://s11.postimg.org/4emy4pklv/logo_rosso.jpg)
