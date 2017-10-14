@@ -14,4 +14,4 @@ export function range(start, stop, step) {
   }
 
   return range;
-};
+}

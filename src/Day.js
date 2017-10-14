@@ -24,14 +24,8 @@ export class Day extends React.Component {
   render() {
     const { classes, day } = this.props;
     return (
-      <td
-        onClick={() => this._onClick()}
-        onMouseEnter={() => this._onHover()}
-        className={classes}
-      >
-        <span className='day-number'>
-          {isNaN(day.date())? "": day.date()}
-        </span>
+      <td onClick={() => this._onClick()} onMouseEnter={() => this._onHover()} className={classes}>
+        <span className="day-number">{isNaN(day.date()) ? '' : day.date()}</span>
       </td>
     );
   }

@@ -12,10 +12,7 @@ const propTypes = {
   selectRange: React.PropTypes.bool,
   onPickDate: React.PropTypes.func,
   onPickRange: React.PropTypes.func,
-  customClasses: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.func
-  ])
+  customClasses: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.func])
 };
 
 const defaultProps = {
@@ -37,19 +34,19 @@ export default class Calendar extends React.Component {
 
     this.state = {
       selectingRange: undefined
-    }
+    };
   }
 
   dayClicked(date, classes) {
-    let { selectingRange , useless } = this.state;
+    let { selectingRange, useless } = this.state;
     const { selectRange, onPickRange, onPickDate } = this.props;
 
-    if( !selectRange ) {
+    if (!selectRange) {
       onPickDate && onPickDate(date, classes);
       return;
     }
 
-    if( !selectingRange ) {
+    if (!selectingRange) {
       selectingRange = [date, date];
     } else {
       onPickRange && onPickRange(selectingRange[0], date);
@@ -58,14 +55,14 @@ export default class Calendar extends React.Component {
 
     this.setState({
       selectingRange
-    })
+    });
   }
 
   dayHovered(hoveredDay) {
     let { selectingRange } = this.state;
 
-    if( selectingRange ) {
-      selectingRange[ 1 ] = hoveredDay;
+    if (selectingRange) {
+      selectingRange[1] = hoveredDay;
 
       this.setState({
         selectingRange
@@ -75,31 +72,26 @@ export default class Calendar extends React.Component {
 
   _daysOfWeek() {
     const { firstDayOfWeek, forceFullWeeks, showWeekSeparators } = this.props;
-    const totalDays = forceFullWeeks? 42: 37;
+    const totalDays = forceFullWeeks ? 42 : 37;
 
     const days = [];
-    range(firstDayOfWeek, totalDays + firstDayOfWeek).map( i => {
-      let day = moment().weekday(i).format('dd').charAt(0);
+    range(firstDayOfWeek, totalDays + firstDayOfWeek).map(i => {
+      let day = moment()
+        .weekday(i)
+        .format('dd')
+        .charAt(0);
 
-      if( showWeekSeparators ) {
-        if(i%7 === firstDayOfWeek && days.length)  {
+      if (showWeekSeparators) {
+        if (i % 7 === firstDayOfWeek && days.length) {
           // push week separator
-          days.push(
-            <th
-              className='week-separator'
-              key={`seperator-${i}`}
-            />
-          )
+          days.push(<th className="week-separator" key={`seperator-${i}`} />);
         }
       }
-      days.push (
-        <th
-          key={`weekday-${i}`}
-          className={ i%7 === 0 ? 'bolder': ''}
-        >
+      days.push(
+        <th key={`weekday-${i}`} className={i % 7 === 0 ? 'bolder' : ''}>
           {day}
         </th>
-      )
+      );
     });
 
     return (
@@ -107,32 +99,28 @@ export default class Calendar extends React.Component {
         <th>&nbsp;</th>
         {days}
       </tr>
-    )
+    );
   }
 
   render() {
     const { year, firstDayOfWeek } = this.props;
     const { selectingRange } = this.state;
 
-    const months = range(0,12).map( month =>
+    const months = range(0, 12).map(month => (
       <Month
         month={month}
         key={`month-${month}`}
         dayClicked={(d, classes) => this.dayClicked(d, classes)}
-        dayHovered={(d) => this.dayHovered(d)}
+        dayHovered={d => this.dayHovered(d)}
         {...this.props}
         selectingRange={selectingRange}
       />
-    );
+    ));
 
     return (
-      <table className='calendar'>
-        <thead className='day-headers'>
-          {this.props.showDaysOfWeek ? this._daysOfWeek() : null}
-        </thead>
-        <tbody>
-          {months}
-        </tbody>
+      <table className="calendar">
+        <thead className="day-headers">{this.props.showDaysOfWeek ? this._daysOfWeek() : null}</thead>
+        <tbody>{months}</tbody>
       </table>
     );
   }
