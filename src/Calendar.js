@@ -52,7 +52,11 @@ export default class Calendar extends React.Component {
     if( !selectingRange ) {
       selectingRange = [date, date];
     } else {
-      onPickRange && onPickRange(selectingRange[0], date);
+      if( selectingRange[0] > date ) {
+        onPickRange && onPickRange(date, selectingRange[0]);
+      } else {
+        onPickRange && onPickRange(selectingRange[0], date);
+      }
       selectingRange = undefined;
     }
 
