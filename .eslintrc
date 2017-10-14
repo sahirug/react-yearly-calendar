@@ -1,0 +1,13 @@
+{
+  "extends": "airbnb",
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "comma-dangle": 0,
+    "react/jsx-filename-extension": 0,
+    "max-len": [2, 120],
+    "arrow-parens": 0
+  },
+}
