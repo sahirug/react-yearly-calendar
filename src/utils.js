@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Grabbed from the underscore.js source code (https://github.com/jashkenas/underscore/blob/master/underscore.js#L691)
 export function range(start, stop, step) {
   if (stop == null) {
@@ -6,10 +7,10 @@ export function range(start, stop, step) {
   }
   step = step || 1;
 
-  var length = Math.max(Math.ceil((stop - start) / step), 0);
-  var range = Array(length);
+  const length = Math.max(Math.ceil((stop - start) / step), 0);
+  const range = Array(length);
 
-  for (var idx = 0; idx < length; idx++, start += step) {
+  for (let idx = 0; idx < length; idx++, start += step) {
     range[idx] = start;
   }
 

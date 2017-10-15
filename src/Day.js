@@ -1,22 +1,32 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { momentObj } from 'react-moment-proptypes';
 
 const propTypes = {
-  classes: React.PropTypes.string,
-  dayClicked: React.PropTypes.func,
-  dayHovered: React.PropTypes.func
+  classes: PropTypes.string,
+  dayClicked: PropTypes.func.isRequired,
+  dayHovered: PropTypes.func.isRequired,
+  day: momentObj.isRequired
 };
 
 const defaultProps = {
   classes: ''
 };
 
-export class Day extends React.Component {
-  _onClick() {
+class Day extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onClick = this.onClick.bind(this);
+    this.onHover = this.onHover.bind(this);
+  }
+
+  onClick() {
     const { dayClicked, day } = this.props;
     dayClicked(day);
   }
 
-  _onHover() {
+  onHover() {
     const { dayHovered, day } = this.props;
     dayHovered(day);
   }
@@ -24,7 +34,7 @@ export class Day extends React.Component {
   render() {
     const { classes, day } = this.props;
     return (
-      <td onClick={() => this._onClick()} onMouseEnter={() => this._onHover()} className={classes}>
+      <td onClick={this.onClick} onMouseEnter={this.onHover} className={classes}>
         <span className="day-number">{isNaN(day.date()) ? '' : day.date()}</span>
       </td>
     );
@@ -33,3 +43,7 @@ export class Day extends React.Component {
 
 Day.propTypes = propTypes;
 Day.defaultProps = defaultProps;
+
+export default {
+  Day
+};

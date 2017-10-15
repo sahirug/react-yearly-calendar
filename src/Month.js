@@ -1,34 +1,48 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
+import { momentObj } from 'react-moment-proptypes';
 import { Day } from './Day';
 import { range } from './utils';
 
-const propTypes = {};
+const propTypes = {
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number.isRequired,
+  forceFullWeeks: PropTypes.bool.isRequired,
+  showWeekSeparators: PropTypes.bool.isRequired,
+  selectedDay: momentObj.isRequired,
+  firstDayOfWeek: PropTypes.number.isRequired,
+  selectingRange: PropTypes.arrayOf(momentObj).isRequired,
+  selectRange: PropTypes.bool.isRequired,
+  selectedRange: PropTypes.arrayOf(momentObj).isRequired,
+  customClasses: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  dayClicked: PropTypes.func.isRequired,
+  dayHovered: PropTypes.func.isRequired
+};
+
 const defaultProps = {};
 
-export class Month extends React.Component {
+class Month extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {};
   }
 
-  _dayClicked(day, classes) {
-    this.props.dayClicked(day, classes);
-  }
-
-  _dayHovered(day) {
-    const { selectRange, dayHovered } = this.props;
-    if (selectRange) {
-      dayHovered(day);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectingRange !== undefined) {
+      this.setState({
+        selectingRangeStart: nextProps.selectingRange[0].month(),
+        selectingRangeEnd: nextProps.selectingRange[1].month()
+      });
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const { month, selectingRange, selectedRange } = this.props;
     const { selectingRangeStart, selectingRangeEnd } = this.state;
 
-    //full repaint for some global-affecting rendering props
+    // full repaint for some global-affecting rendering props
     if (
       this.props.year !== nextProps.year ||
       this.props.forceFullWeeks !== nextProps.forceFullWeeks ||
@@ -42,7 +56,7 @@ export class Month extends React.Component {
 
     // if we get to this point and we are in 'selectRange' mode then it's likely that we have a change in selectingRange
     if (this.props.selectRange) {
-      if (selectingRange == undefined) {
+      if (selectingRange === undefined) {
         let oldRangeStart = selectedRange[0].month();
         let oldRangeEnd = selectedRange[1].month();
         if (oldRangeStart > oldRangeEnd) [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
@@ -53,7 +67,7 @@ export class Month extends React.Component {
 
         // first time it's called, repaint months in old selectedRange and next selectingRange
         return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
-      } else if (nextProps.selectingRange == undefined) {
+      } else if (nextProps.selectingRange === undefined) {
         // last time it's called, repaint months in previous selectingRange
         let oldRangeStart = selectingRangeStart;
         let oldRangeEnd = selectingRangeEnd;
@@ -65,19 +79,18 @@ export class Month extends React.Component {
 
         // called on day hovering changed
         return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
-      } else {
-        // called on day hovering changed
-        let oldRangeStart = selectingRangeStart;
-        let oldRangeEnd = selectingRangeEnd;
-        if (oldRangeStart > oldRangeEnd) [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
-
-        let newRangeStart = nextProps.selectingRange[0].month();
-        let newRangeEnd = nextProps.selectingRange[1].month();
-        if (newRangeStart > newRangeEnd) [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
-
-        return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
       }
-    } else if (this.props.selectedDay.month() == month || nextProps.selectedDay.month() == month) {
+      // called on day hovering changed
+      let oldRangeStart = selectingRangeStart;
+      let oldRangeEnd = selectingRangeEnd;
+      if (oldRangeStart > oldRangeEnd) [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
+
+      let newRangeStart = nextProps.selectingRange[0].month();
+      let newRangeEnd = nextProps.selectingRange[1].month();
+      if (newRangeStart > newRangeEnd) [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+
+      return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
+    } else if (this.props.selectedDay.month() === month || nextProps.selectedDay.month() === month) {
       // single selectedDay changed: repaint months where selectedDay was and where will be
       return true;
     }
@@ -85,23 +98,25 @@ export class Month extends React.Component {
     return false;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectingRange !== undefined) {
-      this.setState({
-        selectingRangeStart: nextProps.selectingRange[0].month(),
-        selectingRangeEnd: nextProps.selectingRange[1].month()
-      });
+  dayClicked(day, classes) {
+    const { dayClicked } = this.props;
+    dayClicked(day, classes);
+  }
+
+  dayHovered(day) {
+    const { selectRange, dayHovered } = this.props;
+    if (selectRange) {
+      dayHovered(day);
     }
   }
 
-  _monthDays() {
+  renderMonthDays() {
     const {
       year,
       month,
       forceFullWeeks,
       showWeekSeparators,
       selectedDay,
-      onPickDate,
       firstDayOfWeek,
       selectingRange,
       selectRange,
@@ -123,11 +138,11 @@ export class Month extends React.Component {
 
     // day-generating loop
     const days = [];
-    range(firstDayOfWeek + 1, totalDays + firstDayOfWeek + 1).map(i => {
-      let day = moment([year, month, i - prevMonthDaysCount]);
+    range(firstDayOfWeek + 1, totalDays + firstDayOfWeek + 1).forEach(i => {
+      const day = moment([year, month, i - prevMonthDaysCount]);
 
       // pick appropriate classes
-      let classes = [];
+      const classes = [];
       if (i <= prevMonthDaysCount) {
         classes.push('prev-month');
       } else if (i > numberOfDays + prevMonthDaysCount) {
@@ -141,8 +156,7 @@ export class Month extends React.Component {
 
           // validate range
           if (end.isBefore(start)) {
-            start = (selectingRange || selectedRange)[1];
-            end = (selectingRange || selectedRange)[0];
+            [end, start] = selectingRange || selectedRange;
           }
 
           if (day.isBetween(start, end, 'day', '[]')) {
@@ -156,13 +170,11 @@ export class Month extends React.Component {
           if (day.isSame(end, 'day')) {
             classes.push('range-right');
           }
-        } else {
-          if (day.isSame(selectedDay, 'day')) {
-            classes.push('selected');
-          }
+        } else if (day.isSame(selectedDay, 'day')) {
+          classes.push('selected');
         }
 
-        // call here customClasses function to avoid giving improper classses to prev/next month
+        // call here customClasses function to avoid giving improper classes to prev/next month
         if (customClasses instanceof Function) {
           classes.push(customClasses(day));
         }
@@ -174,7 +186,7 @@ export class Month extends React.Component {
       }
 
       if (customClasses) {
-        Object.keys(customClasses).map(k => {
+        Object.keys(customClasses).forEach(k => {
           const obj = customClasses[k];
           // Order here is important! Everything is instance of Object in js
           if (typeof obj === 'string') {
@@ -182,20 +194,18 @@ export class Month extends React.Component {
               classes.push(k);
             }
           } else if (obj instanceof Array) {
-            obj.map(d => {
+            obj.forEach(d => {
               if (day.format('YYYY-MM-DD') === d) classes.push(k);
             });
           } else if (obj instanceof Function) {
             if (obj(day)) {
               classes.push(k);
             }
-          } else {
-            /*if( obj instanceof Object )*/ if (obj.start && obj.end) {
-              let startDate = moment(obj.start, 'YYYY-MM-DD').add(-1, 'days');
-              let endDate = moment(obj.end, 'YYYY-MM-DD').add(1, 'days');
-              if (day.isBetween(startDate, endDate)) {
-                classes.push(k);
-              }
+          } else if (obj.start && obj.end) {
+            const startDate = moment(obj.start, 'YYYY-MM-DD').add(-1, 'days');
+            const endDate = moment(obj.end, 'YYYY-MM-DD').add(1, 'days');
+            if (day.isBetween(startDate, endDate)) {
+              classes.push(k);
             }
           }
         });
@@ -212,8 +222,8 @@ export class Month extends React.Component {
           key={`day-${i}`}
           day={day}
           classes={classes.join(' ')}
-          dayClicked={d => this._dayClicked(d, classes.join(' '))}
-          dayHovered={d => this._dayHovered(d)}
+          dayClicked={d => this.dayClicked(d, classes.join(' '))}
+          dayHovered={d => this.dayHovered(d)}
         />
       );
     });
@@ -227,7 +237,7 @@ export class Month extends React.Component {
     return (
       <tr>
         <td className="month-name">{moment([year, month, 1]).format('MMM')}</td>
-        {this._monthDays()}
+        {this.renderMonthDays()}
       </tr>
     );
   }
@@ -235,3 +245,7 @@ export class Month extends React.Component {
 
 Month.propTypes = propTypes;
 Month.defaultProps = defaultProps;
+
+export default {
+  Month
+};
