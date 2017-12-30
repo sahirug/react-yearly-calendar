@@ -1,16 +1,17 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const moment = require('moment');
-const {Calendar, CalendarControls} = require('react-yearly-calendar');
-const safeEval = require('notevil')
+import React from 'react';
+import ReactDOM from 'react-dom';
+import moment from 'moment';
+import { Calendar, CalendarControls } from 'react-yearly-calendar';
+import safeEval from 'notevil';
+import './style.css';
 
 class Demo extends React.Component {
   constructor(props) {
     super(props);
 
-    var today = moment();
+    const today = moment();
 
-    var customCSSclasses = {
+    const customCSSclasses = {
       holidays: [
         '2017-04-25',
         '2017-05-01',
@@ -31,15 +32,15 @@ class Demo extends React.Component {
         end: '2017-12-21'
       },
       weekend: 'Sat,Sun',
-      winter: day => day.isBefore( moment([2017,2,21]) ) || day.isAfter( moment([2017,11,21]))
-    }
-    // alternatively, customClasses can be a function accepting a moment object
-    //var customCSSclasses = day => ( day.isBefore( moment([day.year(),2,21]) ) || day.isAfter( moment([day.year(),11,21]) ) ) ? 'winter': 'summer'
+      winter: day => day.isBefore(moment([2017, 2, 21])) || day.isAfter(moment([2017, 11, 21]))
+    };
+    // alternatively, customClasses can be a function accepting a moment object. For example:
+    // day => (day.isBefore(moment([day.year(),2,21])) || day.isAfter(moment([day.year(),11,21]))) ? 'winter': 'summer'
 
     this.state = {
       year: today.year(),
       selectedDay: today,
-      selectedRange: [today, moment(today).add(15, 'day') ],
+      selectedRange: [today, moment(today).add(15, 'day')],
       showDaysOfWeek: true,
       showTodayBtn: true,
       showWeekSeparators: true,
@@ -50,76 +51,89 @@ class Demo extends React.Component {
   }
 
   onPrevYear() {
-    this.setState({ year: this.state.year-1 });
+    this.setState(prevState => ({
+      year: prevState.year - 1
+    }));
   }
 
   onNextYear() {
-    this.setState({ year: this.state.year+1 });
+    this.setState(prevState => ({
+      year: prevState.year + 1
+    }));
   }
 
   goToToday() {
-    var today = moment();
+    const today = moment();
 
     this.setState({
       selectedDay: today,
-      selectedRange: [today, moment(today).add(15, 'day') ],
+      selectedRange: [today, moment(today).add(15, 'day')],
       year: today.year()
     });
   }
 
-  datePicked(date, classes) {
+  datePicked(date) {
     this.setState({
       selectedDay: date,
-      selectedRange: [date, moment(date).add(15, 'day') ],
+      selectedRange: [date, moment(date).add(15, 'day')],
     });
   }
 
   rangePicked(start, end) {
     this.setState({
-      selectedRange: [ start, end ],
+      selectedRange: [start, end],
       selectedDay: start
     });
   }
 
   toggleShowDaysOfWeek() {
-    this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
+    this.setState(prevState => ({
+      showDaysOfWeek: !prevState.showDaysOfWeek
+    }));
   }
 
-  toggleForceFullWeeks(){
-    var next_forceFullWeeks = !this.state.forceFullWeeks;
-    this.setState({
-      showDaysOfWeek: next_forceFullWeeks,
-      forceFullWeeks: next_forceFullWeeks
-    });
+  toggleForceFullWeeks() {
+    this.setState(prevState => ({
+      showDaysOfWeek: true,
+      forceFullWeeks: !prevState.forceFullWeeks
+    }));
   }
 
   toggleShowTodayBtn() {
-    this.setState({ showTodayBtn: !this.state.showTodayBtn });
+    this.setState(prevState => ({
+      showTodayBtn: !prevState.showTodayBtn
+    }));
   }
 
   toggleShowWeekSeparators() {
-    this.setState({ showWeekSeparators: !this.state.showWeekSeparators });
+    this.setState(prevState => ({
+      showWeekSeparators: !prevState.showWeekSeparators
+    }));
   }
 
   toggleSelectRange() {
-    this.setState({ selectRange: !this.state.selectRange });
+    this.setState(prevState => ({
+      selectRange: !prevState.selectRange
+    }));
   }
 
-  selectFirstDayOfWeek(e) {
-    this.setState({ firstDayOfWeek: parseInt(event.target.value) });
+  selectFirstDayOfWeek(event) {
+    this.setState({
+      firstDayOfWeek: parseInt(event.target.value, 10)
+    });
   }
 
   updateClasses() {
-    var { customCSSclasses } = this.state;
-    var input = this.refs.customClassesInput.value;
-    var context = { customCSSclasses, moment }
+    const { customCSSclasses } = this.state;
+    const input = this.customClassesInput.value;
+    const context = { customCSSclasses, moment };
 
     try {
-      safeEval( input, context );
+      safeEval(input, context);
 
-      customCSSclasses = context.customCSSclasses;
+      const nextCustomCSSclasses = context.customCSSclasses;
       this.setState({
-        customCSSclasses,
+        customCSSclasses: nextCustomCSSclasses,
         customClassesError: false
       });
     } catch (e) {
@@ -131,11 +145,12 @@ class Demo extends React.Component {
   }
 
   render() {
-    var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, showWeekSeparators, firstDayOfWeek, selectRange, selectedRange, customCSSclasses } = this.state;
+    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks,
+      showWeekSeparators, firstDayOfWeek, selectRange, selectedRange, customCSSclasses } = this.state;
 
     return (
       <div>
-        <div id='calendar'>
+        <div id="calendar">
           <CalendarControls
             year={year}
             showTodayButton={showTodayBtn}
@@ -158,79 +173,88 @@ class Demo extends React.Component {
           />
         </div>
 
-        <h5>Proudly brought to you by <a href='http://belka.us/en'>Belka</a></h5>
+        <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
 
-        <div className='options'>
-          <div className='half'>
+        <div className="options">
+          <div className="half">
             <b>Demo Options</b>
             <br />
             <ul>
               <li>
                 <input
-                  id='showDaysOfWeek'
-                  type='checkbox'
+                  id="showDaysOfWeek"
+                  type="checkbox"
                   checked={showDaysOfWeek}
                   onChange={() => this.toggleShowDaysOfWeek()}
                 />
-                <label htmlFor='showDaysOfWeek'>Show days of week</label>
+                <label htmlFor="showDaysOfWeek">Show days of week</label>
               </li>
               <li>
                 <input
-                  id='forceFullWeeks'
-                  type='checkbox'
+                  id="forceFullWeeks"
+                  type="checkbox"
                   checked={forceFullWeeks}
                   onChange={() => this.toggleForceFullWeeks()}
                 />
-                <label htmlFor='forceFullWeeks'>Force full weeks</label>
+                <label htmlFor="forceFullWeeks">Force full weeks</label>
               </li>
               <li>
                 <input
-                  id='showTodayBtn'
-                  type='checkbox'
+                  id="showTodayBtn"
+                  type="checkbox"
                   checked={showTodayBtn}
                   onChange={() => this.toggleShowTodayBtn()}
                 />
-                <label htmlFor='showTodayBtn'>Show 'Today' button</label>
+                <label htmlFor="showTodayBtn">Show &apos;Today&apos; button</label>
               </li>
               <li>
                 <input
-                  id='showWeekSeparators'
-                  type='checkbox'
+                  id="showWeekSeparators"
+                  type="checkbox"
                   checked={showWeekSeparators}
                   onChange={() => this.toggleShowWeekSeparators()}
                 />
-              <label htmlFor='showWeekSeparators'>Show week separators</label>
+              <label htmlFor="showWeekSeparators">Show week separators</label>
               </li>
               <li>
-                <label htmlFor='firstDayOfWeek'>First day of week</label>
+                <label htmlFor="firstDayOfWeek">First day of week</label>
                 <select
-                  id='firstDayOfWeek'
+                  id="firstDayOfWeek"
                   value={firstDayOfWeek}
                   onChange={(e) => this.selectFirstDayOfWeek(e)}
                 >
-                  {[0,1,2,3,4,5,6].map( i =>
+                  {[0, 1, 2, 3, 4, 5, 6].map(i =>
                     <option key={i} value={i}>{moment().weekday(i).format('ddd')}</option>
                   )}
                 </select>
               </li>
               <li>
                 <input
-                  id='selectRange'
-                  type='checkbox'
+                  id="selectRange"
+                  type="checkbox"
                   checked={selectRange}
                   onChange={() => this.toggleSelectRange()}
                 />
-                <label htmlFor='selectRange'>Select Date range</label>
+                <label htmlFor="selectRange">Select Date range</label>
               </li>
             </ul>
             <br />
-            <i>All these options are available as Calendar props. Colors are assigned with<br/>
-            an object mapping class names to week days, periods or single days.</i>
+            <i>
+              All these options are available as Calendar props. Colors are assigned with<br />
+              an object mapping class names to week days, periods or single days.
+            </i>
           </div>
-          <div className='half'>
+          <div className="half">
             <b>Custom classes mapping</b>
-            <p className='interactiveDemo'>Available classes (already styled in the CSS) are: <i>holidays</i>, <i>spring</i>, <i>summer</i>,<br/> <i>autumn</i>, <i>winter</i>, <i>weekend</i>. Other classes will be applied, but will have<br/> no visual difference until you apply some styling to them.</p>
-            <textarea ref='customClassesInput' className={this.state.customClassesError? 'error' : ''}>
+            <p className="interactiveDemo">
+              Available classes (already styled in the CSS) are: <i>holidays</i>, <i>spring</i>, <i>summer</i>,<br />
+              <i>autumn</i>, <i>winter</i>, <i>weekend</i>. Other classes will be applied, but will have<br />
+              no visual difference until you apply some styling to them.
+            </p>
+            <textarea
+              ref={r => { this.customClassesInput = r; }}
+              className={this.state.customClassesError ? 'error' : ''}
+            >
               {
   `customCSSclasses = {
     holidays: [
@@ -258,7 +282,13 @@ class Demo extends React.Component {
               }
             </textarea>
             <button onClick={() => this.updateClasses()}>Update</button>
-            <a href="https://github.com/BelkaLab/react-yearly-calendar#custom-daysperiods-colors" target="_blank">Reference</a>
+            <a
+              href="https://github.com/BelkaLab/react-yearly-calendar#custom-daysperiods-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Reference
+            </a>
           </div>
         </div>
       </div>
@@ -268,5 +298,5 @@ class Demo extends React.Component {
 
 ReactDOM.render(
   <Demo />,
-  document.getElementById('demo')
+  document.getElementById('root')
 );
