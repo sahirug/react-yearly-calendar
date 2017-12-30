@@ -1,49 +1,47 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const propTypes = {
-  year: React.PropTypes.number.isRequired,
-  onPrevYear: React.PropTypes.func,
-  onNextYear: React.PropTypes.func,
-  goToToday: React.PropTypes.func,
-  showTodayButton: React.PropTypes.bool
+  year: PropTypes.number.isRequired,
+  onPrevYear: PropTypes.func,
+  onNextYear: PropTypes.func,
+  goToToday: PropTypes.func,
+  showTodayButton: PropTypes.bool
 };
 
-export default class CalendarControls extends React.Component {
-  render() {
-    const { showTodayButton, goToToday, onPrevYear, onNextYear } = this.props;
-    let todayButton;
-    if( showTodayButton ) {
-      todayButton = (
-        <div
-          className='control today'
-          onClick={() => goToToday()}
-        >
-          Today
-        </div>
-      );
-    }
+const defaultProps = {
+  onPrevYear: undefined,
+  onNextYear: undefined,
+  goToToday: undefined,
+  showTodayButton: false
+};
 
-    return (
-      <div className='calendar-controls'>
-        <div
-          className='control'
-          onClick={() => onPrevYear()}
-        >
-          &laquo;
-        </div>
-        <div className='current-year'>
-          {this.props.year}
-        </div>
-        <div
-          className='control'
-          onClick={() => onNextYear()}
-        >
-          &raquo;
-        </div>
-        {todayButton}
+const CalendarControls = props => {
+  const { year, showTodayButton, goToToday, onPrevYear, onNextYear } = props;
+  let todayButton;
+  if (showTodayButton) {
+    todayButton = (
+      <div className="control today" onClick={() => goToToday()}>
+        Today
       </div>
     );
   }
-}
+
+  return (
+    <div className="calendar-controls">
+      <div className="control" onClick={() => onPrevYear()}>
+        &laquo;
+      </div>
+      <div className="current-year">{year}</div>
+      <div className="control" onClick={() => onNextYear()}>
+        &raquo;
+      </div>
+      {todayButton}
+    </div>
+  );
+};
 
 CalendarControls.propTypes = propTypes;
+CalendarControls.defaultProps = defaultProps;
+
+export default CalendarControls;

@@ -1,18 +1,19 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const moment = require('moment');
-const {Calendar, CalendarControls} = require('react-yearly-calendar');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import moment from 'moment';
+import { Calendar, CalendarControls } from 'react-yearly-calendar';
+import './style.css';
 
 class Demo extends React.Component {
   constructor(props) {
     super(props);
 
-    var today = moment();
+    const today = moment();
 
     this.state = {
       year: today.year(),
       selectedDay: today,
-      selectedRange: [today, moment(today).add(15, 'day') ],
+      selectedRange: [today, moment(today).add(15, 'day')],
       showDaysOfWeek: true,
       showTodayBtn: true,
       showWeekSeparators: true,
@@ -22,19 +23,23 @@ class Demo extends React.Component {
   }
 
   onPrevYear() {
-    this.setState({ year: this.state.year-1 });
+    this.setState(prevState => ({
+      year: prevState.year - 1
+    }));
   }
 
   onNextYear() {
-    this.setState({ year: this.state.year+1 });
+    this.setState(prevState => ({
+      year: prevState.year + 1
+    }));
   }
 
   goToToday() {
-    var today = moment();
+    const today = moment();
 
     this.setState({
       selectedDay: today,
-      selectedRange: [today, moment(today).add(15, 'day') ],
+      selectedRange: [today, moment(today).add(15, 'day')],
       year: today.year()
     });
   }
@@ -42,51 +47,61 @@ class Demo extends React.Component {
   datePicked(date) {
     this.setState({
       selectedDay: date,
-      selectedRange: [date, moment(date).add(15, 'day') ],
-     });
+      selectedRange: [date, moment(date).add(15, 'day')],
+    });
   }
 
   rangePicked(start, end) {
     this.setState({
-      selectedRange: [ start, end ],
+      selectedRange: [start, end],
       selectedDay: start
     });
   }
 
   toggleShowDaysOfWeek() {
-    this.setState({ showDaysOfWeek: !this.state.showDaysOfWeek });
+    this.setState(prevState => ({
+      showDaysOfWeek: !prevState.showDaysOfWeek
+    }));
   }
 
-  toggleForceFullWeeks(){
-    var next_forceFullWeeks = !this.state.forceFullWeeks;
-    this.setState({
+  toggleForceFullWeeks() {
+    this.setState(prevState => ({
       showDaysOfWeek: true,
-      forceFullWeeks: next_forceFullWeeks
-    });
+      forceFullWeeks: !prevState.forceFullWeeks
+    }));
   }
 
   toggleShowTodayBtn() {
-    this.setState({ showTodayBtn: !this.state.showTodayBtn });
+    this.setState(prevState => ({
+      showTodayBtn: !prevState.showTodayBtn
+    }));
   }
 
   toggleShowWeekSeparators() {
-    this.setState({ showWeekSeparators: !this.state.showWeekSeparators });
+    this.setState(prevState => ({
+      showWeekSeparators: !prevState.showWeekSeparators
+    }));
   }
 
   toggleSelectRange() {
-    this.setState({ selectRange: !this.state.selectRange });
+    this.setState(prevState => ({
+      selectRange: !prevState.selectRange
+    }));
   }
 
-  selectFirstDayOfWeek(e) {
-    this.setState({ firstDayOfWeek: parseInt(event.target.value) });
+  selectFirstDayOfWeek(event) {
+    this.setState({
+      firstDayOfWeek: parseInt(event.target.value, 10)
+    });
   }
 
   render() {
-    var { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks, showWeekSeparators, firstDayOfWeek, selectRange, selectedRange } = this.state;
+    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks,
+      showWeekSeparators, firstDayOfWeek, selectRange, selectedRange } = this.state;
 
     return (
       <div>
-        <div id='calendar'>
+        <div id="calendar">
           <CalendarControls
             year={year}
             showTodayButton={showTodayBtn}
@@ -110,66 +125,66 @@ class Demo extends React.Component {
 
         <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
 
-        <div className='options'>
+        <div className="options">
           <b>Demo Options</b>
           <br />
           <ul>
             <li>
               <input
-                id='showDaysOfWeek'
-                type='checkbox'
+                id="showDaysOfWeek"
+                type="checkbox"
                 checked={showDaysOfWeek}
                 onChange={() => this.toggleShowDaysOfWeek()}
               />
-              <label htmlFor='showDaysOfWeek'>Show days of week</label>
+              <label htmlFor="showDaysOfWeek">Show days of week</label>
             </li>
             <li>
               <input
-                id='forceFullWeeks'
-                type='checkbox'
+                id="forceFullWeeks"
+                type="checkbox"
                 checked={forceFullWeeks}
                 onChange={() => this.toggleForceFullWeeks()}
               />
-              <label htmlFor='forceFullWeeks'>Force full weeks</label>
+              <label htmlFor="forceFullWeeks">Force full weeks</label>
             </li>
             <li>
               <input
-                id='showTodayBtn'
-                type='checkbox'
+                id="showTodayBtn"
+                type="checkbox"
                 checked={showTodayBtn}
                 onChange={() => this.toggleShowTodayBtn()}
               />
-              <label htmlFor='showTodayBtn'>Show 'Today' button</label>
+              <label htmlFor="showTodayBtn">Show &apos;Today&apos; button</label>
             </li>
             <li>
               <input
-                id='showWeekSeparators'
-                type='checkbox'
+                id="showWeekSeparators"
+                type="checkbox"
                 checked={showWeekSeparators}
                 onChange={() => this.toggleShowWeekSeparators()}
               />
-            <label htmlFor='showWeekSeparators'>Show week separators</label>
+            <label htmlFor="showWeekSeparators">Show week separators</label>
             </li>
             <li>
-              <label htmlFor='firstDayOfWeek'>First day of week</label>
+              <label htmlFor="firstDayOfWeek">First day of week</label>
               <select
-                id='firstDayOfWeek'
+                id="firstDayOfWeek"
                 value={firstDayOfWeek}
                 onChange={(e) => this.selectFirstDayOfWeek(e)}
               >
-                {[0,1,2,3,4,5,6].map( i =>
-                  <option key={i} value={i}>{moment().weekday(i).format("ddd")}</option>
+                {[0, 1, 2, 3, 4, 5, 6].map(i =>
+                  <option key={i} value={i}>{moment().weekday(i).format('ddd')}</option>
                 )}
               </select>
             </li>
             <li>
               <input
-                id='selectRange'
-                type='checkbox'
+                id="selectRange"
+                type="checkbox"
                 checked={selectRange}
                 onChange={() => this.toggleSelectRange()}
               />
-              <label htmlFor='selectRange'>Select Date range</label>
+              <label htmlFor="selectRange">Select Date range</label>
             </li>
           </ul>
           <br />
@@ -182,5 +197,5 @@ class Demo extends React.Component {
 
 ReactDOM.render(
   <Demo />,
-  document.getElementById('demo')
+  document.getElementById('root')
 );

@@ -152,7 +152,7 @@ div#calendar {
   user-select: none;
 }
 
-div#demo {
+div#root {
   display: table;
   margin: 50px auto;
 }
