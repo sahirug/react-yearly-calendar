@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf lib dist",
     "build": "babel src --out-dir lib",
-    "prepublish": "NODE_ENV=production; npm run prettify; babel src --out-dir lib",
+    "prepublish": "NODE_ENV=development; npm run lint && npm run prettify && npm run build",
     "prettify": "prettier --config .prettierrc --write \"src/**/*.js\"",
     "lint": "eslint --config .eslintrc src/",
     "lint:fix": "eslint --fix --config .eslintrc src/"
