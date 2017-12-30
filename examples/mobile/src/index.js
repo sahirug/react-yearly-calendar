@@ -12,26 +12,26 @@ class Demo extends React.Component {
 
     const customCSSclasses = {
       holidays: [
-        '2017-04-25',
-        '2017-05-01',
-        '2017-06-02',
-        '2017-08-15',
-        '2017-11-01'
+        '2018-04-25',
+        '2018-05-01',
+        '2018-06-02',
+        '2018-08-15',
+        '2018-11-01'
       ],
       spring: {
-        start: '2017-03-21',
-        end: '2017-6-20'
+        start: '2018-03-21',
+        end: '2018-6-20'
       },
       summer: {
-        start: '2017-06-21',
-        end: '2017-09-22'
+        start: '2018-06-21',
+        end: '2018-09-22'
       },
       autumn: {
-        start: '2017-09-23',
-        end: '2017-12-21'
+        start: '2018-09-23',
+        end: '2018-12-21'
       },
       weekend: 'Sat,Sun',
-      winter: day => day.isBefore(moment([2017, 2, 21])) || day.isAfter(moment([2017, 11, 21]))
+      winter: day => day.isBefore(moment([2018, 2, 21])) || day.isAfter(moment([2018, 11, 21]))
     };
     // alternatively, customClasses can be a function accepting a moment object. For example:
     // day => (day.isBefore(moment([day.year(),2,21])) || day.isAfter(moment([day.year(),11,21]))) ? 'winter': 'summer'

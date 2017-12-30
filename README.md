@@ -25,7 +25,7 @@ function onDatePicked(date) {
 
 ReactDOM.render(
   <Calendar
-    year={2017}
+    year={2018}
     onPickDate={onDatePicked}
   />,
   document.getElementById('calendar')
@@ -94,10 +94,10 @@ ____
  - `div.calendar-controls .current-year`: the current year
  - `div.calendar-controls .controls`: applies to *next* and *previous* arrows and to *today* button
  - `div.calendar-controls .today`: the *today* button
- 
-### Responsive
-A first attempt at making this design responsive can be seen [here](http://code.belka.us/react-yearly-calendar/responsive/) (windows width < 1200 triggers mobile layout). Discussion on this is really welcome [on issue #10](https://github.com/BelkaLab/react-yearly-calendar/issues/10)
 
+### Responsive
+
+A first attempt at making this design responsive can be seen [here](http://code.belka.us/react-yearly-calendar/responsive/) (window width < 1200px triggers mobile layout). Suggestions and feedback on this is welcome [on issue #10](https://github.com/BelkaLab/react-yearly-calendar/issues/10)
 
 ## Custom days/periods colors
 
@@ -120,26 +120,26 @@ Confused? see the snippet below or try it yourself with this [interactive exampl
 ```js
 const customCSSclasses = {
   holidays: [
-    '2017-04-25',
-    '2017-05-01',
-    '2017-06-02',
-    '2017-08-15',
-    '2017-11-01'
+    '2018-04-25',
+    '2018-05-01',
+    '2018-06-02',
+    '2018-08-15',
+    '2018-11-01'
   ],
   spring: {
-    start: '2017-03-21',
-    end: '2017-6-20'
+    start: '2018-03-21',
+    end: '2018-6-20'
   },
   summer: {
-    start: '2017-06-21',
-    end: '2017-09-22'
+    start: '2018-06-21',
+    end: '2018-09-22'
   },
   autumn: {
-    start: '2017-09-23',
-    end: '2017-12-21'
+    start: '2018-09-23',
+    end: '2018-12-21'
   },
   weekend: 'Sat,Sun',
-  winter: day => day.isBefore( moment([2017,2,21]) ) || day.isAfter( moment([2017,11,21]))
+  winter: day => day.isBefore( moment([2018,2,21]) ) || day.isAfter( moment([2018,11,21]))
 }
 ```
 
@@ -152,14 +152,16 @@ $ npm install
 ```
 
 ## License
-react-yearly-calendar is Copyright (c) 2017 Belka, srl. It is free software, and may be redistributed under the terms specified in the LICENSE file.  
+react-yearly-calendar is Copyright (c) 2016-2018 Belka s.r.l.
+
+It is free software, and may be redistributed under the terms specified in the LICENSE file (TL;DR: **MIT license**).  
 
 ## About Belka
 ![logo_rosso.jpg](https://s11.postimg.org/4emy4pklv/logo_rosso.jpg)
 
-[Belka](http://belka.us/en) is a Digital Agency specialized in design, mobile applications development and custom solutions.
+[Belka](http://belka.us/en) is a Digital Agency focused on design, mobile applications development and custom solutions.
 We love open source software! You can [see our projects](http://belka.us/en/portfolio/) or look at our case studies.
 
-Interested? [Hire us](http://belka.us/en/contacts/) to help build your next amazing project.
+Interested? [Hire us](http://belka.us/en/contacts/) to help you build your next amazing project.
 
 [www.belka.us](http://belka.us/en)
