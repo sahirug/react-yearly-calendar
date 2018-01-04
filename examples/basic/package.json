@@ -2,7 +2,7 @@
   "name": "react-yearly-calendar-demo",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "http://code.belka.us/react-yearly-calendar/",
+  "homepage": "http://code.belka.us/react-yearly-calendar/",
   "devDependencies": {
     "react-scripts": "1.0.17"
   },

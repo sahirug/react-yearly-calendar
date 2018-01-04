@@ -11,7 +11,7 @@
     "notevil": "^1.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-yearly-calendar": "^1.1.5"
+    "react-yearly-calendar": "1.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

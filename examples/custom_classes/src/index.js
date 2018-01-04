@@ -12,13 +12,7 @@ class Demo extends React.Component {
     const today = moment();
 
     const customCSSclasses = {
-      holidays: [
-        '2018-04-25',
-        '2018-05-01',
-        '2018-06-02',
-        '2018-08-15',
-        '2018-11-01'
-      ],
+      holidays: ['2018-04-25', '2018-05-01', '2018-06-02', '2018-08-15', '2018-11-01'],
       spring: {
         start: '2018-03-21',
         end: '2018-6-20'
@@ -75,7 +69,7 @@ class Demo extends React.Component {
   datePicked(date) {
     this.setState({
       selectedDay: date,
-      selectedRange: [date, moment(date).add(15, 'day')],
+      selectedRange: [date, moment(date).add(15, 'day')]
     });
   }
 
@@ -145,8 +139,18 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks,
-      showWeekSeparators, firstDayOfWeek, selectRange, selectedRange, customCSSclasses } = this.state;
+    const {
+      year,
+      showTodayBtn,
+      selectedDay,
+      showDaysOfWeek,
+      forceFullWeeks,
+      showWeekSeparators,
+      firstDayOfWeek,
+      selectRange,
+      selectedRange,
+      customCSSclasses
+    } = this.state;
 
     return (
       <div>
@@ -173,7 +177,9 @@ class Demo extends React.Component {
           />
         </div>
 
-        <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
+        <h5>
+          Proudly brought to you by <a href="http://belka.us/en">Belka</a>
+        </h5>
 
         <div className="options">
           <div className="half">
@@ -214,18 +220,18 @@ class Demo extends React.Component {
                   checked={showWeekSeparators}
                   onChange={() => this.toggleShowWeekSeparators()}
                 />
-              <label htmlFor="showWeekSeparators">Show week separators</label>
+                <label htmlFor="showWeekSeparators">Show week separators</label>
               </li>
               <li>
                 <label htmlFor="firstDayOfWeek">First day of week</label>
-                <select
-                  id="firstDayOfWeek"
-                  value={firstDayOfWeek}
-                  onChange={(e) => this.selectFirstDayOfWeek(e)}
-                >
-                  {[0, 1, 2, 3, 4, 5, 6].map(i =>
-                    <option key={i} value={i}>{moment().weekday(i).format('ddd')}</option>
-                  )}
+                <select id="firstDayOfWeek" value={firstDayOfWeek} onChange={e => this.selectFirstDayOfWeek(e)}>
+                  {[0, 1, 2, 3, 4, 5, 6].map(i => (
+                    <option key={i} value={i}>
+                      {moment()
+                        .weekday(i)
+                        .format('ddd')}
+                    </option>
+                  ))}
                 </select>
               </li>
               <li>
@@ -252,11 +258,12 @@ class Demo extends React.Component {
               no visual difference until you apply some styling to them.
             </p>
             <textarea
-              ref={r => { this.customClassesInput = r; }}
+              ref={r => {
+                this.customClassesInput = r;
+              }}
               className={this.state.customClassesError ? 'error' : ''}
             >
-              {
-  `customCSSclasses = {
+              {`customCSSclasses = {
     holidays: [
       '2018-04-25',
       '2018-05-01',
@@ -278,8 +285,7 @@ class Demo extends React.Component {
     },
     weekend: 'Sat,Sun',
     winter: function(day) { return day.isBefore( moment([2018,2,21]) ) || day.isAfter( moment([2018,11,21])) }
-  }`
-              }
+  }`}
             </textarea>
             <button onClick={() => this.updateClasses()}>Update</button>
             <a
@@ -296,7 +302,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <Demo />,
-  document.getElementById('root')
-);
+ReactDOM.render(<Demo />, document.getElementById('root'));

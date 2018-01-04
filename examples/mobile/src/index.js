@@ -11,13 +11,7 @@ class Demo extends React.Component {
     const today = moment();
 
     const customCSSclasses = {
-      holidays: [
-        '2018-04-25',
-        '2018-05-01',
-        '2018-06-02',
-        '2018-08-15',
-        '2018-11-01'
-      ],
+      holidays: ['2018-04-25', '2018-05-01', '2018-06-02', '2018-08-15', '2018-11-01'],
       spring: {
         start: '2018-03-21',
         end: '2018-6-20'
@@ -74,7 +68,7 @@ class Demo extends React.Component {
   datePicked(date) {
     this.setState({
       selectedDay: date,
-      selectedRange: [date, moment(date).add(15, 'day')],
+      selectedRange: [date, moment(date).add(15, 'day')]
     });
   }
 
@@ -123,8 +117,18 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks,
-      showWeekSeparators, firstDayOfWeek, selectRange, selectedRange, customCSSclasses } = this.state;
+    const {
+      year,
+      showTodayBtn,
+      selectedDay,
+      showDaysOfWeek,
+      forceFullWeeks,
+      showWeekSeparators,
+      firstDayOfWeek,
+      selectRange,
+      selectedRange,
+      customCSSclasses
+    } = this.state;
 
     return (
       <div>
@@ -151,7 +155,9 @@ class Demo extends React.Component {
           />
         </div>
 
-        <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
+        <h5>
+          Proudly brought to you by <a href="http://belka.us/en">Belka</a>
+        </h5>
 
         <div className="options">
           <b>Demo Options</b>
@@ -159,30 +165,25 @@ class Demo extends React.Component {
           <ul>
             <li>
               <label htmlFor="firstDayOfWeek">First day of week</label>
-              <select
-                id="firstDayOfWeek"
-                value={firstDayOfWeek}
-                onChange={(e) => this.selectFirstDayOfWeek(e)}
-              >
-                {[0, 1, 2, 3, 4, 5, 6].map(i =>
-                  <option key={i} value={i}>{moment().weekday(i).format('ddd')}</option>
-                )}
+              <select id="firstDayOfWeek" value={firstDayOfWeek} onChange={e => this.selectFirstDayOfWeek(e)}>
+                {[0, 1, 2, 3, 4, 5, 6].map(i => (
+                  <option key={i} value={i}>
+                    {moment()
+                      .weekday(i)
+                      .format('ddd')}
+                  </option>
+                ))}
               </select>
             </li>
             <li>
-              <input
-                id="selectRange"
-                type="checkbox"
-                checked={selectRange}
-                onChange={() => this.toggleSelectRange()}
-              />
+              <input id="selectRange" type="checkbox" checked={selectRange} onChange={() => this.toggleSelectRange()} />
               <label htmlFor="selectRange">Select Date range</label>
             </li>
           </ul>
           <br />
           <i>
-            All these options (and more!) are available as Calendar props. Colors are assigned with
-            an object mapping class names to week days, periods or single days.
+            All these options (and more!) are available as Calendar props. Colors are assigned with an object mapping
+            class names to week days, periods or single days.
           </i>
         </div>
       </div>
@@ -190,7 +191,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <Demo />,
-  document.getElementById('root')
-);
+ReactDOM.render(<Demo />, document.getElementById('root'));

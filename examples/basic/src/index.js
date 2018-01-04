@@ -47,7 +47,7 @@ class Demo extends React.Component {
   datePicked(date) {
     this.setState({
       selectedDay: date,
-      selectedRange: [date, moment(date).add(15, 'day')],
+      selectedRange: [date, moment(date).add(15, 'day')]
     });
   }
 
@@ -96,8 +96,17 @@ class Demo extends React.Component {
   }
 
   render() {
-    const { year, showTodayBtn, selectedDay, showDaysOfWeek, forceFullWeeks,
-      showWeekSeparators, firstDayOfWeek, selectRange, selectedRange } = this.state;
+    const {
+      year,
+      showTodayBtn,
+      selectedDay,
+      showDaysOfWeek,
+      forceFullWeeks,
+      showWeekSeparators,
+      firstDayOfWeek,
+      selectRange,
+      selectedRange
+    } = this.state;
 
     return (
       <div>
@@ -118,12 +127,14 @@ class Demo extends React.Component {
             firstDayOfWeek={firstDayOfWeek}
             selectRange={selectRange}
             selectedRange={selectedRange}
-            onPickDate={(date) => this.datePicked(date)}
+            onPickDate={date => this.datePicked(date)}
             onPickRange={(start, end) => this.rangePicked(start, end)}
           />
         </div>
 
-        <h5>Proudly brought to you by <a href="http://belka.us/en">Belka</a></h5>
+        <h5>
+          Proudly brought to you by <a href="http://belka.us/en">Belka</a>
+        </h5>
 
         <div className="options">
           <b>Demo Options</b>
@@ -163,27 +174,22 @@ class Demo extends React.Component {
                 checked={showWeekSeparators}
                 onChange={() => this.toggleShowWeekSeparators()}
               />
-            <label htmlFor="showWeekSeparators">Show week separators</label>
+              <label htmlFor="showWeekSeparators">Show week separators</label>
             </li>
             <li>
               <label htmlFor="firstDayOfWeek">First day of week</label>
-              <select
-                id="firstDayOfWeek"
-                value={firstDayOfWeek}
-                onChange={(e) => this.selectFirstDayOfWeek(e)}
-              >
-                {[0, 1, 2, 3, 4, 5, 6].map(i =>
-                  <option key={i} value={i}>{moment().weekday(i).format('ddd')}</option>
-                )}
+              <select id="firstDayOfWeek" value={firstDayOfWeek} onChange={e => this.selectFirstDayOfWeek(e)}>
+                {[0, 1, 2, 3, 4, 5, 6].map(i => (
+                  <option key={i} value={i}>
+                    {moment()
+                      .weekday(i)
+                      .format('ddd')}
+                  </option>
+                ))}
               </select>
             </li>
             <li>
-              <input
-                id="selectRange"
-                type="checkbox"
-                checked={selectRange}
-                onChange={() => this.toggleSelectRange()}
-              />
+              <input id="selectRange" type="checkbox" checked={selectRange} onChange={() => this.toggleSelectRange()} />
               <label htmlFor="selectRange">Select Date range</label>
             </li>
           </ul>
@@ -195,7 +201,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <Demo />,
-  document.getElementById('root')
-);
+ReactDOM.render(<Demo />, document.getElementById('root'));
