@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { momentObj } from 'react-moment-proptypes';
-import { Month } from './Month';
+import Month from './Month';
 import { range } from './utils';
 
 const propTypes = {
@@ -30,7 +30,7 @@ const defaultProps = {
   customClasses: null
 };
 
-class Calendar extends React.Component {
+class Calendar extends Component {
   constructor(props) {
     super(props);
 

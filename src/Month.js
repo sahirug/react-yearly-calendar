@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { momentObj } from 'react-moment-proptypes';
-import { Day } from './Day';
+import Day from './Day';
 import { range } from './utils';
 
 const propTypes = {
@@ -12,17 +12,21 @@ const propTypes = {
   showWeekSeparators: PropTypes.bool.isRequired,
   selectedDay: momentObj.isRequired,
   firstDayOfWeek: PropTypes.number.isRequired,
-  selectingRange: PropTypes.arrayOf(momentObj).isRequired,
+  selectingRange: PropTypes.arrayOf(momentObj),
   selectRange: PropTypes.bool.isRequired,
-  selectedRange: PropTypes.arrayOf(momentObj).isRequired,
-  customClasses: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  selectedRange: PropTypes.arrayOf(momentObj),
+  customClasses: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
   dayClicked: PropTypes.func.isRequired,
   dayHovered: PropTypes.func.isRequired
 };
 
-const defaultProps = {};
+const defaultProps = {
+  selectingRange: undefined,
+  selectedRange: undefined,
+  customClasses: undefined
+};
 
-class Month extends React.Component {
+class Month extends Component {
   constructor(props) {
     super(props);
 
@@ -246,6 +250,4 @@ class Month extends React.Component {
 Month.propTypes = propTypes;
 Month.defaultProps = defaultProps;
 
-export default {
-  Month
-};
+export default Month;

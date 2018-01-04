@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { momentObj } from 'react-moment-proptypes';
 
@@ -13,7 +13,7 @@ const defaultProps = {
   classes: ''
 };
 
-class Day extends React.Component {
+class Day extends Component {
   constructor(props) {
     super(props);
 
@@ -44,6 +44,4 @@ class Day extends React.Component {
 Day.propTypes = propTypes;
 Day.defaultProps = defaultProps;
 
-export default {
-  Day
-};
+export default Day;

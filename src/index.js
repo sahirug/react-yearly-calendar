@@ -1,2 +1,4 @@
-export { default as Calendar } from './Calendar';
-export { default as CalendarControls } from './CalendarControls';
+import Calendar from './Calendar';
+import CalendarControls from './CalendarControls';
+
+export { Calendar, CalendarControls };
