@@ -53,7 +53,8 @@ class Month extends Component {
       this.props.showWeekSeparators !== nextProps.showWeekSeparators ||
       this.props.firstDayOfWeek !== nextProps.firstDayOfWeek ||
       this.props.selectRange !== nextProps.selectRange ||
-      this.props.customClasses !== nextProps.customClasses
+      this.props.customClasses !== nextProps.customClasses ||
+      (this.props.selectRange && selectingRange === undefined && nextProps.selectingRange === undefined)
     ) {
       return true;
     }
@@ -63,11 +64,15 @@ class Month extends Component {
       if (selectingRange === undefined) {
         let oldRangeStart = selectedRange[0].month();
         let oldRangeEnd = selectedRange[1].month();
-        if (oldRangeStart > oldRangeEnd) [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
+        if (oldRangeStart > oldRangeEnd) {
+          [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
+        }
 
         let newRangeStart = nextProps.selectingRange[0].month();
         let newRangeEnd = nextProps.selectingRange[1].month();
-        if (newRangeStart > newRangeEnd) [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+        if (newRangeStart > newRangeEnd) {
+          [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+        }
 
         // first time it's called, repaint months in old selectedRange and next selectingRange
         return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
@@ -75,11 +80,15 @@ class Month extends Component {
         // last time it's called, repaint months in previous selectingRange
         let oldRangeStart = selectingRangeStart;
         let oldRangeEnd = selectingRangeEnd;
-        if (oldRangeStart > oldRangeEnd) [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
+        if (oldRangeStart > oldRangeEnd) {
+          [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
+        }
 
         let newRangeStart = nextProps.selectedRange[0].month();
         let newRangeEnd = nextProps.selectedRange[1].month();
-        if (newRangeStart > newRangeEnd) [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+        if (newRangeStart > newRangeEnd) {
+          [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+        }
 
         // called on day hovering changed
         return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
@@ -91,7 +100,9 @@ class Month extends Component {
 
       let newRangeStart = nextProps.selectingRange[0].month();
       let newRangeEnd = nextProps.selectingRange[1].month();
-      if (newRangeStart > newRangeEnd) [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+      if (newRangeStart > newRangeEnd) {
+        [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
+      }
 
       return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
     } else if (this.props.selectedDay.month() === month || nextProps.selectedDay.month() === month) {
