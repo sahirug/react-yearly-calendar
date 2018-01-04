@@ -76,7 +76,7 @@ ReactDOM.render(
 ## Styling guide
 The calendar is rendered as an html `table` element, to ensure proper displaying even in case the style isn't being loaded.
 
-Take a look at the css file in `examples/basic/style.css`. Here are some head-ups if you want to style it yourself.
+Take a look at the css file in [`examples/basic/src/style.css`](https://github.com/BelkaLab/react-yearly-calendar/blob/master/examples/basic/src/style.css). Here are some head-ups if you want to style it yourself.
 
  - `table.calendar`: the main element that renders the calendar
  - `table.calendar thead`: renders the week day names
