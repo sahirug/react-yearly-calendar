@@ -40,6 +40,11 @@ class Calendar extends Component {
   }
 
   dayClicked(date, classes) {
+    if (!date) {
+      // clicked on prev or next month
+      return;
+    }
+
     let { selectingRange } = this.state;
     const { selectRange, onPickRange, onPickDate } = this.props;
 
@@ -69,6 +74,11 @@ class Calendar extends Component {
   }
 
   dayHovered(hoveredDay) {
+    if (!hoveredDay) {
+      // clicked on prev or next month
+      return;
+    }
+
     const { selectingRange } = this.state;
 
     if (selectingRange) {

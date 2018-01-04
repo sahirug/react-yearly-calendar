@@ -235,7 +235,7 @@ class Month extends Component {
       days.push(
         <Day
           key={`day-${i}`}
-          day={day}
+          day={day.isValid() ? day : null}
           classes={classes.join(' ')}
           dayClicked={d => this.dayClicked(d, classes.join(' '))}
           dayHovered={d => this.dayHovered(d)}

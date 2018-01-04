@@ -6,11 +6,12 @@ const propTypes = {
   classes: PropTypes.string,
   dayClicked: PropTypes.func.isRequired,
   dayHovered: PropTypes.func.isRequired,
-  day: momentObj.isRequired
+  day: momentObj
 };
 
 const defaultProps = {
-  classes: ''
+  classes: '',
+  day: null
 };
 
 class Day extends Component {
@@ -35,7 +36,7 @@ class Day extends Component {
     const { classes, day } = this.props;
     return (
       <td onClick={this.onClick} onMouseEnter={this.onHover} className={classes}>
-        <span className="day-number">{isNaN(day.date()) ? '' : day.date()}</span>
+        <span className="day-number">{day === null ? '' : day.date()}</span>
       </td>
     );
   }
